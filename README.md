@@ -1,35 +1,8 @@
 # Cruise Connection
 
-Cruise Connection is a white-label positive-interaction module for cruise-line apps.
+Agency-grade pilot/demo for a white-label **cruise-line add-to-app module** covering crew recognition, private Experience Pulse + service recovery, safe passenger positive interaction, interest-led participation, social commerce and end-of-cruise positive-memory summaries.
 
-The first build is a sellable pilot/demo shell that demonstrates the complete value loop before deep cruise-line integrations are implemented.
-
-## Core product rules
-
-- Cruise-first and white-label.
-- No dating mode.
-- No unrestricted passenger chat.
-- Passenger-to-passenger communication uses predefined positive affirmations and invitations.
-- Negative feedback follows a separate private service-recovery path.
-- No public star ratings or popularity leaderboards.
-- Crew recognition uses badge identification; no facial recognition.
-- Alcohol/casino rewards are outside the MVP.
-
-## GAMMESO
-
-**Great Interaction → Affirmation → More Participation & Interaction → More Activity & Commerce → End-of-Cruise Positive Summary → Social Sharing → Organic Cruise-Line Exposure**
-
-## Included demo surfaces
-
-- Cruise-line value proposition overview
-- Passenger affirmation/invitation module
-- Crew recognition flow
-- Private service-recovery flow
-- Participation/social-commerce flow
-- Passenger end-of-cruise shareable summary
-- Crew recognition summary
-- Cruise-line pilot dashboard
-- GAMMESO health view
+Cruise Connection is not a social network or dating app. It helps verified passengers make a safe first connection, then gets out of the way so real-world interaction happens onboard.
 
 ## Run locally
 
@@ -38,22 +11,118 @@ npm install
 npm run dev
 ```
 
-## Production build
+Open `http://localhost:5173/`.
+
+## Build
 
 ```bash
 npm run build
 ```
 
-## Integration direction
+## Crawlable product routes
 
-The front-end currently uses demo data. The domain model is intentionally compatible with future cruise-line integrations for:
+- `/`
+- `/crew-recognition/`
+- `/service-recovery/`
+- `/passenger-experience/`
+- `/social-commerce/`
+- `/cruise-dashboard/`
+- `/integration/`
+- `/pilot/`
 
-- sailing/reservation verification
-- crew roster / badge identifiers
-- venue and activity inventory
-- service-recovery routing
-- commerce attribution
-- branded sharing
-- analytics / BI exports
+The Vite build treats each route as its own HTML entry so important buyer propositions are not represented only by client-side state.
 
-No real cruise-line affiliation is implied by the demo data.
+## SEO production step
+
+Once the production domain is chosen:
+
+```bash
+SITE_URL=https://your-domain.com npm run seo:generate
+npm run build
+```
+
+## Final passenger interaction model
+
+Discovery is intentionally scoped. There is no browse-all-passengers screen.
+
+A verified passenger can find an opted-in same-sailing passenger through:
+
+1. **Nearby** — coarse proximity supplied by the native cruise-line app/SDK; never a live map or exact distance.
+2. **Shared activity** — both passengers attended the same verified onboard activity/context.
+3. **Shared interests** — passengers voluntarily expose selected cruise-relevant interests such as food, shopping, fitness, wellness or excursion types.
+
+First contact is a **predefined positive affirmation only**. The receiver can acknowledge or ignore it. Only after acknowledgement can the sender propose a predefined **public onboard venue/activity** such as coffee, a bar, restaurant, game, spa/wellness, shopping, fitness, a show or excursion. Cabins/staterooms are never offered.
+
+No unrestricted chat. No dating mode. No phone-number disclosure.
+
+## Offline-first requirement
+
+Core Cruise Connection usage must not depend on public internet access at sea.
+
+The demo now includes:
+
+- a service-worker cached application shell
+- a production requirement to pre-bundle/pre-cache the module before sailing or serve it from the ship-local network so first onboard open does not require public internet
+- local preference/action persistence
+- an offline action queue
+- host bridge events for nearby discovery, interests, affirmations, public-meeting proposals, crew recognition, service issues and Experience Pulse
+- an integration architecture separating **device**, **ship-local network** and **external cloud** responsibilities
+
+Production nearby discovery should be supplied by a native cruise-app bridge/SDK (for example BLE-based coarse proximity, with optional more precise capability only where the cruise line approves it). The web UI itself should not claim precise proximity or authenticate passengers.
+
+If the ship exposes onboard APIs/LAN, events can synchronize locally without public internet. If external connectivity is unavailable, non-urgent events can queue and synchronize later. Production queued records should use the host application's approved secure local storage.
+
+## Crew recognition
+
+- Badge-photo identification, not facial recognition.
+- One passenger may recognize the same crew member once per sailing-local day.
+- Up to two predefined positive reasons per recognition event.
+- Crew summary shows sailing number, dates, total recognitions, unique recognizing guests and recognition consistency across sailing days.
+- No public leaderboard or popularity ranking.
+
+## Experience Pulse
+
+Experience Pulse is private cruise-line operational feedback, not public rating content.
+
+- Ask only about departments/experiences the guest used.
+- Maximum one pulse per guest/department/sailing-local day.
+- Low score can open private service recovery.
+- High score can route into named crew recognition.
+- Post-resolution pulse can measure whether satisfaction improved after recovery.
+
+## Social commerce
+
+Passenger interests and positive connections create natural social proof around relevant cruise inventory. The cruise line keeps inventory, price, checkout and payment.
+
+The cruise line must actively promote the passenger layer before and during the sailing for a pilot to produce meaningful activation and commerce evidence.
+
+## Working commercial framework
+
+For design-partner discussions, the current working anchor is:
+
+- Enterprise onboarding/integration fee — negotiated
+- Ship activation/licensing fee — negotiated per vessel
+- Platform fee — **$1 per eligible passenger** working anchor
+- Performance fee — **5% of agreed attributable incremental onboard revenue** working anchor
+
+A lower passenger fee such as $0.50 can be negotiated against stronger minimums, vessel licensing or performance economics. These are working negotiation anchors, not fixed public pricing.
+
+## Host app integration
+
+`src/bridge.ts` is a demo transport contract only. See `docs/INTEGRATION.md` for the production architecture. Query parameters and browser `postMessage` are never identity proof.
+
+## Important demo notes
+
+- Demo metrics and sailing details are illustrative.
+- The pilot request form is front-end only until a CRM/backend is selected.
+- Nearby discovery is simulated through the host bridge contract; the real proximity layer requires native cruise-line app integration.
+- Offline action queuing in this demo uses browser local storage; production must use approved secure storage and data-retention rules.
+
+
+## Legal pages (v0.5.0)
+
+Business-specific legal routes are included at `/imprint/`, `/privacy/`, `/terms/`, and `/cookies/`. They use PlanetHike OÜ as the operator and reflect Cruise Connection's actual white-label, proximity, offline, recognition, recovery and commerce architecture. See `docs/LEGAL.md`.
+
+## V6 visual storytelling update
+
+The public overview now uses local generated cruise-hospitality imagery in the hero, measurable-outcome cards, crew-recognition story, service-recovery story, passenger-connection story, social-commerce moment, positive-memory card and integration section. All image assets live under `public/media/` and are included in the service-worker shell so the visual experience remains available after pre-cache/onboard distribution.

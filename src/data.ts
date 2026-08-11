@@ -22,11 +22,3 @@ export const recognitionReasons = [
   'Great with our family',
   'Made our trip memorable',
 ]
-
-export const passengerSignals = [
-  'You seemed friendly',
-  'You made us laugh',
-  'Great trivia teammate',
-  'Enjoyed meeting you',
-  'Great travel companion',
-]

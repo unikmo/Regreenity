@@ -1,0 +1,10 @@
+{
+  "name": "Cruise Connection",
+  "short_name": "Cruise Connection",
+  "description": "White-label positive-interaction infrastructure for cruise lines.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f6f2",
+  "theme_color": "#071e27",
+  "icons": []
+}
