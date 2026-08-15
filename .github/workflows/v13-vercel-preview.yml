@@ -14,19 +14,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Require Vercel token
+      - name: Detect Vercel token
+        id: auth
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          if [ -z "$VERCEL_TOKEN" ]; then
-            echo "VERCEL_TOKEN is not available to this repository."
-            exit 2
+          if [ -n "$VERCEL_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Vercel preview skipped: repository has no VERCEL_TOKEN."
           fi
       - name: Link existing Cruise Connection project
+        if: steps.auth.outputs.available == 'true'
         run: |
           mkdir -p .vercel
           printf '%s\n' '{"orgId":"team_sVekjWxQpKBAOb3DWW89HdvK","projectId":"prj_stTrdoXSFDYy0rOrnIX1CYUKr1u5"}' > .vercel/project.json
       - name: Deploy preview
+        if: steps.auth.outputs.available == 'true'
         id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -36,6 +41,7 @@ jobs:
           echo "### Cruise Connection v13 Preview" >> "$GITHUB_STEP_SUMMARY"
           echo "$URL/pilot-simulator/" >> "$GITHUB_STEP_SUMMARY"
       - name: Smoke test pilot route
+        if: steps.auth.outputs.available == 'true'
         env:
           URL: ${{ steps.deploy.outputs.url }}
         run: |
