@@ -14,6 +14,7 @@ export default defineConfig({
         'cruise-dashboard/index.html',
         'integration/index.html',
         'pilot/index.html',
+        'pilot-simulator/index.html',
         'imprint/index.html',
         'privacy/index.html',
         'terms/index.html',
