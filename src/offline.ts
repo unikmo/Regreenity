@@ -31,6 +31,13 @@ export function queueOfflineAction(type: string, payload: Record<string, unknown
   return action
 }
 
+export function removeOfflineAction(id: string) {
+  const next = readOfflineQueue().filter(action => action.id !== id)
+  try { window.localStorage.setItem(QUEUE_KEY, JSON.stringify(next)) } catch { /* storage unavailable */ }
+  window.dispatchEvent(new CustomEvent('cruise-connection-queue-change', { detail: next.length }))
+  return next
+}
+
 export function clearOfflineQueue() {
   try { window.localStorage.removeItem(QUEUE_KEY) } catch { /* storage unavailable */ }
   window.dispatchEvent(new CustomEvent('cruise-connection-queue-change', { detail: 0 }))
