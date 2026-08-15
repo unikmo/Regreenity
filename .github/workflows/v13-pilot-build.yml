@@ -23,7 +23,8 @@ jobs:
       - name: Verify pilot route in build
         run: |
           test -f dist/pilot-simulator/index.html
-          grep -q "Cruise Connection v13 Pilot Console" dist/pilot-simulator/index.html
+          grep -q "Cruise Connection v13 Pilot Simulator" dist/pilot-simulator/index.html
+          test -n "$(find dist -type f -name '*.js' -print -quit)"
       - name: Upload Vercel-ready dist
         uses: actions/upload-artifact@v4
         with:
@@ -36,6 +37,7 @@ jobs:
             https://phhpiqwvgwlgjmyiksqe.supabase.co/functions/v1/cruiseconnect-api-v3/health \
             | tee /tmp/health.json
           grep -q '"ok":true' /tmp/health.json
+          grep -q '"version":3' /tmp/health.json
       - name: Check Vercel deployment surface
         run: |
           URL="https://cruiseconnection-pilot-git-v13-pilot-unikmos-projects.vercel.app/pilot-simulator/"
@@ -44,13 +46,13 @@ jobs:
             echo "Unexpected Vercel response: HTTP $CODE"
             exit 1
           fi
-          if grep -q "Cruise Connection v13 Pilot Console" /tmp/pilot.html; then
+          if grep -q "Cruise Connection v13 Pilot Simulator" /tmp/pilot.html; then
             echo "Live v13 pilot content verified: $URL"
             exit 0
           fi
           if grep -q 'data-dpl-id=' /tmp/pilot.html || grep -qi 'vercel' /tmp/pilot.html; then
             echo "Vercel deployment is reachable but protected by Vercel Authentication."
-            echo "Build artifact and Supabase health are verified; content smoke test will run once a public/shareable URL is available."
+            echo "Build artifact and Supabase v3 health are verified; content smoke test will run once a public/shareable URL is available."
             exit 0
           fi
           echo "HTTP 200 returned unexpected content."
