@@ -1,0 +1,43 @@
+([])
+  const [notice,setNotice]=useState('')
+  const load=async()=>{try{setCampaigns(await clientLoadParticipationCampaigns())}catch(e){setNotice(e instanceof Error?e.message:'Unable to load live participation.')}}
+  useEffect(()=>{load();const timer=window.setInterval(load,5000);return()=>window.clearInterval(timer)},[])
+  const enter=async(c:ParticipationCampaign,response?:string)=>{try{await clientEnterParticipation(c.id,response,c.entryMode==='check_in'?'check_in':'tap');setNotice('Entry recorded live — no paper ticket required.');await load()}catch(e){setNotice(e instanceof Error?e.message:'Unable to enter.')}}
+  if(!campaigns.length)return <div className="sim-card"><small>LIVE PARTICIPATION</small><h2>No live moments right now.</h2><p>When the cruise team opens a draw, poll, trivia question or check-in, it appears here instantly.</p>{notice&&<div className="sim-error">{notice}</div>}</div>
+  return <div className="sim-live-stack"><div className="sim-card live-participation-intro"><small>LIVE PARTICIPATION</small><h2>Join from your phone. No paper raffle slips.</h2><p>Live draws, polls, trivia and activity check-ins can all run inside the cruise app. One verified passenger entry per moment.</p></div>{campaigns.map(c=><div className="sim-card live-campaign" key={c.id}><div className="sim-card-head"><div><small>{campaignTypeLabel[c.campaignType]||c.campaignType} · {c.status.toUpperCase()}</small><h3>{c.title}</h3></div>{c.entered&&<span className="sim-live-status">ENTERED ✓</span>}</div><p>{c.message}</p>{c.prompt&&<b className="sim-live-prompt">{c.prompt}</b>}{!c.entered&&c.options.length>0&&<div className="sim-chip-actions">{c.options.map(o=><button key={o} onClick={()=>enter(c,o)}>{o}</button>)}</div>}{!c.entered&&c.options.length===0&&<button className="sim-primary" onClick={()=>enter(c)}>{c.entryMode==='check_in'?'Check in & join':'Join live'}</button>}{c.entered&&<div className="sim-success">Your participation is recorded{c.entryCode?` · Entry ${c.entryCode}`:''}{c.myResponse?` · ${c.myResponse}`:''}.</div>}{c.won&&<div className="sim-winner-inline"><b>You were selected</b><span>{c.myPrize}</span></div>}{c.showLiveResults&&typeof c.participants==='number'&&<small>{c.participants} live responses</small>}{c.noPurchaseRequired&&<div className="sim-compliance-note">No purchase required for this pilot participation moment. Cruise-line official rules control production eligibility.</div>}</div>)}{notice&&<div className="sim-toast" onClick={()=>setNotice('')}>{notice}</div>}</div>
+}
+
+function RecoveryFollowUp() {
+  const [issues,setIssues]=useState<MyServiceIssue[]>([])
+  const [notice,setNotice]=useState('')
+  const load=async()=>{try{setIssues(await clientLoadMyServiceIssues())}catch{/* optional in fallback */}}
+  useEffect(()=>{load()},[])
+  const rate=async(id:string,score:number)=>{try{await clientPostRecoveryPulse(id,score);setNotice('Recovery feedback saved.');await load()}catch(e){setNotice(e instanceof Error?e.message:'Unable to save feedback.')}}
+  const resolved=issues.filter(i=>['resolved','closed'].includes(i.status)&&!i.postRecoveryScore)
+  if(!resolved.length)return null
+  return <div className="sim-card"><small>AFTER SERVICE RECOVERY</small><h3>Did we fix it?</h3><p>One tap closes the recovery loop for Guest Services.</p>{resolved.map(i=><div className="sim-recovery-pulse" key={i.id}><div><b>{i.category}</b><span>{i.department_id||'General'}</span></div><div className="sim-scale">{[1,2,3,4,5].map(n=><button key={n} onClick={()=>rate(i.id,n)}>{n}</button>)}</div></div>)}{notice&&<div className="sim-success">{notice}</div>}</div>
+}
+
+function PassengerRecovery({ directory }: { directory:RemoteDirectory }) {
+  const [department,setDepartment]=useState(directory.departments[0]?.id||'guest-services')
+  const [category,setCategory]=useState('Something needs attention')
+  const [notice,setNotice]=useState('')
+  const submitIssue=async()=>{try{await clientSubmitServiceIssue(department,category);setNotice('Guest Services has received this privately.')}catch(e){setNotice(e instanceof Error?e.message:'Unable to submit issue.')}}
+  const pulse=async(score:number)=>{try{const r=await clientSubmitExperiencePulse(department,score,'contextual') as {recoveryOpened?:boolean};setNotice(r?.recoveryOpened?'Low score received — a private service-recovery item was opened.':'Experience Pulse saved.')}catch(e){setNotice(e instanceof Error?e.message:'Unable to save pulse.')}}
+  return <div className="sim-live-stack"><div className="sim-card"><small>PRIVATE SERVICE RECOVERY</small><h2>Fix it while you are still onboard.</h2><p>This route is private to the cruise line. It is not a public review or passenger post.</p><div className="sim-form-grid"><label>Department<select value={department} onChange={e=>setDepartment(e.target.value)}>{directory.departments.map(d=><option key={d.id} value={d.id}>{d.name}</option>)}</select></label><label>Issue category<select value={category} onChange={e=>setCategory(e.target.value)}><option>Something needs attention</option><option>Service delay</option><option>Cleanliness</option><option>Booking / reservation issue</option><option>Accessibility / assistance</option></select></label></div><button className="sim-primary" onClick={submitIssue}>Request onboard help</button></div><div className="sim-card"><small>EXPERIENCE PULSE</small><h3>How is this department doing right now?</h3><p>One tap, 1–5. A 1–2 can automatically open a private recovery item so the team can respond before disembarkation.</p><div className="sim-scale large">{[1,2,3,4,5].map(n=><button key={n} onClick={()=>pulse(n)}>{n}</button>)}</div>{notice&&<div className="sim-success">{notice}</div>}</div></div>
+}
+
+function PassengerView({ account, state, directory, refresh }: { account:PilotAccount; state:PilotState; directory:RemoteDirectory; refresh:()=>void }) {
+  const [tab,setTab]=useState<'home'|'live'|'help'|'connect'|'crew'|'pulse'>('home')
+  const [selectedPassenger,setSelectedPassenger]=useState('PAX-1002')
+  const [selectedCrew,setSelectedCrew]=useState('CREW-101')
+  const [selectedReasons,setSelectedReasons]=useState<string[]>(['Made us feel welcome'])
+  const [notice,setNotice]=useState('')
+  const { sailing, accounts, crew, departments } = directory
+  const nearby=accounts.filter(a=>a.role==='passenger'&&a.id!==account.id&&a.nearbyVisible&&a.ageBand!=='minor')
+  const incoming=state.affirmations.filter(a=>a.toId===account.id && a.status==='pending')
+  const acknowledged=state.affirmations.find(a=>((a.fromId===account.id&&a.toId===selectedPassenger)||(a.fromId===selectedPassenger&&a.toId===account.id))&&a.status==='acknowledged')
+  const act=async(fn:()=>Promise<unknown>)=>{try{await fn();setNotice(`Saved via ${clientMode()}.`);refresh()}catch(e){setNotice(e instanceof Error?e.message:'Action failed.')}}
+  const toggleReason=(r:string)=>setSelectedReasons(prev=>prev.includes(r)?prev.filter(x=>x!==r):prev.length<2?[...prev,r]:prev)
+  return <div className="sim-passenger-layout"><aside className="sim-side-nav"><b>{account.firstName}</b><small>{sailing.title}</small>{[['home','Home'],['live','Live now'],['help','Get help'],['connect','Connect'],['crew','Recognize crew'],['pulse','Final-night pulse']].map(([id,label])=><button key={id} className={tab===id?'active':''} onClick={()=>setTab(id as typeof tab)}>{label}</button>)}</aside><div className="sim-main">
+    {state.finalPulseActive && !state.pulseResponses[account.id] && <button className="sim-pulse-banner" onClick={()=>setTab('pulse')}><span>FINAL NIGHT</span><b>Take 60–90 seconds to rate your cruise →</b></but
