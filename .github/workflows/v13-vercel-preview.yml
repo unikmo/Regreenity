@@ -1,0 +1,51 @@
+name: v13 Vercel preview
+
+on:
+  push:
+    branches: [v13-pilot]
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Require Vercel token
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "VERCEL_TOKEN is not available to this repository."
+            exit 2
+          fi
+      - name: Link existing Cruise Connection project
+        run: |
+          mkdir -p .vercel
+          printf '%s\n' '{"orgId":"team_sVekjWxQpKBAOb3DWW89HdvK","projectId":"prj_stTrdoXSFDYy0rOrnIX1CYUKr1u5"}' > .vercel/project.json
+      - name: Deploy preview
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          URL=$(npx vercel@latest deploy --yes --token="$VERCEL_TOKEN" --scope=unikmos-projects)
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "### Cruise Connection v13 Preview" >> "$GITHUB_STEP_SUMMARY"
+          echo "$URL/pilot-simulator/" >> "$GITHUB_STEP_SUMMARY"
+      - name: Smoke test pilot route
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          for i in 1 2 3 4 5 6; do
+            CODE=$(curl -L -s -o /tmp/pilot.html -w '%{http_code}' "$URL/pilot-simulator/" || true)
+            if [ "$CODE" = "200" ] && grep -q "Cruise Connection v13 Pilot Console" /tmp/pilot.html; then
+              echo "Pilot preview verified: $URL/pilot-simulator/"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Preview route did not verify."
+          exit 1
