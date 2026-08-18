@@ -6,17 +6,20 @@
   "outputDirectory": "pilot-static",
   "cleanUrls": true,
   "redirects": [
-    {"source":"/","destination":"/pilot-simulator/","permanent":false}
+    {"source":"/passenger-experience","destination":"/guest-participation","permanent":true},
+    {"source":"/crew-recognition","destination":"/crew-and-staff-recognition","permanent":true},
+    {"source":"/social-commerce","destination":"/ancillary-revenue","permanent":true},
+    {"source":"/cruise-dashboard","destination":"/cruise","permanent":true},
+    {"source":"/integration","destination":"/guest-engagement-platform","permanent":true},
+    {"source":"/pilot","destination":"/request-pilot","permanent":true}
   ],
   "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {"key":"X-Content-Type-Options","value":"nosniff"},
-        {"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"},
-        {"key":"X-Frame-Options","value":"SAMEORIGIN"},
-        {"key":"Permissions-Policy","value":"microphone=(), geolocation=()"}
-      ]
-    }
+    {"source":"/(.*)","headers":[
+      {"key":"X-Content-Type-Options","value":"nosniff"},
+      {"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"},
+      {"key":"X-Frame-Options","value":"SAMEORIGIN"},
+      {"key":"Permissions-Policy","value":"microphone=(), geolocation=()"}
+    ]},
+    {"source":"/pilot-simulator/(.*)","headers":[{"key":"X-Robots-Tag","value":"noindex, nofollow"}]}
   ]
 }

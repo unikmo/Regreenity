@@ -1,4 +1,4 @@
-name: v13 static pilot release
+name: Tisonik static site release
 
 on:
   push:
@@ -20,15 +20,26 @@ jobs:
           node-version: '24'
       - name: Install dependencies
         run: npm install
-      - name: Build full v13 pilot
+      - name: Build Tisonik site and cruise pilot
         run: npm run build
-      - name: Prepare static Vercel artifact
+      - name: Verify deployable artifact
+        run: |
+          test -f dist/index.html
+          grep -q "Tisonik" dist/index.html
+          test -f dist/guest-engagement-platform/index.html
+          test -f dist/cruise/index.html
+          test -f dist/hotels-resorts/index.html
+          test -f dist/hotel-guest-experience-software/index.html
+          test -f dist/request-pilot/index.html
+          test -f dist/pilot-simulator/index.html
+          grep -q "Tisonik Cruise v13 Pilot Simulator" dist/pilot-simulator/index.html
+          test -f dist/sitemap.xml
+          test -f dist/marketing.css
+          test -f dist/marketing.js
+      - name: Prepare prebuilt Vercel artifact
         run: |
           rm -rf pilot-static
           cp -R dist pilot-static
-          test -f pilot-static/pilot-simulator/index.html
-          grep -q "Cruise Connection v13 Pilot Simulator" pilot-static/pilot-simulator/index.html
-          test -n "$(find pilot-static -type f -name '*.js' -print -quit)"
       - name: Commit prebuilt artifact
         run: |
           git config user.name "github-actions[bot]"
@@ -38,5 +49,5 @@ jobs:
             echo "Prebuilt artifact is already current."
             exit 0
           fi
-          git commit -m "chore: publish prebuilt Cruise Connection v13 pilot [static-dist]"
+          git commit -m "chore: publish prebuilt Tisonik site and cruise pilot [static-dist]"
           git push origin HEAD:v13-pilot
