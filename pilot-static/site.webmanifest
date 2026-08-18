@@ -1,0 +1,10 @@
+{
+  "name": "Tisonik",
+  "short_name": "Tisonik",
+  "description": "Guest engagement platform for cruise lines, hotels and resorts.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f7f6",
+  "theme_color": "#071c24",
+  "icons": []
+}

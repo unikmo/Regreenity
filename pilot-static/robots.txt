@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /pilot-simulator/
+Sitemap: https://tisonik.com/sitemap.xml
