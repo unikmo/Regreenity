@@ -1,0 +1,54 @@
+name: Regreenity static site release
+
+on:
+  push:
+    branches: [v13-pilot]
+
+permissions:
+  contents: write
+
+jobs:
+  publish-static:
+    if: ${{ !contains(github.event.head_commit.message, '[static-dist]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: v13-pilot
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install dependencies
+        run: npm install
+      - name: Build Regreenity site and cruise pilot
+        run: npm run build
+      - name: Verify deployable artifact
+        run: |
+          test -f dist/index.html
+          grep -q "Regreenity" dist/index.html
+          grep -q "https://regreenity.com/" dist/index.html
+          test -f dist/guest-engagement-platform/index.html
+          test -f dist/cruise/index.html
+          test -f dist/hotels-resorts/index.html
+          test -f dist/hotel-guest-experience-software/index.html
+          test -f dist/request-pilot/index.html
+          test -f dist/pilot-simulator/index.html
+          grep -q "Regreenity Cruise v13 Pilot Simulator" dist/pilot-simulator/index.html
+          test -f dist/sitemap.xml
+          test -f dist/marketing.css
+          test -f dist/marketing.js
+      - name: Prepare prebuilt Vercel artifact
+        run: |
+          rm -rf pilot-static
+          cp -R dist pilot-static
+      - name: Commit prebuilt artifact
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f pilot-static
+          if git diff --cached --quiet; then
+            echo "Prebuilt artifact is already current."
+            exit 0
+          fi
+          git commit -m "chore: publish prebuilt Regreenity site and cruise pilot [static-dist]"
+          git push origin HEAD:v13-pilot

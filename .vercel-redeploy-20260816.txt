@@ -1,0 +1,2 @@
+Cruise Connection v13 pilot redeploy trigger — 2026-08-16.
+No application logic changed; this commit exists only to trigger the connected Vercel project after the previous rate-limit window cleared.

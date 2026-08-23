@@ -1,0 +1,47 @@
+name: Regreenity site build
+
+on:
+  push:
+    branches: [v13-pilot]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install dependencies
+        run: npm install
+      - name: Build Regreenity
+        run: npm run build
+      - name: Verify public architecture
+        run: |
+          grep -q "Regreenity" dist/index.html
+          grep -q "Turn guest engagement into better experiences and more revenue" dist/index.html
+          grep -q "https://regreenity.com/" dist/index.html
+          for page in guest-engagement-platform cruise cruise-guest-engagement cruise-mobile-app-engagement cruise-service-recovery cruise-guest-feedback cruise-onboard-revenue hotels-resorts hotel-guest-experience-software hotel-guest-app hospitality-mobile-app resort-app hotel-upselling-software hotel-ancillary-revenue solutions guest-participation service-recovery crew-and-staff-recognition guest-feedback ancillary-revenue promotions-and-rewards digital-raffles-and-campaigns request-pilot; do
+            test -f "dist/$page/index.html"
+          done
+          test -f dist/pilot-simulator/index.html
+          grep -q "Regreenity Cruise v13 Pilot Simulator" dist/pilot-simulator/index.html
+          test -f dist/sitemap.xml
+      - name: Verify live Supabase cruise API
+        run: |
+          curl --fail --silent --show-error https://phhpiqwvgwlgjmyiksqe.supabase.co/functions/v1/cruiseconnect-api-v3/health | tee /tmp/health.json
+          grep -q '"ok":true' /tmp/health.json
+      - name: Verify pilot request endpoint CORS
+        run: |
+          CODE=$(curl -sS -o /dev/null -w '%{http_code}' -X OPTIONS -H 'Origin: https://regreenity.com' https://phhpiqwvgwlgjmyiksqe.supabase.co/functions/v1/regreenity-pilot-request)
+          test "$CODE" = "204"
+      - name: Upload Vercel-ready dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: regreenity-site-dist
+          path: dist
+          if-no-files-found: error

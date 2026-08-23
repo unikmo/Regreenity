@@ -1,0 +1,87 @@
+import { useEffect, useState } from 'react'
+import type { ChangeEvent, ReactNode } from 'react'
+import { crewMembers, departments as localDepartments, pilotAccounts, pilotSailing, type PilotAccount, type PilotRole } from './pilotData'
+import { loadPilotState, type PilotState } from './pilotRuntime'
+import {
+  clientAccount,
+  clientCreateParticipationCampaign,
+  clientCreatePromotion,
+  clientDrawParticipation,
+  clientDrawWinners,
+  clientEnterParticipation,
+  clientLaunchPulse,
+  clientLoadDirectory,
+  clientLoadIntegrations,
+  clientLoadMyServiceIssues,
+  clientLoadParticipationCampaigns,
+  clientLoadStaffOverview,
+  clientLoadState,
+  clientLogin,
+  clientLogout,
+  clientMode,
+  clientPostRecoveryPulse,
+  clientProposeMeeting,
+  clientRecognizeCrew,
+  clientReset,
+  clientRespondAffirmation,
+  clientSendAffirmation,
+  clientSession,
+  clientSetParticipationStatus,
+  clientSetPromotionStatus,
+  clientSubmitPulse,
+  clientSubmitServiceIssue,
+  clientSubmitExperiencePulse,
+  clientTrackPromotion,
+  clientUpdatePrize,
+  clientUpdateServiceIssueStatus,
+  type IntegrationConnector,
+  type MyServiceIssue,
+  type ParticipationCampaign,
+  type RemoteDirectory,
+  type StaffOverview,
+} from './pilotClient'
+
+const recognitionReasons = ['Made us feel welcome','Went above and beyond','Exceptional service','Solved a problem','Great with our family','Made our trip memorable']
+const affirmations = ['Great energy','That was kind of you','You made us laugh','Great style','Great trivia teammate','Enjoyed meeting you']
+const publicPlaces = ['Coffee / café','Bar / lounge','Restaurant','Trivia / game','Spa / wellness','Shopping','Fitness activity','Show','Excursion']
+
+const roleLabel: Record<PilotRole,string> = {
+  passenger: 'Passenger', crew: 'Crew member', director: 'Cruise director', admin: 'Cruise-line admin',
+  guest_services: 'Guest Services', marketing: 'Marketing', sales: 'Sales / Revenue', crew_lead: 'Crew lead', activities: 'Entertainment / Activities',
+}
+
+const fmt = (iso?: string) => iso ? new Date(iso).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : 'Not launched'
+const campaignTypeLabel:Record<string,string>={raffle:'Live draw',poll:'Audience poll',trivia:'Trivia',check_in:'Digital check-in',activity:'Activity participation',feedback:'Feedback'}
+
+function Login({ onLogin }: { onLogin: () => void }) {
+  const [accountId, setAccountId] = useState('PAX-1001')
+  const [pin, setPin] = useState('2468')
+  const [error, setError] = useState('')
+  const chosen = pilotAccounts.find(a => a.id === accountId)!
+  const choose = (id: string) => { const account = pilotAccounts.find(a => a.id === id)!; setAccountId(id); setPin(account.pin); setError('') }
+  const login = async () => { const session = await clientLogin(accountId,pin); if (!session) { setError('Invalid test credential.'); return }; onLogin() }
+  return <div className="pilot-sim-login">
+    <div className="pilot-sim-login-copy"><span className="sim-badge">PILOT SIMULATION · AUTH ENABLED</span><h1>Run the sailing before connecting a cruise line.</h1><p>Shared pilot data, role-based staff access and passenger flows run against the Supabase pilot API. Production swaps the seeded identities for signed cruise-line launch context.</p><div className="sim-sailing-line"><b>{pilotSailing.title}</b><span>{pilotSailing.number}</span><span>{pilotSailing.shipName}</span><span>Day {pilotSailing.day} of {pilotSailing.days}</span></div></div>
+    <div className="pilot-sim-login-card"><small>CHOOSE A TEST ROLE</small><div className="sim-role-grid">
+      {[["PAX-1001","Maria · passenger"],["CREW-LOGIN-101","Ana · crew"],["DIRECTOR-01","Jordan · director"],["ACTIVITIES-01","Jamie · activities"],["GUESTSERVICES-01","Maya · guest services"],["MARKETING-01","Avery · marketing"],["SALES-01","Chris · sales"],["CREWLEAD-01","Nadia · crew lead"],["ADMIN-01","Taylor · admin"]].map(([id,label]) => <button key={id} className={accountId===id?'active':''} onClick={()=>choose(id)}>{label}</button>)}
+    </div><label>Test identity<select value={accountId} onChange={(e: ChangeEvent<HTMLSelectElement>)=>choose(e.target.value)}>{pilotAccounts.map(a=><option key={a.id} value={a.id}>{a.id} · {a.firstName} {a.lastName} · {roleLabel[a.role]}</option>)}</select></label><label>PIN<input value={pin} onChange={(e: ChangeEvent<HTMLInputElement>)=>setPin(e.target.value)} inputMode="numeric"/></label>{error && <div className="sim-error">{error}</div>}<button className="sim-primary" onClick={login}>Enter pilot as {chosen.firstName}</button><div className="sim-security-note"><b>Simulation only</b><span>Production auth is sailing-scoped and supplied by the host cruise app.</span></div></div>
+  </div>
+}
+
+function Shell({ account, sailing, children, onLogout }: { account: PilotAccount; sailing: RemoteDirectory['sailing']; children: ReactNode; onLogout:()=>void }) {
+  return <div className="pilot-sim-shell"><div className="sim-topbar"><div><b>Cruise Connection</b><span>Pilot runtime · {sailing.number}</span></div><div className="sim-session"><span>{account.firstName} {account.lastName}</span><small>{roleLabel[account.role]}</small><button onClick={onLogout}>Sign out</button></div></div>{children}</div>
+}
+
+function FinalPulse({ account, state, departments, refresh }: { account: PilotAccount; state: PilotState; departments: RemoteDirectory['departments']; refresh:()=>void }) {
+  const existing = state.pulseResponses[account.id] || {}
+  const [ratings,setRatings] = useState<Record<string,number>>(existing)
+  const [done,setDone] = useState(Object.keys(existing).length === departments.length)
+  const [message,setMessage] = useState('')
+  const completed = departments.filter(d=>ratings[d.id]).length
+  const submit = async () => { try { await clientSubmitPulse(account.id,ratings); setDone(true); setMessage('Experience Pulse complete. You are entered in the final-night draw.'); refresh() } catch(e){ setMessage(e instanceof Error ? e.message : 'Please rate every department.') } }
+  if (!state.finalPulseActive && !done) return <div className="sim-card final-pulse-preview"><small>FINAL-NIGHT EXPERIENCE PULSE</small><h3>Not live yet.</h3><p>The Cruise Director activates this on the final night. Six departments, one 1–5 tap each, no writing.</p></div>
+  return <div className="sim-card final-pulse-card"><div className="pulse-head"><div><small>FINAL-NIGHT EXPERIENCE PULSE</small><h3>{done?'Thanks — you’re done.':'Rate the cruise in under 2 minutes.'}</h3><p>No writing. One tap per department. {completed}/{departments.length} complete.</p></div><div className="pulse-progress"><b>{Math.round(completed/departments.length*100)}%</b><span>complete</span></div></div><div className="sim-rating-list">{departments.map(dep=><div key={dep.id} className="sim-rating-row"><div><span>{dep.icon}</span><b>{dep.name}</b></div><div className="sim-scale">{[1,2,3,4,5].map(n=><button key={n} className={ratings[dep.id]===n?'active':''} onClick={()=>!done&&setRatings(prev=>({...prev,[dep.id]:n}))} disabled={done}>{n}</button>)}</div></div>)}</div>{!done && <button className="sim-primary" disabled={completed!==departments.length} onClick={submit}>Submit ratings & enter draw</button>}{message && <div className="sim-success">{message}</div>}<div className="sim-prize-note"><b>Completion incentive</b><span>{state.prize.winnerCount} lucky participant{state.prize.winnerCount>1?'s':''}: {state.prize.adultPrize}. Operator official rules apply.</span></div></div>
+}
+
+function PassengerLiveParticipation() {
+  const [campaigns,setCampaigns]=useState<ParticipationCampaign[]>

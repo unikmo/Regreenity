@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /pilot-simulator/
+Sitemap: https://regreenity.com/sitemap.xml
