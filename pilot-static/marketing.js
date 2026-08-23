@@ -23,7 +23,7 @@ if(form){
     };
     button.disabled=true;button.textContent='Sending…';
     try{
-      const response=await fetch('https://phhpiqwvgwlgjmyiksqe.supabase.co/functions/v1/tisonik-pilot-request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const response=await fetch('https://phhpiqwvgwlgjmyiksqe.supabase.co/functions/v1/regreenity-pilot-request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       const body=await response.json().catch(()=>({}));
       if(!response.ok)throw new Error(body.error||'Request could not be sent.');
       form.reset();status.textContent=`Request received${body.reference?` · Ref ${body.reference}`:''}. We’ll review it and follow up directly.`;status.className='form-status ok';
