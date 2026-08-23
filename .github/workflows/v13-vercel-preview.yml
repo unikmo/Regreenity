@@ -1,4 +1,4 @@
-name: v13 Vercel preview
+name: Regreenity Vercel preview
 
 on:
   push:
@@ -25,11 +25,11 @@ jobs:
             echo "available=false" >> "$GITHUB_OUTPUT"
             echo "Vercel preview skipped: repository has no VERCEL_TOKEN."
           fi
-      - name: Link existing Cruise Connection project
+      - name: Link Regreenity pilot project
         if: steps.auth.outputs.available == 'true'
         run: |
           mkdir -p .vercel
-          printf '%s\n' '{"orgId":"team_sVekjWxQpKBAOb3DWW89HdvK","projectId":"prj_stTrdoXSFDYy0rOrnIX1CYUKr1u5"}' > .vercel/project.json
+          printf '%s\n' '{"orgId":"team_sVekjWxQpKBAOb3DWW89HdvK","projectId":"prj_8A6lUfjP2cy5xR0f1xv0IcGGAwaj"}' > .vercel/project.json
       - name: Deploy preview
         if: steps.auth.outputs.available == 'true'
         id: deploy
@@ -38,7 +38,8 @@ jobs:
         run: |
           URL=$(npx vercel@latest deploy --yes --token="$VERCEL_TOKEN" --scope=unikmos-projects)
           echo "url=$URL" >> "$GITHUB_OUTPUT"
-          echo "### Cruise Connection v13 Preview" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Regreenity Preview" >> "$GITHUB_STEP_SUMMARY"
+          echo "$URL/" >> "$GITHUB_STEP_SUMMARY"
           echo "$URL/pilot-simulator/" >> "$GITHUB_STEP_SUMMARY"
       - name: Smoke test pilot route
         if: steps.auth.outputs.available == 'true'
@@ -47,8 +48,8 @@ jobs:
         run: |
           for i in 1 2 3 4 5 6; do
             CODE=$(curl -L -s -o /tmp/pilot.html -w '%{http_code}' "$URL/pilot-simulator/" || true)
-            if [ "$CODE" = "200" ] && grep -q "Cruise Connection v13 Pilot Console" /tmp/pilot.html; then
-              echo "Pilot preview verified: $URL/pilot-simulator/"
+            if [ "$CODE" = "200" ] && grep -q "Regreenity Cruise v13 Pilot Simulator" /tmp/pilot.html; then
+              echo "Regreenity pilot preview verified: $URL/pilot-simulator/"
               exit 0
             fi
             sleep 5
