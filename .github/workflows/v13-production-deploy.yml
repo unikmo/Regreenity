@@ -1,0 +1,75 @@
+name: Regreenity production deploy
+
+on:
+  push:
+    branches: [v13-pilot]
+
+concurrency:
+  group: regreenity-production
+  cancel-in-progress: true
+
+jobs:
+  deploy-production:
+    if: ${{ !contains(github.event.head_commit.message, '[static-dist]') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Require Vercel token
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::Repository secret VERCEL_TOKEN is not configured."
+            exit 1
+          fi
+
+      - name: Link production project
+        run: |
+          mkdir -p .vercel
+          printf '%s\n' '{"orgId":"team_sVekjWxQpKBAOb3DWW89HdvK","projectId":"prj_stTrdoXSFDYy0rOrnIX1CYUKr1u5"}' > .vercel/project.json
+
+      - name: Install and verify Design Excellence build
+        run: |
+          npm install
+          npm run build
+          grep -q "Turn guest engagement into better experiences and" dist/index.html
+          grep -q "page--home" dist/index.html
+          grep -q "prefers-reduced-motion" dist/marketing.css
+          grep -q "skip-link" dist/index.html
+          test -f dist/media/hero-deck.jpg
+          test -f dist/media/crew-recognition.jpg
+          test -f dist/media/service-recovery.jpg
+          test -f dist/media/passenger-connection.jpg
+          test -f dist/media/social-commerce.jpg
+          test -f dist/pilot-simulator/index.html
+
+      - name: Deploy Regreenity to production
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          URL=$(npx vercel@latest deploy --prod --yes --token="$VERCEL_TOKEN" --scope=unikmos-projects)
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "### Regreenity Production" >> "$GITHUB_STEP_SUMMARY"
+          echo "$URL" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://regreenity.com" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Verify production domain
+        run: |
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            CODE=$(curl -L -s -o /tmp/home.html -w '%{http_code}' https://regreenity.com/ || true)
+            if [ "$CODE" = "200" ] && grep -q "Turn guest engagement into better experiences and" /tmp/home.html && grep -q "Design Excellence" dist/marketing.css; then
+              echo "Regreenity production verified."
+              exit 0
+            fi
+            sleep 6
+          done
+          echo "::error::Production domain did not verify the Design Excellence homepage in time."
+          exit 1
