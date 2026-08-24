@@ -1,0 +1,135 @@
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+
+const root = process.cwd()
+const pages = [
+  '', 'guest-engagement-platform','cruise','cruise-guest-engagement','cruise-mobile-app-engagement','cruise-service-recovery','cruise-guest-feedback','cruise-onboard-revenue','hotels-resorts','hotel-guest-experience-software','hotel-guest-app','hospitality-mobile-app','resort-app','hotel-upselling-software','hotel-ancillary-revenue','solutions','guest-participation','service-recovery','crew-and-staff-recognition','guest-feedback','ancillary-revenue','promotions-and-rewards','digital-raffles-and-campaigns','request-pilot','imprint','privacy','terms','cookies'
+]
+
+const mediaReplacements = [
+  ['/media/shareable-memory.jpg', '/media/hero-deck.jpg'],
+  ['/media/onboard-life.jpg', '/media/passenger-connection.jpg'],
+]
+
+const homeMain = `<main class="recovered-home">
+<section class="rh-hero">
+  <div class="shell rh-hero-grid">
+    <div class="rh-hero-copy">
+      <div class="eyebrow">Guest engagement platform · Cruise lines, hotels & resorts</div>
+      <h1>Make every positive guest interaction <em>more valuable.</em></h1>
+      <p>Regreenity turns live guest moments into recognition, faster service recovery, higher participation and relevant revenue — without replacing the operator's app, systems or customer relationship.</p>
+      <div class="rh-actions"><a class="btn btn-accent" href="/request-pilot/">Request a pilot</a><a class="btn btn-ghost" href="/guest-engagement-platform/">Explore the platform</a></div>
+      <div class="rh-trust"><span>White-label</span><span>No open chat</span><span>Private recovery</span><span>Operator-owned commerce</span></div>
+    </div>
+    <div class="rh-hero-media">
+      <figure class="rh-photo"><img src="/media/hero-deck.jpg" alt="Guests enjoying a sunset conversation on a cruise ship deck" width="1600" height="900" fetchpriority="high"></figure>
+      <div class="rh-phone" aria-label="Illustrative Regreenity guest module">
+        <div class="rh-phone-top"><small>DAY 4 OF 7</small><b>Mediterranean Escape</b><i>MA</i></div>
+        <div class="rh-phone-card"><small>GOOD AFTERNOON, MARIA</small><strong>Who made your day better?</strong><span>A quick positive note takes seconds.</span><button type="button">Recognize someone →</button></div>
+        <div class="rh-phone-grid"><span><b>Recognize crew</b><small>Say thank you now</small></span><span><b>Need help?</b><small>Private service route</small></span><span><b>Join together</b><small>Activities you share</small></span><span><b>Experience pulse</b><small>1–5 in seconds</small></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rh-proof"><div class="shell rh-proof-grid"><div><small>ONE OPERATING LAYER</small><strong>Engage · Recover · Grow</strong></div><div><b>Recognition</b><span>Capture great service while it is fresh.</span></div><div><b>Recovery</b><span>Act while the guest is still present.</span></div><div><b>Participation</b><span>Turn moments into action, not another message.</span></div><div><b>Revenue</b><span>Surface relevance, then hand back to operator checkout.</span></div></div></section>
+
+<section class="rh-section rh-dark">
+  <div class="shell rh-split">
+    <div class="rh-copy">
+      <div class="eyebrow">Recognition · Real time, real context</div>
+      <h2>Recognize great service while it is happening.</h2>
+      <p>Guests can recognize crew or staff in seconds with structured reasons. Positive service becomes visible without public popularity scores or a noisy review layer.</p>
+      <div class="rh-mini-panel"><div><small>THIS SAILING</small><strong>84</strong><span>recognitions</span></div><div><small>UNIQUE GUESTS</small><strong>61</strong><span>participated</span></div><div><small>TOP SIGNAL</small><strong>Helpful</strong><span>structured reason</span></div></div>
+      <a class="rh-link" href="/crew-and-staff-recognition/">Explore crew & staff recognition →</a>
+    </div>
+    <figure class="rh-feature-photo"><img src="/media/crew-recognition.jpg" alt="Crew member providing warm service to a guest in an elegant dining setting" width="1600" height="900" loading="lazy"></figure>
+  </div>
+</section>
+
+<section class="rh-section rh-light">
+  <div class="shell rh-split rh-reverse">
+    <figure class="rh-feature-photo"><img src="/media/service-recovery.jpg" alt="Guest services professional helping a guest resolve an issue" width="1600" height="900" loading="lazy"></figure>
+    <div class="rh-copy">
+      <div class="eyebrow">Service recovery · Before the moment is lost</div>
+      <h2>Recognize the good. Recover the bad. While the guest is still there.</h2>
+      <p>A low experience signal can become an owned workflow immediately — onboard or before hotel checkout — instead of arriving days later in a survey.</p>
+      <ol class="rh-lifecycle"><li><b>Submitted</b><span>Guest signals an issue privately.</span></li><li><b>Acknowledged</b><span>The guest knows somebody has seen it.</span></li><li><b>Assigned</b><span>The right operational owner takes it.</span></li><li><b>Resolved</b><span>The team closes the operational issue.</span></li><li><b>Post-recovery pulse</b><span>Measure whether the guest actually felt recovered.</span></li></ol>
+      <a class="rh-link" href="/service-recovery/">Explore service recovery →</a>
+    </div>
+  </div>
+</section>
+
+<section class="rh-section rh-dark">
+  <div class="shell rh-split">
+    <div class="rh-copy">
+      <div class="eyebrow">Positive connection · Cruise-specific workflow</div>
+      <h2>The ship is the social environment. Regreenity only makes the safe first move easier.</h2>
+      <p>Guests can discover shared activities and interests without unrestricted messaging. First contact stays structured, opt-in and tied to public onboard experiences.</p>
+      <div class="rh-pill-grid"><span><b>Nearby</b><small>Opt-in visibility</small></span><span><b>Shared activity</b><small>Same time, same place</small></span><span><b>Shared interests</b><small>Find common ground</small></span><span><b>Public proposal</b><small>No cabins. No private meetups.</small></span></div>
+      <a class="rh-link" href="/cruise-guest-engagement/">Explore cruise guest engagement →</a>
+    </div>
+    <figure class="rh-feature-photo"><img src="/media/passenger-connection.jpg" alt="Guests socializing together in an elegant onboard lounge" width="1600" height="900" loading="lazy"></figure>
+  </div>
+</section>
+
+<section class="rh-section rh-light">
+  <div class="shell rh-split rh-reverse">
+    <figure class="rh-feature-photo"><img src="/media/social-commerce.jpg" alt="Guests enjoying a premium dining experience with attentive hospitality service" width="1600" height="900" loading="lazy"></figure>
+    <div class="rh-copy">
+      <div class="eyebrow">Participation & revenue · Relevant, timely, operator-owned</div>
+      <h2>Surface the right experience because people want to do it together.</h2>
+      <p>Participation creates useful context. Regreenity can connect that context to dining, excursions, spa, activities or upgrades while the cruise line, hotel or resort keeps inventory, pricing, payment and fulfilment.</p>
+      <div class="rh-offer-card"><small>RELEVANT NEXT STEP</small><strong>Sunset dinner & drinks</strong><span>Shared dining interest · availability supplied by operator</span><a href="/ancillary-revenue/">View the revenue workflow →</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="rh-section rh-framework">
+  <div class="shell">
+    <div class="rh-heading"><div><div class="eyebrow">The Regreenity operating model</div><h2>Three outcomes. One connected guest journey.</h2></div><p>The same signal should not be treated the same way every time. Context determines whether the next useful action is engagement, recovery or growth.</p></div>
+    <div class="rh-three"><article><span>01</span><h3>Engage</h3><p>Participation, recognition, guest feedback, live campaigns and bounded positive interaction.</p><a href="/guest-participation/">Participation →</a></article><article><span>02</span><h3>Recover</h3><p>Private issue routing, accountable ownership, resolution and post-recovery measurement.</p><a href="/service-recovery/">Recovery →</a></article><article><span>03</span><h3>Grow</h3><p>Relevant operator-owned experiences informed by voluntary interests and participation context.</p><a href="/ancillary-revenue/">Revenue →</a></article></div>
+  </div>
+</section>
+
+<section class="rh-section rh-memory">
+  <div class="shell rh-split">
+    <div class="rh-copy">
+      <div class="eyebrow">Positive memory layer</div>
+      <h2>Positive moments should not disappear when the experience ends.</h2>
+      <p>Recognition, participation and memorable guest moments can become a concise personal summary — giving the operator a positive ending rather than another generic post-stay message.</p>
+      <a class="rh-link" href="/guest-feedback/">Explore guest feedback →</a>
+    </div>
+    <div class="rh-memory-ui"><div class="rh-memory-head"><small>YOUR CRUISE MOMENTS</small><b>Mediterranean Escape</b><span>7 days · 12 positive moments</span></div><div class="rh-memory-grid"><span><b>3</b><small>crew thanked</small></span><span><b>4</b><small>activities joined</small></span><span><b>2</b><small>new connections</small></span><span><b>1</b><small>issue recovered</small></span></div><div class="rh-memory-note">A structured summary built from moments the guest chose to create.</div></div>
+  </div>
+</section>
+
+<section class="rh-section rh-insights">
+  <div class="shell rh-split">
+    <div class="rh-copy">
+      <div class="eyebrow">Experience Pulse · Management view</div>
+      <h2>Show management what changed — not just how many people opened the feature.</h2>
+      <p>Measure adoption, participation, recovery and relevant commercial handoffs at sailing or property level.</p>
+      <a class="rh-link" href="/pilot-simulator/">Open the v13 cruise pilot →</a>
+    </div>
+    <div class="rh-dashboard"><div class="rh-dash-top"><b>Experience Pulse</b><span>Illustrative pilot view</span></div><div class="rh-metrics"><div><small>RECOGNITIONS</small><strong>1,247</strong><em>+18%</em></div><div><small>PARTICIPATION</small><strong>63%</strong><em>+12%</em></div><div><small>RECOVERY PULSE</small><strong>4.4/5</strong><em>after resolution</em></div></div><div class="rh-chart"><span style="height:35%"></span><span style="height:48%"></span><span style="height:44%"></span><span style="height:61%"></span><span style="height:67%"></span><span style="height:78%"></span><span style="height:88%"></span></div></div>
+  </div>
+</section>
+
+<section class="rh-section rh-verticals"><div class="shell"><div class="rh-heading"><div><div class="eyebrow">Two verticals</div><h2>Built for high-dwell guest environments.</h2></div><p>Cruise lines, hotels and resorts share the same opportunity: the guest is already inside the experience, but engagement, service response and revenue context are fragmented.</p></div><div class="rh-two"><a href="/cruise/"><small>REGREENITY CRUISE</small><h3>Cruise lines</h3><p>Passenger participation, crew recognition, onboard service recovery and relevant revenue in a sailing-scoped layer.</p><span>Explore Cruise →</span></a><a href="/hotels-resorts/"><small>REGREENITY HOTELS & RESORTS</small><h3>Hotels & Resorts</h3><p>In-stay participation, staff recognition, service intelligence and ancillary opportunities across the property journey.</p><span>Explore Hotels & Resorts →</span></a></div></div></section>
+
+<section class="rh-section rh-integration"><div class="shell"><div class="rh-heading"><div><div class="eyebrow">Built to fit the app you already have</div><h2>An engagement layer — not another guest app.</h2></div><p>Regreenity is designed to sit inside or alongside the operator's existing digital relationship. Systems of record stay where they belong.</p></div><div class="rh-system-flow"><div><small>01</small><b>Operator identity</b><span>Guest, sailing or stay context</span></div><i>→</i><div class="active"><small>02</small><b>Regreenity</b><span>Engage · Recover · Grow</span></div><i>→</i><div><small>03</small><b>Existing systems</b><span>Inventory, payment, fulfilment, BI</span></div></div></div></section>
+
+<section class="rh-final"><div class="shell"><div><div class="eyebrow">Pilot-first</div><h2>Start with one bounded problem. Measure what changes.</h2><p>One sailing or property. Clear staff owners. Defined KPIs. Expand only when the workflow proves its value.</p></div><a class="btn btn-accent" href="/request-pilot/">Request a pilot</a></div></section>
+</main>`
+
+for (const slug of pages) {
+  const file = resolve(root, slug, 'index.html')
+  if (!existsSync(file)) continue
+  let source = readFileSync(file, 'utf8')
+  for (const [from, to] of mediaReplacements) source = source.replaceAll(from, to)
+  if (slug === '') source = source.replace(/<main[\s\S]*?<\/main>/, homeMain)
+  writeFileSync(file, source, 'utf8')
+}
+
+console.log('Recovered Regreenity premium frontend with the five approved human images and no text-over-image layout.')

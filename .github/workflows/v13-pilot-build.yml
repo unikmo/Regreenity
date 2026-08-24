@@ -23,22 +23,23 @@ jobs:
       - name: Verify public architecture and recovered visual layer
         run: |
           grep -q "Regreenity" dist/index.html
-          grep -q "Turn guest engagement into better experiences and more revenue" dist/index.html
+          grep -q "Make every positive guest interaction" dist/index.html
+          grep -q "Recognize great service while it is happening" dist/index.html
+          grep -q "The ship is the social environment" dist/index.html
+          grep -q "Surface the right experience because people want to do it together" dist/index.html
           grep -q "https://regreenity.com/" dist/index.html
           grep -q "/recovery.css" dist/index.html
           grep -q "/media/hero-deck.jpg" dist/index.html
           grep -q "/media/crew-recognition.jpg" dist/index.html
-          grep -q "/media/passenger-connection.jpg" dist/index.html
           grep -q "/media/service-recovery.jpg" dist/index.html
+          grep -q "/media/passenger-connection.jpg" dist/index.html
           grep -q "/media/social-commerce.jpg" dist/index.html
-          grep -q "/media/shareable-memory.jpg" dist/index.html
           test -f dist/recovery.css
           test -f dist/media/hero-deck.jpg
           test -f dist/media/crew-recognition.jpg
-          test -f dist/media/passenger-connection.jpg
           test -f dist/media/service-recovery.jpg
+          test -f dist/media/passenger-connection.jpg
           test -f dist/media/social-commerce.jpg
-          test -f dist/media/shareable-memory.jpg
           for page in guest-engagement-platform cruise cruise-guest-engagement cruise-mobile-app-engagement cruise-service-recovery cruise-guest-feedback cruise-onboard-revenue hotels-resorts hotel-guest-experience-software hotel-guest-app hospitality-mobile-app resort-app hotel-upselling-software hotel-ancillary-revenue solutions guest-participation service-recovery crew-and-staff-recognition guest-feedback ancillary-revenue promotions-and-rewards digital-raffles-and-campaigns request-pilot; do
             test -f "dist/$page/index.html"
           done
