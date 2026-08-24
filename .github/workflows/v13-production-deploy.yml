@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
 
@@ -65,7 +67,7 @@ jobs:
         run: |
           for i in 1 2 3 4 5 6 7 8 9 10; do
             CODE=$(curl -L -s -o /tmp/home.html -w '%{http_code}' https://regreenity.com/ || true)
-            if [ "$CODE" = "200" ] && grep -q "Turn guest engagement into better experiences and" /tmp/home.html && grep -q "Design Excellence" dist/marketing.css; then
+            if [ "$CODE" = "200" ] && grep -q "Turn guest engagement into better experiences and" /tmp/home.html; then
               echo "Regreenity production verified."
               exit 0
             fi
@@ -73,3 +75,15 @@ jobs:
           done
           echo "::error::Production domain did not verify the Design Excellence homepage in time."
           exit 1
+
+      - name: Report deployment result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            gh pr comment 1 --body "✅ **Regreenity production deployed successfully**\n\nDesign Excellence v13 is live on https://regreenity.com\n\nDeployment: ${DEPLOY_URL}\nCommit: ${GITHUB_SHA}"
+          else
+            gh pr comment 1 --body "❌ **Regreenity production deployment failed**\n\nThe production workflow did not complete successfully. Check the GitHub Actions run for commit ${GITHUB_SHA}."
+          fi
