@@ -24,6 +24,7 @@ jobs:
           node-version: '24'
 
       - name: Require Vercel token
+        id: auth
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
@@ -33,11 +34,13 @@ jobs:
           fi
 
       - name: Link production project
+        id: link
         run: |
           mkdir -p .vercel
           printf '%s\n' '{"orgId":"team_sVekjWxQpKBAOb3DWW89HdvK","projectId":"prj_stTrdoXSFDYy0rOrnIX1CYUKr1u5"}' > .vercel/project.json
 
       - name: Install and verify Design Excellence build
+        id: build
         run: |
           npm install
           npm run build
@@ -64,6 +67,7 @@ jobs:
           echo "https://regreenity.com" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Verify production domain
+        id: verify
         run: |
           for i in 1 2 3 4 5 6 7 8 9 10; do
             CODE=$(curl -L -s -o /tmp/home.html -w '%{http_code}' https://regreenity.com/ || true)
@@ -82,8 +86,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           DEPLOY_URL: ${{ steps.deploy.outputs.url }}
         run: |
+          AUTH='${{ steps.auth.outcome }}'
+          LINK='${{ steps.link.outcome }}'
+          BUILD='${{ steps.build.outcome }}'
+          DEPLOY='${{ steps.deploy.outcome }}'
+          VERIFY='${{ steps.verify.outcome }}'
           if [ "${{ job.status }}" = "success" ]; then
-            gh pr comment 1 --body "✅ **Regreenity production deployed successfully**\n\nDesign Excellence v13 is live on https://regreenity.com\n\nDeployment: ${DEPLOY_URL}\nCommit: ${GITHUB_SHA}"
+            gh pr comment 1 --body "✅ **Regreenity production deployed successfully**\n\nDesign Excellence v13 is live on https://regreenity.com\n\nDeployment: ${DEPLOY_URL}\nCommit: ${GITHUB_SHA}\n\nStages: auth=${AUTH}, link=${LINK}, build=${BUILD}, deploy=${DEPLOY}, verify=${VERIFY}"
           else
-            gh pr comment 1 --body "❌ **Regreenity production deployment failed**\n\nThe production workflow did not complete successfully. Check the GitHub Actions run for commit ${GITHUB_SHA}."
+            gh pr comment 1 --body "❌ **Regreenity production deployment failed**\n\nCommit: ${GITHUB_SHA}\n\nStages: auth=${AUTH}, link=${LINK}, build=${BUILD}, deploy=${DEPLOY}, verify=${VERIFY}"
           fi
