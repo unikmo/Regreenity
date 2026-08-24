@@ -20,13 +20,18 @@ jobs:
           node-version: '24'
       - name: Install dependencies
         run: npm install
-      - name: Build Regreenity site and cruise pilot
+      - name: Build Regreenity design excellence site
         run: npm run build
       - name: Verify deployable artifact
         run: |
           test -f dist/index.html
           grep -q "Regreenity" dist/index.html
+          grep -q "Turn guest engagement into better experiences and" dist/index.html
           grep -q "https://regreenity.com/" dist/index.html
+          grep -q 'class="skip-link"' dist/index.html
+          grep -q 'prefers-reduced-motion' dist/marketing.css
+          ! grep -q '/recovery.css' dist/index.html
+          ! grep -Rqi 'Tisonik' dist --include='*.html'
           test -f dist/guest-engagement-platform/index.html
           test -f dist/cruise/index.html
           test -f dist/hotels-resorts/index.html
@@ -50,5 +55,5 @@ jobs:
             echo "Prebuilt artifact is already current."
             exit 0
           fi
-          git commit -m "chore: publish prebuilt Regreenity site and cruise pilot [static-dist]"
+          git commit -m "chore: publish Design Excellence Regreenity site [static-dist]"
           git push origin HEAD:v13-pilot

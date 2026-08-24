@@ -1,4 +1,4 @@
-name: Regreenity site build
+name: Regreenity design excellence build
 
 on:
   push:
@@ -20,21 +20,24 @@ jobs:
         run: npm install
       - name: Build Regreenity
         run: npm run build
-      - name: Verify public architecture and recovered visual layer
+      - name: Verify Design Excellence source gate
         run: |
-          grep -q "Regreenity" dist/index.html
-          grep -q "Make every positive guest interaction" dist/index.html
-          grep -q "Recognize great service while it is happening" dist/index.html
-          grep -q "The ship is the social environment" dist/index.html
-          grep -q "Surface the right experience because people want to do it together" dist/index.html
-          grep -q "https://regreenity.com/" dist/index.html
-          grep -q "/recovery.css" dist/index.html
-          grep -q "/media/hero-deck.jpg" dist/index.html
-          grep -q "/media/crew-recognition.jpg" dist/index.html
-          grep -q "/media/service-recovery.jpg" dist/index.html
-          grep -q "/media/passenger-connection.jpg" dist/index.html
-          grep -q "/media/social-commerce.jpg" dist/index.html
-          test -f dist/recovery.css
+          test -f dist/index.html
+          test -f dist/marketing.css
+          test -f dist/marketing.js
+          grep -q "Turn guest engagement into better experiences and" dist/index.html
+          grep -q "Request a pilot" dist/index.html
+          grep -q 'class="skip-link"' dist/index.html
+          grep -q 'id="main-content"' dist/index.html
+          grep -q ':focus-visible' dist/marketing.css
+          grep -q 'prefers-reduced-motion' dist/marketing.css
+          ! grep -q '/recovery.css' dist/index.html
+          ! grep -Rqi 'Tisonik' dist --include='*.html'
+          grep -q '/media/hero-deck.jpg' dist/index.html
+          grep -q '/media/crew-recognition.jpg' dist/index.html
+          grep -q '/media/service-recovery.jpg' dist/index.html
+          grep -q '/media/passenger-connection.jpg' dist/index.html
+          grep -q '/media/social-commerce.jpg' dist/index.html
           test -f dist/media/hero-deck.jpg
           test -f dist/media/crew-recognition.jpg
           test -f dist/media/service-recovery.jpg
@@ -42,7 +45,10 @@ jobs:
           test -f dist/media/social-commerce.jpg
           for page in guest-engagement-platform cruise cruise-guest-engagement cruise-mobile-app-engagement cruise-service-recovery cruise-guest-feedback cruise-onboard-revenue hotels-resorts hotel-guest-experience-software hotel-guest-app hospitality-mobile-app resort-app hotel-upselling-software hotel-ancillary-revenue solutions guest-participation service-recovery crew-and-staff-recognition guest-feedback ancillary-revenue promotions-and-rewards digital-raffles-and-campaigns request-pilot; do
             test -f "dist/$page/index.html"
+            grep -q 'class="skip-link"' "dist/$page/index.html"
           done
+          grep -q 'id="pilot-request-form"' dist/request-pilot/index.html
+          grep -q 'aria-live="polite"' dist/request-pilot/index.html
           test -f dist/pilot-simulator/index.html
           grep -q "Regreenity Cruise v13 Pilot Simulator" dist/pilot-simulator/index.html
           test -f dist/sitemap.xml
@@ -57,6 +63,6 @@ jobs:
       - name: Upload Vercel-ready dist
         uses: actions/upload-artifact@v4
         with:
-          name: regreenity-site-dist
+          name: regreenity-design-excellence-dist
           path: dist
           if-no-files-found: error

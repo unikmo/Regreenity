@@ -1,16 +1,16 @@
 {
   "name": "regreenity-platform",
   "private": true,
-  "version": "1.6.0-pilot",
+  "version": "2.0.0-design-excellence",
   "type": "module",
   "scripts": {
     "assemble:pilot": "node scripts/assemble-v13-pilot.mjs",
-    "generate:marketing": "node scripts/generate-marketing.mjs && node scripts/apply-regreenity-brand.mjs && node scripts/recover-premium-home.mjs",
-    "dev": "node scripts/assemble-v13-pilot.mjs && node scripts/generate-marketing.mjs && node scripts/apply-regreenity-brand.mjs && node scripts/recover-premium-home.mjs && vite",
-    "build": "node scripts/assemble-v13-pilot.mjs && node scripts/generate-marketing.mjs && node scripts/apply-regreenity-brand.mjs && node scripts/recover-premium-home.mjs && tsc -b && vite build",
+    "generate:marketing": "node scripts/generate-marketing.mjs && node scripts/compile-regreenity-site.mjs",
+    "dev": "node scripts/assemble-v13-pilot.mjs && node scripts/generate-marketing.mjs && node scripts/compile-regreenity-site.mjs && vite",
+    "build": "node scripts/assemble-v13-pilot.mjs && node scripts/generate-marketing.mjs && node scripts/compile-regreenity-site.mjs && tsc -b && vite build",
     "preview": "vite preview",
     "dev:pilot": "node scripts/assemble-v13-pilot.mjs && vite",
-    "dev:web": "node scripts/generate-marketing.mjs && node scripts/apply-regreenity-brand.mjs && node scripts/recover-premium-home.mjs && vite",
+    "dev:web": "node scripts/generate-marketing.mjs && node scripts/compile-regreenity-site.mjs && vite",
     "dev:vercel": "vercel dev"
   },
   "dependencies": {
@@ -25,7 +25,5 @@
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3"
   },
-  "engines": {
-    "node": ">=20.19.0"
-  }
+  "engines": { "node": ">=20.19.0" }
 }
