@@ -111,7 +111,7 @@ export default function MarketingSite() {
           <p className="eyebrow">THE NEXT STEP IS NOT A CONTRACT.</p>
           <h2>Experience Regreenity<br/>on one cruise line.</h2>
           <p>Start with a focused pilot. See how guests respond. Measure what matters. Decide what deserves to scale.</p>
-          <a className="pilot-button" href="mailto:hello@regreenity.com?subject=Regreenity%20pilot">Explore a pilot <Arrow /></a>
+          <a className="pilot-button" href="/pilot/#pilot">Explore a pilot <Arrow /></a>
         </section>
       </main>
 
