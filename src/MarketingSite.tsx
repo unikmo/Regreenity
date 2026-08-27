@@ -2,16 +2,14 @@ import type { ReactNode } from 'react'
 
 const Arrow = () => <span aria-hidden="true">→</span>
 
-const Section = ({ id, eyebrow, title, children, image, reverse = false }: { id: string; eyebrow: string; title: string; children: ReactNode; image: string; reverse?: boolean }) => (
+const Section = ({ id, eyebrow, title, children, crop, reverse = false, alt }: { id: string; eyebrow: string; title: string; children: ReactNode; crop: string; reverse?: boolean; alt: string }) => (
   <section id={id} className={`story-section ${reverse ? 'story-section--reverse' : ''}`}>
     <div className="story-copy">
       <p className="eyebrow">{eyebrow}</p>
       <h2>{title}</h2>
       <div className="story-body">{children}</div>
     </div>
-    <figure className="story-visual">
-      <img src={image} alt="" loading="lazy" />
-    </figure>
+    <figure className={`story-visual story-visual--${crop}`} role="img" aria-label={alt} />
   </section>
 )
 
@@ -35,7 +33,7 @@ export default function MarketingSite() {
           <p className="eyebrow hero-eyebrow">DESIGNED FOR CRUISE LINES</p>
           <h1>Turn more onboard moments into <span>unforgettable experiences.</span></h1>
           <figure className="hero-visual">
-            <img src="/media/hero-crew-short-hair.jpg" alt="Black cruise crew member welcoming guests onboard" />
+            <img src="/media/hero-crew-short-hair-v2.jpg" alt="Black cruise crew member welcoming guests onboard" fetchPriority="high" />
           </figure>
         </section>
 
@@ -52,50 +50,23 @@ export default function MarketingSite() {
           <p className="manifesto-copy">A quieter interaction layer for guests, crew and the moments between the itinerary.</p>
         </section>
 
-        <Section
-          id="passenger-experience"
-          eyebrow="PASSENGER EXPERIENCE"
-          title="Make the app feel more alive."
-          image="/media/passenger-connection.jpg"
-        >
+        <Section id="passenger-experience" eyebrow="PASSENGER EXPERIENCE" title="Make the app feel more alive." crop="passenger" alt="Asian hospitality professional speaking with a guest onboard">
           <p>Give guests more relevant reasons to interact throughout the sailing—without making the experience feel busy, intrusive or transactional.</p>
         </Section>
 
-        <Section
-          id="crew-recognition"
-          eyebrow="CREW RECOGNITION"
-          title="Let great service be seen."
-          image="/media/crew-recognition.jpg"
-          reverse
-        >
+        <Section id="crew-recognition" eyebrow="CREW RECOGNITION" title="Let great service be seen." crop="crew" alt="Asian cruise crew member in a premium onboard setting" reverse>
           <p>A simple moment of recognition becomes visible, measurable and memorable—for the guest, the crew member and the operator.</p>
         </Section>
 
-        <Section
-          id="service-recovery"
-          eyebrow="SERVICE RECOVERY"
-          title="Resolve the moment while it still matters."
-          image="/media/service-recovery.jpg"
-        >
+        <Section id="service-recovery" eyebrow="SERVICE RECOVERY" title="Resolve the moment while it still matters." crop="recovery" alt="Cruise officer speaking with a guest onboard">
           <p>Give guests a discreet way to signal friction during the journey, creating the opportunity to respond before the experience is over.</p>
         </Section>
 
-        <Section
-          id="engagement"
-          eyebrow="ENGAGEMENT"
-          title="Make participation feel effortless."
-          image="/media/onboard-life.jpg"
-          reverse
-        >
+        <Section id="engagement" eyebrow="ENGAGEMENT" title="Make participation feel effortless." crop="engagement" alt="A mixed-race group of guests socialising onboard" reverse>
           <p>Help guests discover moments, activities and interactions that feel personally relevant—while keeping the experience calm and intentional.</p>
         </Section>
 
-        <Section
-          id="ancillary-revenue"
-          eyebrow="ANCILLARY REVENUE"
-          title="Make relevance commercial."
-          image="/media/social-commerce.jpg"
-        >
+        <Section id="ancillary-revenue" eyebrow="ANCILLARY REVENUE" title="Make relevance commercial." crop="revenue" alt="Asian hospitality professional using a tablet onboard">
           <p>When the guest is already engaged, relevant experiences and offers can appear naturally—supporting onboard value without turning the journey into a catalogue.</p>
         </Section>
 
