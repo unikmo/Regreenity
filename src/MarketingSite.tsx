@@ -35,7 +35,7 @@ export default function MarketingSite() {
           <p className="eyebrow hero-eyebrow">DESIGNED FOR CRUISE LINES</p>
           <h1>Turn more onboard moments into <span>unforgettable experiences.</span></h1>
           <figure className="hero-visual">
-            <img src="/media/crew-recognition.jpg" alt="Cruise crew member welcoming guests onboard" />
+            <img src="/media/hero-crew-short-hair.jpg" alt="Black cruise crew member welcoming guests onboard" />
           </figure>
         </section>
 
