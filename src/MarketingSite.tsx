@@ -33,7 +33,7 @@ export default function MarketingSite() {
       <main>
         <section id="top" className="hero">
           <p className="eyebrow hero-eyebrow">DESIGNED FOR CRUISE LINES</p>
-          <h1>Turn more onboard moments into <em>unforgettable experiences.</em></h1>
+          <h1>Turn more onboard moments into <span>unforgettable experiences.</span></h1>
           <figure className="hero-visual">
             <img src="/media/crew-recognition.jpg" alt="Cruise crew member welcoming guests onboard" />
           </figure>
@@ -41,14 +41,15 @@ export default function MarketingSite() {
 
         <section className="hero-after" aria-labelledby="hero-after-title">
           <p id="hero-after-title" className="hero-after-copy">
-            Regreenity adds a new interaction layer to the cruise-line app—helping guests recognise great service, surface issues earlier and discover more of their journey.
+            Regreenity helps your team personalise every interaction, recognise excellence, and deliver a more seamless guest experience at scale.
           </p>
           <a className="pilot-link" href="#pilot">EXPLORE A PILOT <Arrow /></a>
         </section>
 
         <section className="manifesto" aria-label="Regreenity promise">
-          <p className="eyebrow">ONE JOURNEY. MORE MEANINGFUL MOMENTS.</p>
-          <h2>Designed to feel natural to guests.<br/>Useful to your team.<br/>Valuable to the cruise line.</h2>
+          <p className="eyebrow">FOR THE CRUISE JOURNEY</p>
+          <h2>Built to feel natural onboard.</h2>
+          <p className="manifesto-copy">A quieter interaction layer for guests, crew and the moments between the itinerary.</p>
         </section>
 
         <Section
@@ -73,16 +74,16 @@ export default function MarketingSite() {
         <Section
           id="service-recovery"
           eyebrow="SERVICE RECOVERY"
-          title="Surface the moment while it can still be changed."
+          title="Resolve the moment while it still matters."
           image="/media/service-recovery.jpg"
         >
-          <p>Regreenity gives guests a discreet way to signal friction during the journey, creating the opportunity to respond before the experience is over.</p>
+          <p>Give guests a discreet way to signal friction during the journey, creating the opportunity to respond before the experience is over.</p>
         </Section>
 
         <Section
           id="engagement"
           eyebrow="ENGAGEMENT"
-          title="Turn passive passengers into active participants."
+          title="Make participation feel effortless."
           image="/media/onboard-life.jpg"
           reverse
         >
@@ -108,8 +109,8 @@ export default function MarketingSite() {
         </section>
 
         <section id="pilot" className="pilot-section">
-          <p className="eyebrow">THE NEXT STEP IS NOT A CONTRACT.</p>
-          <h2>Experience Regreenity<br/>on one cruise line.</h2>
+          <p className="eyebrow">START SMALL. LEARN FAST.</p>
+          <h2>Experience Regreenity on one cruise line.</h2>
           <p>Start with a focused pilot. See how guests respond. Measure what matters. Decide what deserves to scale.</p>
           <a className="pilot-button" href="/pilot/#pilot">Explore a pilot <Arrow /></a>
         </section>
