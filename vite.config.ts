@@ -7,9 +7,11 @@ export default defineConfig({
     rollupOptions: {
       input: [
         'index.html',
+        'passenger-experience/index.html',
         'crew-recognition/index.html',
         'service-recovery/index.html',
-        'passenger-experience/index.html',
+        'engagement/index.html',
+        'ancillary-revenue/index.html',
         'social-commerce/index.html',
         'cruise-dashboard/index.html',
         'integration/index.html',

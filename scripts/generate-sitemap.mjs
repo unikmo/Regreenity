@@ -6,7 +6,7 @@ if (!raw) {
   process.exit(1)
 }
 const site = raw.replace(/\/$/, '')
-const paths = ['/', '/crew-recognition/', '/service-recovery/', '/passenger-experience/', '/social-commerce/', '/cruise-dashboard/', '/integration/', '/pilot/', '/imprint/', '/privacy/', '/terms/', '/cookies/']
+const paths = ['/', '/passenger-experience/', '/crew-recognition/', '/service-recovery/', '/engagement/', '/ancillary-revenue/', '/cruise-dashboard/', '/integration/', '/pilot/', '/imprint/', '/privacy/', '/terms/', '/cookies/']
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map((path) => `  <url><loc>${site}${path}</loc></url>`).join('\n')}\n</urlset>\n`
 fs.writeFileSync('public/sitemap.xml', xml)
 fs.writeFileSync('public/robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\n`)

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-# Add an absolute Sitemap directive after the production domain is chosen.
+Sitemap: https://regreenity.com/sitemap.xml

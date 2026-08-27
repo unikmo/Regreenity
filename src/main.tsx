@@ -8,10 +8,12 @@ import { registerOfflineShell } from './offline'
 
 registerOfflineShell()
 
-const useLegacyProductShell = window.location.pathname.startsWith('/product-app/')
+const path = window.location.pathname
+const useLegacyProductShell = path.startsWith('/product-app/')
+const useLegacyLegalShell = ['/imprint/', '/privacy/', '/terms/', '/cookies/'].some((route) => path.startsWith(route))
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    {useLegacyProductShell ? <App /> : <MarketingSite />}
+    {useLegacyProductShell || useLegacyLegalShell ? <App /> : <MarketingSite />}
   </React.StrictMode>,
 )
