@@ -1,0 +1,26 @@
+# Regreenity
+
+Regreenity is a PlanetHike project focused on cruise-line passenger experience.
+
+## What Regreenity is
+Regreenity is a cruise-line guest-experience interaction layer designed to sit inside the existing cruise-line app. It supports passenger interaction, crew recognition, private service recovery, engagement and contextual ancillary-revenue discovery.
+
+## Product boundaries
+- Regreenity is designed as an add-on interaction layer, not a replacement for the cruise line's app or core commerce stack.
+- Inventory, pricing, checkout and payment remain with the cruise line.
+- Native proximity and ship-local integrations require host integration.
+- Offline-first operation is an architecture design direction; it should not be read as evidence of a production deployment.
+- Public performance claims should follow real pilot evidence; demo or pilot assumptions are not production proof.
+
+## Canonical pages
+- https://regreenity.com/ — overview
+- https://regreenity.com/passenger-experience/ — passenger experience
+- https://regreenity.com/crew-recognition/ — crew recognition
+- https://regreenity.com/service-recovery/ — private service recovery
+- https://regreenity.com/engagement/ — passenger engagement
+- https://regreenity.com/ancillary-revenue/ — contextual ancillary-revenue discovery
+- https://regreenity.com/integration/ — integration and offline-first architecture
+- https://regreenity.com/pilot/ — pilot framework
+
+## Brand
+Regreenity is the public product/project brand. It is a PlanetHike project.
