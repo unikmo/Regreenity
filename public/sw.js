@@ -1,4 +1,4 @@
-const CACHE = 'regreenity-shell-v2'
+const CACHE = 'regreenity-shell-v3'
 const SHELL = [
   '/',
   '/passenger-experience/',
@@ -15,6 +15,7 @@ const SHELL = [
   '/cookies/',
   '/site.webmanifest',
   '/favicon.svg',
+  '/media/hero-black-crew-v3.jpg',
   '/media/crew-recognition.jpg',
   '/media/passenger-connection.jpg',
   '/media/service-recovery.jpg',
