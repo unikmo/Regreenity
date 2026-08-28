@@ -147,6 +147,7 @@ const Footer = () => (
   <footer className="site-footer">
     <div><strong>REGREENITY</strong><span>A PlanetHike project</span></div>
     <p>Passenger experience, crew recognition, service recovery, engagement and ancillary-revenue discovery for cruise lines.</p>
+    <nav className="footer-links" aria-label="Footer navigation"><a href="mailto:hello@planethike.org">Contact</a><a href="/imprint/">Imprint</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/cookies/">Cookies</a></nav>
   </footer>
 )
 
@@ -191,12 +192,33 @@ const Home = () => (
   </>
 )
 
+const PilotContactForm = () => {
+  const sent = new URLSearchParams(window.location.search).get('sent') === '1'
+  return <section className="contact-form-section" aria-labelledby="pilot-contact-title">
+    <div className="contact-form-copy"><p className="eyebrow">START A CONVERSATION</p><h2 id="pilot-contact-title">Tell us what you want to test.</h2><p>Share a focused use case and we’ll reply from PlanetHike. No mailing list and no automated sales sequence.</p><a href="mailto:hello@planethike.org">hello@planethike.org <Arrow /></a></div>
+    <form className="pilot-contact-form" action="https://formsubmit.co/hello@planethike.org" method="POST" acceptCharset="UTF-8">
+      <input type="hidden" name="_subject" value="Regreenity pilot enquiry" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_next" value="https://regreenity.com/pilot/?sent=1" />
+      <input className="form-honeypot" type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+      {sent && <p className="form-success" role="status">Thank you. Your Regreenity enquiry has been sent.</p>}
+      <label>Work email<input required name="email" type="email" autoComplete="email" placeholder="name@cruiseline.com" /></label>
+      <div className="contact-form-row"><label>Name<input required name="name" autoComplete="name" placeholder="Your name" /></label><label>Role<input name="role" autoComplete="organization-title" placeholder="Guest Experience, Digital…" /></label></div>
+      <label>Cruise line or company<input required name="company" autoComplete="organization" placeholder="Organisation" /></label>
+      <label>What would you like to validate?<textarea required name="message" rows={5} placeholder="Crew recognition, service recovery, passenger engagement, ancillary discovery…" /></label>
+      <label className="form-consent"><input required type="checkbox" name="privacy_consent" value="I agree to the privacy policy" /><span>I agree that PlanetHike may use these details to respond to my enquiry, as described in the <a href="/privacy/">privacy policy</a>.</span></label>
+      <button className="pilot-button contact-submit" type="submit">Send pilot enquiry <Arrow /></button>
+    </form>
+  </section>
+}
+
 const DetailPage = ({ page }: { page: Exclude<PageKey, 'home'> }) => {
   const detail = details[page]
   return <>
     <section className="detail-hero"><p className="eyebrow">{detail.eyebrow}</p><h1>{detail.title}</h1><p className="detail-intro">{detail.intro}</p><figure className={`detail-visual story-visual--${detail.crop}`} role="img" aria-label={detail.alt} /></section>
     <section className="detail-facts" id="details">{detail.facts.map((fact,index)=><article key={fact.title}><span>0{index+1}</span><h2>{fact.title}</h2><p>{fact.body}</p></article>)}</section>
     {detail.note && <p className="architecture-note">{detail.note}</p>}
+    {page === 'pilot' && <PilotContactForm />}
     <EntityDefinition />
     {page !== 'pilot' ? <section className="detail-next"><p className="eyebrow">PILOT BEFORE SCALE</p><h2>Test this as a focused Regreenity pilot.</h2><a className="pilot-button" href="/pilot/">Explore a pilot <Arrow /></a></section> : <section className="detail-next"><p className="eyebrow">NEXT</p><h2>Choose the first loop worth testing.</h2><div className="entity-links"><a href="/crew-recognition/">Crew recognition</a><a href="/service-recovery/">Service recovery</a><a href="/passenger-experience/">Passenger experience</a><a href="/ancillary-revenue/">Ancillary revenue</a></div></section>}
   </>

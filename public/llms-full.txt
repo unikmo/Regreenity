@@ -1,0 +1,46 @@
+# Regreenity — Full Product Reference
+
+Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It is designed as a white-label interaction layer inside the cruise line's existing app rather than as a separate consumer social network.
+
+## Core product areas
+
+### Passenger experience
+- Opt-in discovery through coarse nearby context, shared activities or voluntarily shared interests.
+- First contact uses predefined positive affirmations rather than unrestricted stranger messaging.
+- A public onboard place or activity may be proposed only after the recipient acknowledges the first contact.
+- Cabins, phone numbers and precise live distance are not exposed.
+
+### Crew recognition
+- Guests can recognize a crew member while the service moment is fresh.
+- Recognition includes sailing context and selected reasons.
+- The design emphasizes breadth, consistency and context rather than public crew rankings.
+- Badge-photo identification may be used; facial recognition is not part of the design.
+
+### Service recovery
+- Guests receive a private route to signal friction during the sailing.
+- The intended workflow is capture, routing, acknowledgement, resolution and follow-up.
+- Experience Pulse can provide private department-level feedback and post-recovery measurement.
+
+### Engagement and ancillary discovery
+- Voluntary interests and onboard context can surface relevant activities or experiences.
+- The cruise line retains inventory, pricing, checkout, payment and fulfilment.
+- Commercial measurement should use an agreed attribution or treatment/control design.
+
+## Architecture
+- Device: cached interface, preferences and pending actions.
+- Ship-local: host identity, approved proximity capabilities and onboard synchronization where available.
+- Deferred cloud: analytics, replication and external sharing when connectivity is available.
+- Native proximity and host-system integrations require cruise-line implementation.
+
+## Product and evidence boundaries
+- Regreenity is not a cruise operator, booking engine, merchant, unrestricted chat service or dating app.
+- Public demonstrations and metrics are illustrative and do not imply a cruise-line affiliation.
+- Offline-first operation is an architecture direction, not a claim of an existing production deployment.
+- Performance claims should follow real pilot evidence.
+
+## Operator and contact
+- Operator: PlanetHike OÜ, Tallinn, Estonia.
+- Pilot and enterprise enquiries: hello@planethike.org
+- Website: https://regreenity.com/
+- Privacy: https://regreenity.com/privacy/
+- Terms: https://regreenity.com/terms/

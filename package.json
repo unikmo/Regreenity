@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/qa-site.mjs",
+    "qa:site": "node scripts/qa-site.mjs",
     "preview": "vite preview",
     "seo:generate": "node scripts/generate-sitemap.mjs"
   },
