@@ -55,7 +55,13 @@ if (existsSync(pilot)) {
   const html = readFileSync(pilot, 'utf8')
   if (!html.includes('formsubmit.co/hello@planethike.org')) fail('pilot page contact form is not connected to hello@planethike.org')
   if (!html.includes('mailto:hello@planethike.org')) fail('pilot page lacks direct email fallback')
+  if (!/complete Regreenity|complete connected product/i.test(html)) fail('pilot page does not present the complete product experience')
+  if (!/existing app/i.test(html)) fail('pilot page does not identify Regreenity as an add-on to the existing app')
 }
+
+const clientBundles = files.filter(file => /assets[\\/].*\.js$/.test(file)).map(file => readFileSync(file, 'utf8')).join('\n')
+if (/Cruise Connection/i.test(clientBundles)) fail('client bundle contains legacy Cruise Connection branding')
+if (/does not transmit data yet|production CRM\/API connection is intentionally pending/i.test(clientBundles)) fail('client bundle contains a disconnected demo-form path')
 
 for (const file of files.filter(file => /\.(?:jpg|jpeg|png)$/i.test(file))) {
   const data = readFileSync(file)

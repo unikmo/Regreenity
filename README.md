@@ -1,8 +1,8 @@
-# Cruise Connection
+# Regreenity
 
-Agency-grade pilot/demo for a white-label **cruise-line add-to-app module** covering crew recognition, private Experience Pulse + service recovery, safe passenger positive interaction, interest-led participation, social commerce and end-of-cruise positive-memory summaries.
+Agency-grade pilot/demo for a white-label **cruise-line add-on inside the existing app** covering crew recognition, private Experience Pulse + service recovery, safe passenger positive interaction, interest-led participation, social commerce and end-of-cruise positive-memory summaries.
 
-Cruise Connection is not a social network or dating app. It helps verified passengers make a safe first connection, then gets out of the way so real-world interaction happens onboard.
+Regreenity is not a new guest app, social network or dating app. It helps verified passengers make a safe first connection inside the cruise line’s existing app, then gets out of the way so real-world interaction happens onboard.
 
 ## Run locally
 
@@ -57,7 +57,7 @@ No unrestricted chat. No dating mode. No phone-number disclosure.
 
 ## Offline-first requirement
 
-Core Cruise Connection usage must not depend on public internet access at sea.
+Core Regreenity usage must not depend on public internet access at sea.
 
 The demo now includes:
 
@@ -114,14 +114,15 @@ A lower passenger fee such as $0.50 can be negotiated against stronger minimums,
 ## Important demo notes
 
 - Demo metrics and sailing details are illustrative.
-- The pilot request form is front-end only until a CRM/backend is selected.
+- The public pilot request form is connected to hello@planethike.org through FormSubmit.
+- The repository demonstrates the complete connected product experience at the front end; production identity, native proximity, secure offline storage, operational routing, analytics and host-system integrations are implemented with the cruise-line partner during pilot deployment.
 - Nearby discovery is simulated through the host bridge contract; the real proximity layer requires native cruise-line app integration.
 - Offline action queuing in this demo uses browser local storage; production must use approved secure storage and data-retention rules.
 
 
 ## Legal pages (v0.5.0)
 
-Business-specific legal routes are included at `/imprint/`, `/privacy/`, `/terms/`, and `/cookies/`. They use PlanetHike OÜ as the operator and reflect Cruise Connection's actual white-label, proximity, offline, recognition, recovery and commerce architecture. See `docs/LEGAL.md`.
+Business-specific legal routes are included at `/imprint/`, `/privacy/`, `/terms/`, and `/cookies/`. They use PlanetHike OÜ as the operator and reflect Regreenity's white-label, proximity, offline, recognition, recovery and commerce architecture. See `docs/LEGAL.md`.
 
 ## V6 visual storytelling update
 

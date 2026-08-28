@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { FormEvent, JSX, MouseEvent, ReactNode } from 'react'
+import type { JSX, MouseEvent, ReactNode } from 'react'
 import { affirmations, kpis, recognitionReasons } from './data'
 import type { View } from './types'
 import { getLaunchContext, notifyHostReady, openHostBooking, publishPassengerInterest, requestNearbyDiscovery, stopNearbyDiscovery, notifyAffirmation, notifyPublicMeetProposal, notifyCrewRecognition, notifyServiceIssue, notifyExperiencePulse } from './bridge'
@@ -696,12 +696,10 @@ function IntegrationPage() {
 
 
 function PilotPage() {
-  const [submitted, setSubmitted] = useState(false)
-  const submit = (e: FormEvent<HTMLFormElement>) => { e.preventDefault(); setSubmitted(true) }
   return (
     <main className="page section-shell pilot-page">
-      <div className="pilot-intro"><div className="section-kicker">PILOT DESIGN</div><h1>Prove Regreenity on <span>one ship.</span></h1><p>A useful pilot is deliberately bounded: selected sailings, defined passenger population, agreed feature set, active cruise-line promotion, predetermined measurement and a commercial decision date.</p><div className="pilot-principles"><div><b>01</b><span>One ship or defined sailing set</span></div><div><b>02</b><span>60–90 day target window</span></div><div><b>03</b><span>Predetermined KPIs</span></div><div><b>04</b><span>Active passenger promotion</span></div></div></div>
-      <form className="pilot-form" onSubmit={submit}><div><small>REQUEST A PILOT CONVERSATION</small><h2>Tell us where to start.</h2><p>This demo form does not transmit data yet; production CRM/API connection is intentionally pending.</p></div><label>Work email<input required type="email" placeholder="name@cruiseline.com" /></label><div className="form-row"><label>Name<input required placeholder="Your name" /></label><label>Role<input placeholder="Digital, Guest Experience, Operations…" /></label></div><label>Cruise line<input required placeholder="Cruise line or group" /></label><label>What would you like to validate?<textarea rows={4} placeholder="Crew recognition, service recovery, passenger participation, commerce…" /></label><button className="btn primary xl" type="submit">{submitted ? 'Pilot request captured in demo ✓' : 'Request pilot discussion'} {!submitted && <Icon name="arrow" size={18}/>}</button>{submitted && <div className="form-success">Demo state only. Connect this form to the selected CRM or backend before production launch.</div>}</form>
+      <div className="pilot-intro"><div className="section-kicker">PILOT DESIGN</div><h1>Pilot the complete Regreenity experience on <span>one ship.</span></h1><p>Deploy the connected product inside the cruise line’s existing app, promote it across selected sailings and measure the full passenger, crew, recovery, engagement and commercial journey.</p><div className="pilot-principles"><div><b>01</b><span>One ship or defined sailing set</span></div><div><b>02</b><span>Complete connected experience</span></div><div><b>03</b><span>Predetermined KPIs</span></div><div><b>04</b><span>Active passenger promotion</span></div></div></div>
+      <div className="pilot-form"><div><small>REQUEST A DEMO</small><h2>Use the live pilot enquiry.</h2><p>Review the complete experience and contact PlanetHike through the production form.</p></div><a className="btn primary xl" href="/pilot/#contact">Open the live enquiry <Icon name="arrow" size={18}/></a></div>
 
       <section className="promotion-requirement"><div><div className="section-kicker light">PILOT REQUIREMENT</div><h2>The cruise line has to promote the feature.</h2><p>Social commerce only becomes measurable if enough travellers activate the passenger layer and share interests. A valid pilot therefore includes agreed placements in the cruise app—not a hidden feature with no meaningful exposure.</p></div><div className="promotion-grid"><span>Pre-sailing interest setup</span><span>Embarkation prompt</span><span>Home/app tile</span><span>Daily-program prompts</span><span>Activity context prompts</span><span>End-of-cruise summary</span></div></section>
 
@@ -804,11 +802,11 @@ export default function App() {
   return (
     <div className="app">
       <header className="topbar">
-        <AppLink to="overview" navigate={navigate} className="brand"><span className="brand-mark"><Icon name="spark" size={19}/></span><span>Cruise <b>Connection</b></span></AppLink>
-        <nav aria-label="Primary navigation">{navItems.map(item => <AppLink key={item.key} to={item.key} navigate={navigate} className={view===item.key?'active':''}>{item.label}</AppLink>)}</nav>
+        <a href="/" className="brand"><span className="brand-mark"><Icon name="spark" size={19}/></span><span><b>Regreenity</b></span></a>
+        <nav aria-label="Primary navigation">{navItems.map(item => <a key={item.key} href={seo[item.key].path} className={view===item.key?'active':''}>{item.label}</a>)}</nav>
         <button className="mobile-menu-button" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={()=>setMenuOpen(!menuOpen)}><Icon name={menuOpen?'close':'menu'} size={20}/></button>
-        <AppLink to="pilot" navigate={navigate} className="nav-cta">Request a pilot <Icon name="arrow" size={15}/></AppLink>
-        {menuOpen && <div className="mobile-nav-panel"><AppLink to="crew" navigate={navigate}>Crew recognition</AppLink><AppLink to="passenger" navigate={navigate}>Passenger experience</AppLink><AppLink to="recovery" navigate={navigate}>Service recovery & pulse</AppLink><AppLink to="commerce" navigate={navigate}>Commerce</AppLink><AppLink to="dashboard" navigate={navigate}>Dashboard</AppLink><AppLink to="integration" navigate={navigate}>Integration</AppLink></div>}
+        <a href="/pilot/" className="nav-cta">Request a demo <Icon name="arrow" size={15}/></a>
+        {menuOpen && <div className="mobile-nav-panel"><a href="/crew-recognition/">Crew recognition</a><a href="/passenger-experience/">Passenger experience</a><a href="/service-recovery/">Service recovery & pulse</a><a href="/ancillary-revenue/">Commerce</a><a href="/cruise-dashboard/">Dashboard</a><a href="/integration/">Integration</a><a href="/pilot/">Request a demo</a></div>}
       </header>
       {view === 'overview' && <Overview navigate={navigate}/>} 
       {view === 'passenger' && <PassengerModule/>}
@@ -822,7 +820,7 @@ export default function App() {
       {view === 'privacy' && <LegalPage kind="privacy"/>}
       {view === 'terms' && <LegalPage kind="terms"/>}
       {view === 'cookies' && <LegalPage kind="cookies"/>}
-      <footer><div className="footer-brand"><span className="brand-mark"><Icon name="spark" size={17}/></span><span>Regreenity</span></div><p>White-label positive-interaction infrastructure for cruise lines.</p><div className="footer-links"><AppLink to="crew" navigate={navigate}>Crew recognition</AppLink><AppLink to="recovery" navigate={navigate}>Service recovery</AppLink><AppLink to="integration" navigate={navigate}>Integration</AppLink><AppLink to="pilot" navigate={navigate}>Pilot</AppLink></div><div className="footer-legal"><AppLink to="imprint" navigate={navigate}>Imprint</AppLink><AppLink to="privacy" navigate={navigate}>Privacy</AppLink><AppLink to="terms" navigate={navigate}>Terms</AppLink><AppLink to="cookies" navigate={navigate}>Cookies</AppLink></div><span className="demo-disclaimer">Demo data only · No cruise-line affiliation implied</span></footer>
+      <footer><div className="footer-brand"><span className="brand-mark"><Icon name="spark" size={17}/></span><span>Regreenity</span></div><p>One white-label add-on inside the cruise line’s existing app.</p><div className="footer-links"><a href="/crew-recognition/">Crew recognition</a><a href="/service-recovery/">Service recovery</a><a href="/integration/">Integration</a><a href="/pilot/">Request a demo</a></div><div className="footer-legal"><a href="/imprint/">Imprint</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/cookies/">Cookies</a></div><span className="demo-disclaimer">Demo data only · No cruise-line affiliation implied</span></footer>
     </div>
   )
 }
