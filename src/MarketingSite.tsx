@@ -21,7 +21,7 @@ const details: Record<Exclude<PageKey, 'home'>, Detail> = {
     title: 'Make the cruise-line app feel more alive.',
     intro: 'Regreenity is designed to create more relevant reasons for guests to interact during the sailing without turning the experience into an unrestricted social network.',
     crop: 'passenger',
-    alt: 'Guests and hospitality staff interacting in a premium cruise setting',
+    alt: 'Multicultural cruise passengers of different ages relaxing together',
     facts: [
       { title: 'Structured first contact', body: 'Discovery can begin through opted-in nearby context, shared activities or shared interests, followed by predefined positive signals rather than open messaging.' },
       { title: 'Public-place progression', body: 'A next step is only available after reciprocity and is designed around approved public onboard places or activities.' },
@@ -33,7 +33,7 @@ const details: Record<Exclude<PageKey, 'home'>, Detail> = {
     title: 'Let great service be seen while it is happening.',
     intro: 'Regreenity captures a recognition moment with the crew member, sailing context and reason while the experience is still fresh.',
     crop: 'crew',
-    alt: 'Cruise hospitality team members at work',
+    alt: 'Diverse cruise crew members sharing a candid end-of-shift moment',
     facts: [
       { title: 'Recognition, not ranking', body: 'The design supports contextual appreciation rather than public crew leaderboards or passenger-facing star ratings.' },
       { title: 'Useful context', body: 'Recognition can be tied to the ship, sailing, date and selected reason, giving operators more context than a raw compliment count.' },
@@ -45,7 +45,7 @@ const details: Record<Exclude<PageKey, 'home'>, Detail> = {
     title: 'Resolve the moment while it still matters.',
     intro: 'Regreenity gives guests a private route to signal friction during the journey so the operator has a chance to respond before the sailing ends.',
     crop: 'recovery',
-    alt: 'Cruise hospitality professional helping a guest',
+    alt: 'Cruise crew member returning a child’s toy beside their parent',
     facts: [
       { title: 'Private by design', body: 'Service issues are separated from positive recognition and passenger interaction.' },
       { title: 'Closed-loop intent', body: 'The workflow is designed around capture, routing, acknowledgement, resolution and a follow-up signal.' },
@@ -57,7 +57,7 @@ const details: Record<Exclude<PageKey, 'home'>, Detail> = {
     title: 'Make participation feel effortless.',
     intro: 'Regreenity is designed to help guests discover activities, people and moments that feel relevant to the sailing while keeping the interface calm and intentional.',
     crop: 'engagement',
-    alt: 'A diverse group of guests socialising in a premium hospitality setting',
+    alt: 'Multigenerational passengers enjoying an inclusive deck activity',
     facts: [
       { title: 'Interest-led', body: 'Guests can voluntarily share cruise-relevant interests that help shape discovery and participation.' },
       { title: 'Context-aware', body: 'Activity and sailing context can make recommendations feel more relevant than a generic feed.' },
@@ -69,7 +69,7 @@ const details: Record<Exclude<PageKey, 'home'>, Detail> = {
     title: 'Make relevance commercial without turning the journey into a catalogue.',
     intro: 'Regreenity can create recommendation and intent context around relevant onboard experiences while leaving inventory, price, checkout and payment with the cruise line.',
     crop: 'revenue',
-    alt: 'Hospitality professional using a tablet in a premium setting',
+    alt: 'A multicultural family choosing an onboard experience together',
     facts: [
       { title: 'Context before offer', body: 'Commercial relevance can come from expressed interests, onboard participation and timing rather than a generic advertising feed.' },
       { title: 'Host-owned commerce', body: 'Regreenity does not need to own inventory, pricing, checkout or payment; those remain in the cruise line’s commerce environment.' },
@@ -180,11 +180,11 @@ const Home = () => (
       <a className="pilot-link" href="/pilot/">EXPLORE A PILOT <Arrow /></a>
     </section>
     <section className="manifesto" aria-label="Regreenity promise"><p className="eyebrow">FOR THE CRUISE JOURNEY</p><h2>Built to feel natural onboard.</h2><p className="manifesto-copy">A quieter interaction layer for guests, crew and the moments between the itinerary.</p></section>
-    <Section id="passenger-experience" eyebrow="PASSENGER EXPERIENCE" title="Make the app feel more alive." crop="passenger" alt="Diverse guests and hospitality staff interacting"><p>Give guests more relevant reasons to interact throughout the sailing—without making the experience feel busy, intrusive or transactional.</p></Section>
-    <Section id="crew-recognition" eyebrow="CREW RECOGNITION" title="Let great service be seen." crop="crew" alt="Cruise hospitality team members at work" reverse><p>A simple moment of recognition becomes visible, measurable and memorable—for the guest, the crew member and the operator.</p></Section>
-    <Section id="service-recovery" eyebrow="SERVICE RECOVERY" title="Resolve the moment while it still matters." crop="recovery" alt="Hospitality professional helping a guest"><p>Give guests a discreet way to signal friction during the journey, creating the opportunity to respond before the experience is over.</p></Section>
-    <Section id="engagement" eyebrow="ENGAGEMENT" title="Make participation feel effortless." crop="engagement" alt="A mixed group of guests socialising" reverse><p>Help guests discover moments, activities and interactions that feel personally relevant—while keeping the experience calm and intentional.</p></Section>
-    <Section id="ancillary-revenue" eyebrow="ANCILLARY REVENUE" title="Make relevance commercial." crop="revenue" alt="Hospitality professional using a tablet"><p>When the guest is already engaged, relevant experiences and offers can appear naturally—while checkout, pricing and payment stay with the cruise line.</p></Section>
+    <Section id="passenger-experience" eyebrow="PASSENGER EXPERIENCE" title="Make the app feel more alive." crop="passenger" alt="Multicultural cruise passengers of different ages relaxing together"><p>Give guests more relevant reasons to interact throughout the sailing—without making the experience feel busy, intrusive or transactional.</p></Section>
+    <Section id="crew-recognition" eyebrow="CREW RECOGNITION" title="Let great service be seen." crop="crew" alt="Diverse cruise crew members sharing a candid end-of-shift moment" reverse><p>A simple moment of recognition becomes visible, measurable and memorable—for the guest, the crew member and the operator.</p></Section>
+    <Section id="service-recovery" eyebrow="SERVICE RECOVERY" title="Resolve the moment while it still matters." crop="recovery" alt="Cruise crew member returning a child’s toy beside their parent"><p>Give guests a discreet way to signal friction during the journey, creating the opportunity to respond before the experience is over.</p></Section>
+    <Section id="engagement" eyebrow="ENGAGEMENT" title="Make participation feel effortless." crop="engagement" alt="Multigenerational passengers enjoying an inclusive deck activity" reverse><p>Help guests discover moments, activities and interactions that feel personally relevant—while keeping the experience calm and intentional.</p></Section>
+    <Section id="ancillary-revenue" eyebrow="ANCILLARY REVENUE" title="Make relevance commercial." crop="revenue" alt="A multicultural family choosing an onboard experience together"><p>When the guest is already engaged, relevant experiences and offers can appear naturally—while checkout, pricing and payment stay with the cruise line.</p></Section>
     <EntityDefinition />
     <section className="quiet-proof"><p className="eyebrow">BUILT TO FIT THE CRUISE JOURNEY</p><div className="proof-grid"><article><strong>Inside the existing app</strong><span>No competing destination for the guest.</span></article><article><strong>Designed for shipboard reality</strong><span>Offline-first architecture with host integration where required.</span></article><article><strong>Pilot before scale</strong><span>Validate behavior, recovery and commercial signals first.</span></article></div></section>
     <section id="pilot" className="pilot-section"><p className="eyebrow">START SMALL. LEARN FAST.</p><h2>Experience Regreenity on one cruise line.</h2><p>Start with a focused pilot. See how guests respond. Measure what matters. Decide what deserves to scale.</p><a className="pilot-button" href="/pilot/">Explore a pilot <Arrow /></a></section>

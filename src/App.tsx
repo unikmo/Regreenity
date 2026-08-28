@@ -275,10 +275,10 @@ function Overview({ navigate }: { navigate: (v: View) => void }) {
 
       <section className="outcome-strip section-shell" aria-label="Cruise Connection outcomes">
         <div className="outcome-intro"><small>ONE ADD-TO-APP MODULE</small><strong>Five measurable outcomes.</strong></div>
-        <div className="outcome-item"><img src="/media/crew-recognition.jpg" alt="" loading="lazy"/><span>01</span><b>Crew recognition</b><small>Capture excellence now</small></div>
-        <div className="outcome-item"><img src="/media/service-recovery.jpg" alt="" loading="lazy"/><span>02</span><b>Service recovery</b><small>Resolve while onboard</small></div>
-        <div className="outcome-item"><img src="/media/passenger-connection.jpg" alt="" loading="lazy"/><span>03</span><b>Participation</b><small>Create real-world connection</small></div>
-        <div className="outcome-item"><img src="/media/social-commerce.jpg" alt="" loading="lazy"/><span>04</span><b>Commerce</b><small>Convert shared intent</small></div>
+        <div className="outcome-item"><img src="/media/cruise-candid-crew.jpg" alt="" loading="lazy"/><span>01</span><b>Crew recognition</b><small>Capture excellence now</small></div>
+        <div className="outcome-item"><img src="/media/cruise-family-recovery.jpg" alt="" loading="lazy"/><span>02</span><b>Service recovery</b><small>Resolve while onboard</small></div>
+        <div className="outcome-item"><img src="/media/cruise-diverse-passengers.jpg" alt="" loading="lazy"/><span>03</span><b>Participation</b><small>Create real-world connection</small></div>
+        <div className="outcome-item"><img src="/media/cruise-family-experience.jpg" alt="" loading="lazy"/><span>04</span><b>Commerce</b><small>Convert shared intent</small></div>
         <div className="outcome-item"><img src="/media/shareable-memory.jpg" alt="" loading="lazy"/><span>05</span><b>Advocacy</b><small>Turn moments into sharing</small></div>
       </section>
 
@@ -292,7 +292,7 @@ function Overview({ navigate }: { navigate: (v: View) => void }) {
             <AppLink to="crew" navigate={navigate} className="text-link light-link">Explore crew recognition <Icon name="arrow" size={17}/></AppLink>
           </div>
           <div className="cinematic-visual">
-            <img className="cinematic-photo" src="/media/crew-recognition.jpg" alt="A cruise crew member speaking with a passenger in a premium onboard hospitality setting" loading="lazy"/>
+            <img className="cinematic-photo" src="/media/cruise-candid-crew.jpg" alt="Diverse cruise crew members sharing a candid end-of-shift moment" loading="lazy"/>
             <div className="cinematic-photo-label"><span>REAL-TIME RECOGNITION</span><b>Great service becomes visible while the sailing is still happening.</b></div>
             <div className="badge-capture-panel"><div className="capture-top"><span>01</span><small>IDENTIFY THE CREW MEMBER</small></div><div className="badge-shot"><div className="badge-person"><span>AN</span><div><small>CREW BADGE</small><b>Ana Rodrigues</b><em>Dining · Meridian</em></div></div><span className="camera-corner"><Icon name="camera" size={19}/></span></div><div className="capture-confirm"><Icon name="check" size={15}/> Badge captured · no facial recognition</div></div>
             <CrewRecognitionCard compact />
@@ -305,7 +305,7 @@ function Overview({ navigate }: { navigate: (v: View) => void }) {
           <div className="recovery-story-copy"><div className="section-kicker">THE OTHER SIDE OF THE MOMENT</div><h2>Recognize the good. Recover the bad. <span>While the guest is still onboard.</span></h2><p>Negative experiences never enter the recognition stream. A separate private route sends the issue to the right onboard team, giving the operator the chance to intervene before disembarkation, surveys or social media.</p><AppLink to="recovery" navigate={navigate} className="text-link">See service recovery <Icon name="arrow" size={17}/></AppLink></div>
           <div className="recovery-visual-stack">
             <figure className="story-photo recovery-photo">
-              <img src="/media/service-recovery.jpg" alt="Guest speaking with a cruise hospitality team member at an onboard service desk" loading="lazy"/>
+              <img src="/media/cruise-family-recovery.jpg" alt="Cruise crew member returning a child's toy beside their parent" loading="lazy"/>
               <figcaption>Private recovery while the guest is still onboard.</figcaption>
             </figure>
             <div className="recovery-flow-visual">
@@ -318,7 +318,7 @@ function Overview({ navigate }: { navigate: (v: View) => void }) {
       <section className="passenger-story section-shell">
         <div className="section-heading split-heading"><div><div className="section-kicker">PASSENGER EXPERIENCE</div><h2>The ship is the social environment. <span>Cruise Connection only makes the safe first move easier.</span></h2></div><p>Guests can discover opted-in people nearby, through a shared activity or through shared interests. First contact is a positive predefined affirmation. Only a recipient response unlocks a proposal to meet in a public onboard place or activity.</p></div>
         <figure className="passenger-photo-banner">
-          <img src="/media/passenger-connection.jpg" alt="Cruise passengers talking together in a bright onboard lounge" loading="lazy"/>
+          <img src="/media/cruise-diverse-passengers.jpg" alt="Multicultural cruise passengers of different ages relaxing together" loading="lazy"/>
           <figcaption><b>Three natural discovery routes.</b><span>Nearby · shared activity · shared interests</span></figcaption>
         </figure>
         <div className="journey-stage expanded-journey">
@@ -337,7 +337,7 @@ function Overview({ navigate }: { navigate: (v: View) => void }) {
         <div className="section-shell commerce-story-grid">
           <div className="commerce-visual-premium">
             <figure className="commerce-photo">
-              <img src="/media/social-commerce.jpg" alt="A premium onboard dining experience prepared for cruise passengers" loading="lazy"/>
+              <img src="/media/cruise-family-experience.jpg" alt="A multicultural family choosing an onboard experience together" loading="lazy"/>
               <figcaption>Social intent becomes relevant onboard inventory—not a generic ad feed.</figcaption>
             </figure>
             <div className="commerce-topline"><span>SHARED INTENT DETECTED</span><span className="capacity">9 seats left</span></div>
@@ -377,7 +377,7 @@ function Overview({ navigate }: { navigate: (v: View) => void }) {
 
       <section className="integration-premium section-shell">
         <div className="integration-heading"><div><div className="section-kicker">BUILT TO FIT THE APP YOU ALREADY HAVE</div><h2>An engagement layer—not another cruise app.</h2></div><p>The operator keeps its brand, passenger relationship, inventory, pricing and payment stack. Cruise Connection supplies the positive-interaction layer and the intelligence around it.</p></div>
-        <div className="integration-visual-band"><img src="/media/onboard-life.jpg" alt="Passengers moving through a lively cruise ship interior" loading="lazy"/><div><small>BUILT FOR CRUISE LIFE</small><b>Human interaction remains the experience. Cruise Connection sits quietly underneath it.</b></div></div>
+        <div className="integration-visual-band"><img src="/media/cruise-inclusive-activity.jpg" alt="Multigenerational passengers enjoying an inclusive deck activity" loading="lazy"/><div><small>BUILT FOR CRUISE LIFE</small><b>Human interaction remains the experience. Cruise Connection sits quietly underneath it.</b></div></div>
         <div className="integration-system"><div className="system-node"><span>01</span><b>Cruise-line app</b><small>Identity · itinerary · passenger context</small></div><div className="system-plus">+</div><div className="system-node featured"><span>02</span><b>Cruise Connection</b><small>Recognition · recovery · interaction · intent</small></div><div className="system-plus">+</div><div className="system-node"><span>03</span><b>Existing commerce</b><small>Inventory · price · booking · payment</small></div></div><AppLink to="integration" navigate={navigate} className="text-link">See the cruise-app integration route <Icon name="arrow" size={17}/></AppLink>
         <div className="deployment-row"><span>API</span><span>Embedded mobile web</span><span>Native SDK bridge</span><span>Offline-first ship mode</span><span>White-label configuration</span></div>
       </section>
