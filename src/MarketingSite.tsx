@@ -173,7 +173,7 @@ const Home = () => (
     <section id="top" className="hero">
       <p className="eyebrow hero-eyebrow">DESIGNED FOR CRUISE LINES</p>
       <h1>Turn more onboard moments into <span>unforgettable experiences.</span></h1>
-      <figure className="hero-visual"><img src="/media/hero-black-crew-v3.jpg" alt="Black cruise crew member welcoming guests onboard" fetchPriority="high" /></figure>
+      <figure className="hero-visual"><img src="/media/hero-centered-black-crew.jpg" alt="Black cruise crew member welcoming guests onboard" fetchPriority="high" /></figure>
     </section>
     <section className="hero-after" aria-labelledby="hero-after-title">
       <p id="hero-after-title" className="hero-after-copy">Regreenity helps your team personalise interactions, recognise excellence and create more timely opportunities to improve the guest journey.</p>
