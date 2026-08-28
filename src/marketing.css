@@ -57,14 +57,14 @@ img { display: block; width: 100%; }
 .story-body p { max-width: 460px; margin: 0; font-size: clamp(15px,1.05vw,18px); line-height: 1.68; color: var(--muted); }
 .story-visual,.detail-visual {
   margin: 0; aspect-ratio: 1.62/1; overflow: hidden; border-radius: clamp(18px,2vw,28px);
-  background-image: url('/media/diverse-cruise-sprite.jpg'); background-repeat: no-repeat; background-size: 100% 500%;
+  background-repeat: no-repeat; background-size: cover; background-position: center;
   background-color: #e7e1d8; filter: saturate(.92) contrast(.99);
 }
-.story-visual--passenger { background-position: center 0%; }
-.story-visual--crew { background-position: center 25%; }
-.story-visual--recovery { background-position: center 50%; }
-.story-visual--engagement { background-position: center 75%; }
-.story-visual--revenue { background-position: center 100%; }
+.story-visual--passenger { background-image: url('/media/passenger-connection.jpg'); }
+.story-visual--crew { background-image: url('/media/crew-recognition.jpg'); }
+.story-visual--recovery { background-image: url('/media/service-recovery.jpg'); }
+.story-visual--engagement { background-image: url('/media/onboard-life.jpg'); }
+.story-visual--revenue { background-image: url('/media/social-commerce.jpg'); }
 .entity-definition { padding: clamp(72px,8vw,106px) 22px; text-align: center; background: #f4f0e9; }
 .entity-definition h2 { max-width: 720px; margin: 0 auto 18px; font-size: clamp(30px,3vw,44px); line-height: 1.1; letter-spacing: -.04em; font-weight: 400; }
 .entity-definition > p:not(.eyebrow) { max-width: 760px; margin: 0 auto; color: var(--muted); font-size: clamp(15px,1.05vw,18px); line-height: 1.7; }

@@ -1,4 +1,4 @@
-const CACHE = 'regreenity-shell-v1'
+const CACHE = 'regreenity-shell-v2'
 const SHELL = [
   '/',
   '/passenger-experience/',
@@ -15,8 +15,11 @@ const SHELL = [
   '/cookies/',
   '/site.webmanifest',
   '/favicon.svg',
-  '/media/hero-crew-short-hair-v2.jpg',
-  '/media/diverse-cruise-sprite.jpg'
+  '/media/crew-recognition.jpg',
+  '/media/passenger-connection.jpg',
+  '/media/service-recovery.jpg',
+  '/media/onboard-life.jpg',
+  '/media/social-commerce.jpg'
 ]
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()))
