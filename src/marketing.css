@@ -115,6 +115,8 @@ img { display: block; width: 100%; }
 .carousel-controls [role="tab"] span { display: block; height: 2px; background: rgba(23,23,21,.22); transition: background .2s ease; }
 .carousel-controls [role="tab"].active span { background: var(--accent); }
 .product-readiness-note { width: min(920px,100%); margin: 25px auto 0; color: var(--muted); font-size: 12px; line-height: 1.65; text-align: center; }
+.product-walkthrough-link { width: fit-content; margin: 22px auto 0; display: flex; align-items: center; gap: 18px; padding: 13px 19px; border: 1px solid var(--ink); border-radius: 999px; font-size: 11px; letter-spacing: .08em; }
+.product-walkthrough-link:hover { background: var(--ink); color: var(--paper); }
 .site-footer { display: grid; grid-template-columns: 1fr 1.2fr auto; gap: 36px; padding: 50px clamp(22px,5vw,74px); border-top: 1px solid var(--line); align-items: start; }
 .site-footer > div { display: grid; gap: 7px; }
 .site-footer strong { font-size: 12px; letter-spacing: .25em; }

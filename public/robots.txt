@@ -1,19 +1,25 @@
 User-agent: *
 Allow: /
+Disallow: /product-app/
 
 User-agent: GPTBot
 Allow: /
+Disallow: /product-app/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /product-app/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /product-app/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /product-app/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /product-app/
 
 Sitemap: https://regreenity.com/sitemap.xml

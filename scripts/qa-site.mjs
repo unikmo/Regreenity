@@ -43,11 +43,21 @@ for (const required of ['robots.txt', 'sitemap.xml', 'llms.txt', 'llms-full.txt'
   if (!existsSync(join(root, required))) fail(`missing ${required}`)
 }
 
+const robots = existsSync(join(root, 'robots.txt')) ? readFileSync(join(root, 'robots.txt'), 'utf8') : ''
+if ((robots.match(/Disallow: \/product-app\//g) || []).length < 6) fail('interactive product walkthrough is not excluded for all declared crawler groups')
+
 const sitemap = existsSync(join(root, 'sitemap.xml')) ? readFileSync(join(root, 'sitemap.xml'), 'utf8') : ''
+if (sitemap.includes('/product-app/')) fail('interactive product walkthrough must not appear in the public sitemap')
 for (const match of sitemap.matchAll(/<loc>https:\/\/regreenity\.com(\/[^<]*)<\/loc>/g)) {
   const path = match[1]
   const expected = path === '/' ? join(root, 'index.html') : join(root, path, 'index.html')
   if (!existsSync(expected)) fail(`sitemap route missing from build: ${path}`)
+}
+
+const productApp = join(root, 'product-app', 'index.html')
+if (existsSync(productApp)) {
+  const html = readFileSync(productApp, 'utf8')
+  if (!/<meta name="robots" content="noindex,nofollow,noarchive"/.test(html)) fail('product walkthrough must be noindex, nofollow and noarchive')
 }
 
 const pilot = join(root, 'pilot', 'index.html')

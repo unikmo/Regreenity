@@ -1,4 +1,4 @@
-const CACHE = 'regreenity-shell-v6'
+const CACHE = 'regreenity-shell-v7'
 const SHELL = [
   '/',
   '/passenger-experience/',
@@ -9,6 +9,7 @@ const SHELL = [
   '/cruise-dashboard/',
   '/integration/',
   '/pilot/',
+  '/product-app/',
   '/imprint/',
   '/privacy/',
   '/terms/',

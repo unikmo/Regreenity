@@ -204,7 +204,7 @@ const productPreviewSlides = [
 const ProductPreviewCarousel = () => {
   const [active, setActive] = useState(0)
   const slide = productPreviewSlides[active]
-  const move = (direction: number) => setActive((active + direction + productPreviewSlides.length) % productPreviewSlides.length)
+  const move = (direction: number) => setActive(current => (current + direction + productPreviewSlides.length) % productPreviewSlides.length)
   return <section className="product-preview" aria-labelledby="product-preview-title">
     <div className="product-preview-head"><div><p className="eyebrow">THE COMPLETE PRODUCT EXPERIENCE</p><h2 id="product-preview-title">See what Regreenity adds to the cruise journey.</h2></div><p>One integrated add-on, presented here as five connected moments. Use the controls to preview the full service before contacting us.</p></div>
     <div className="product-preview-stage" aria-live="polite">
@@ -213,6 +213,7 @@ const ProductPreviewCarousel = () => {
     </div>
     <div className="carousel-controls"><button type="button" onClick={() => move(-1)} aria-label="Previous capability">←</button><div role="tablist" aria-label="Product capabilities">{productPreviewSlides.map((item,index)=><button key={item.eyebrow} type="button" role="tab" aria-selected={active===index} aria-label={`Show ${item.eyebrow.toLowerCase()}`} className={active===index?'active':''} onClick={()=>setActive(index)}><span /></button>)}</div><button type="button" onClick={() => move(1)} aria-label="Next capability">→</button></div>
     <p className="product-readiness-note">This website demonstrates the product workflows. Production identity, ship systems, native proximity, secure offline storage and operational integrations are implemented with the cruise-line partner during pilot deployment.</p>
+    <a className="product-walkthrough-link" href="/product-app/">Open the interactive product walkthrough <Arrow /></a>
   </section>
 }
 

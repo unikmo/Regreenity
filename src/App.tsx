@@ -112,16 +112,24 @@ const seo: Record<View, { title: string; description: string; path: string }> = 
 }
 
 const normalizePath = (path: string) => path === '/' ? '/' : `${path.replace(/\/+$/, '')}/`
+const productViews = new Set<View>(['overview', 'passenger', 'crew', 'recovery', 'commerce', 'dashboard', 'integration'])
+
+const resolveView = (isProductDemo: boolean): View => {
+  if (!isProductDemo) return routeMap[normalizePath(window.location.pathname)] || 'overview'
+  const requested = new URLSearchParams(window.location.search).get('view') as View | null
+  return requested && productViews.has(requested) ? requested : 'overview'
+}
 
 function useRoute() {
+  const isProductDemo = window.location.pathname.startsWith('/product-app/')
   const initialPath = normalizePath(window.location.pathname)
-  const [view, setView] = useState<View>(routeMap[initialPath] || 'overview')
+  const [view, setView] = useState<View>(isProductDemo ? resolveView(true) : routeMap[initialPath] || 'overview')
 
   useEffect(() => {
-    const onPop = () => setView(routeMap[normalizePath(window.location.pathname)] || 'overview')
+    const onPop = () => setView(resolveView(isProductDemo))
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
-  }, [])
+  }, [isProductDemo])
 
   useEffect(() => {
     const current = seo[view]
@@ -129,25 +137,29 @@ function useRoute() {
     const description = document.querySelector('meta[name="description"]')
     description?.setAttribute('content', current.description)
     const canonical = document.querySelector('link[rel="canonical"]')
-    canonical?.setAttribute('href', `${window.location.origin}${current.path}`)
+    const publicPath = isProductDemo ? '/product-app/' : current.path
+    canonical?.setAttribute('href', `${window.location.origin}${publicPath}`)
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', current.title)
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', current.description)
-    document.querySelector('meta[property="og:url"]')?.setAttribute('content', `${window.location.origin}${current.path}`)
-  }, [view])
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', `${window.location.origin}${publicPath}`)
+  }, [view, isProductDemo])
 
   const navigate = (next: View) => {
-    const path = seo[next].path
-    if (window.location.pathname !== path) window.history.pushState({}, '', path)
+    const params = new URLSearchParams(window.location.search)
+    params.set('view', next)
+    const path = isProductDemo ? `/product-app/?${params.toString()}` : seo[next].path
+    if (`${window.location.pathname}${window.location.search}` !== path) window.history.pushState({}, '', path)
     setView(next)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  return { view, navigate }
+  return { view, navigate, isProductDemo }
 }
 
-const AppLink = ({ to, navigate, className, children, onClick }: { to: View; navigate: (v: View) => void; className?: string; children: ReactNode; onClick?: () => void }) => (
-  <a href={seo[to].path} className={className} onClick={(e: MouseEvent<HTMLAnchorElement>) => { e.preventDefault(); onClick?.(); navigate(to) }}>{children}</a>
-)
+const AppLink = ({ to, navigate, className, children, onClick }: { to: View; navigate: (v: View) => void; className?: string; children: ReactNode; onClick?: () => void }) => {
+  const href = window.location.pathname.startsWith('/product-app/') ? `/product-app/?view=${to}` : seo[to].path
+  return <a href={href} className={className} onClick={(e: MouseEvent<HTMLAnchorElement>) => { e.preventDefault(); onClick?.(); navigate(to) }}>{children}</a>
+}
 
 const navItems: { key: View; label: string }[] = [
   { key: 'crew', label: 'Crew recognition' },
@@ -227,6 +239,17 @@ const CrewRecognitionCard = ({ compact = false, shareable = false }: { compact?:
 }
 
 function Overview({ navigate }: { navigate: (v: View) => void }) {
+  const [bookingHandoff, setBookingHandoff] = useState(false)
+  const [memoryShared, setMemoryShared] = useState(false)
+  const openBooking = () => { openHostBooking('mediterranean-tasting-2030'); setBookingHandoff(true) }
+  const shareMemory = async () => {
+    const text = 'My Regreenity · Mediterranean Escape · The positive moments I collected at sea.'
+    try {
+      if (navigator.share) await navigator.share({ title: 'My Regreenity', text })
+      else if (navigator.clipboard) await navigator.clipboard.writeText(text)
+      setMemoryShared(true)
+    } catch { /* user cancelled */ }
+  }
   return (
     <main>
       <section className="hero-premium">
@@ -345,7 +368,7 @@ function Overview({ navigate }: { navigate: (v: View) => void }) {
             <div className="group-avatars premium-avatars"><span>MA</span><span>JL</span><span>SK</span><span>+2</span></div>
             <p><b>7 passengers who share your food interest</b> are considering tonight's tasting. Three are people you've already positively connected with.</p>
             <div className="experience-meta"><span>8:30 PM</span><span>Deck 7</span><span>$49 pp</span></div>
-            <div className="commerce-cta-row"><button>View in cruise-line booking <Icon name="arrow" size={16}/></button><small>Inventory · price · payment stay with the cruise line</small></div>
+            <div className="commerce-cta-row"><button onClick={openBooking}>{bookingHandoff ? 'Booking handoff sent ✓' : 'View in cruise-line booking'} {!bookingHandoff && <Icon name="arrow" size={16}/>}</button><small>{bookingHandoff ? 'The host app received the selected inventory item.' : 'Inventory · price · payment stay with the cruise line'}</small></div>
           </div>
           <div className="commerce-story-copy"><div className="section-kicker light">PARTICIPATION → COMMERCE</div><h2>Surface the right experience because people want to do it <span>together.</span></h2><p>Regreenity does not create an ad feed. Travellers voluntarily share cruise-relevant interests; the system combines that intent with real onboard interaction and sends any booking back to the cruise line's own commerce environment.</p><div className="commerce-proof"><div><b>Relevant</b><span>Based on expressed activity interest</span></div><div><b>Timely</b><span>Can respond to remaining capacity</span></div><div><b>Measurable</b><span>Built for agreed attribution or treatment/control testing</span></div></div><AppLink to="commerce" navigate={navigate} className="text-link light-link">Explore participation & commerce <Icon name="arrow" size={17}/></AppLink></div>
         </div>
@@ -359,7 +382,7 @@ function Overview({ navigate }: { navigate: (v: View) => void }) {
       <section className="memory-section section-shell">
         <div className="memory-copy"><div className="section-kicker">THE MEMORY LAYER</div><h2>Positive moments should not disappear when the sailing ends.</h2><p>Participating passengers and crew receive a personal summary tied to the actual sailing. Selected summaries can be shared externally, turning authentic recognition into organic cruise-line exposure.</p><div className="privacy-note"><Icon name="lock" size={18}/><span>Public passenger summaries show the compliments received—not the identities of the people who sent them unless separately permitted.</span></div></div>
         <div className="memory-cards">
-          <div className="share-card premium-share"><img className="memory-photo" src="/media/shareable-memory.jpg" alt="A passenger photographing a memorable coastal cruise destination" loading="lazy"/><small>CC-0826-17 · 2–9 AUG 2026</small><h3>Your Regreenity</h3><p>The positive moments you collected at sea.</p><div className="affirm-grid">{affirmations.map(a => <div key={a.label} className={`affirm ${a.tone}`}><b>{a.count}</b><span>{a.label}</span></div>)}</div><div className="share-footer"><span>Powered by Regreenity</span><button><Icon name="share" size={15}/> Share</button></div></div>
+          <div className="share-card premium-share"><img className="memory-photo" src="/media/shareable-memory.jpg" alt="A passenger photographing a memorable coastal cruise destination" loading="lazy"/><small>CC-0826-17 · 2–9 AUG 2026</small><h3>Your Regreenity</h3><p>The positive moments you collected at sea.</p><div className="affirm-grid">{affirmations.map(a => <div key={a.label} className={`affirm ${a.tone}`}><b>{a.count}</b><span>{a.label}</span></div>)}</div><div className="share-footer"><span>Powered by Regreenity</span><button onClick={shareMemory}><Icon name="share" size={15}/> {memoryShared ? 'Copied / shared' : 'Share'}</button></div></div>
           <CrewRecognitionCard compact shareable />
         </div>
       </section>
@@ -383,7 +406,7 @@ function Overview({ navigate }: { navigate: (v: View) => void }) {
       </section>
 
       <section className="pilot-cta section-shell">
-        <div className="pilot-cta-inner"><div><small>PROVE IT ON ONE SHIP</small><h2>Start with a bounded pilot. Measure what changes.</h2><p>One ship. Selected sailings. Defined passenger population. Predetermined KPIs. No exclusivity. Commercial review date.</p></div><AppLink to="pilot" navigate={navigate} className="btn primary inverted xl">Request a pilot <Icon name="arrow" size={18}/></AppLink></div>
+        <div className="pilot-cta-inner"><div><small>PROVE IT ON ONE SHIP</small><h2>Pilot the complete experience. Measure what changes.</h2><p>One ship. Selected sailings. Connected workflows. Predetermined KPIs. Commercial review date.</p></div><a href="/pilot/" className="btn primary inverted xl">Request a demo <Icon name="arrow" size={18}/></a></div>
       </section>
     </main>
   )
@@ -399,11 +422,27 @@ function PassengerModule() {
   const [interestSet, setInterestSet] = useState<string[]>(['Food experiences', 'Shopping', 'Fitness'])
   const [queuedCount, setQueuedCount] = useState(() => getQueuedActionCount())
   const [online, setOnline] = useState(() => navigator.onLine)
+  const nearbyGuests = [
+    { id: 'GUEST-DANIEL-208', initials: 'DA', name: 'Daniel', detail: 'Nearby · Shopping · Food', className: 'daniel' },
+    { id: 'GUEST-SOFIA-311', initials: 'SK', name: 'Sofia', detail: 'Nearby · Fitness · Wellness', className: '' },
+    { id: 'GUEST-JONAS-144', initials: 'JL', name: 'Jonas', detail: 'Nearby · Trivia · Culture', className: '' },
+  ]
+  const [selectedGuest, setSelectedGuest] = useState(nearbyGuests[0])
+  const [previewAction, setPreviewAction] = useState<'acknowledged' | 'ignored' | 'blocked' | null>(null)
   const launchContext = useMemo(() => getLaunchContext(), [])
 
   const interestOptions = ['Food experiences','Shopping','Fitness','Wellness','Adventure excursions','Culture','Trivia & games','Live music','Family activities','Beach & nature']
   const publicMeetOptions = ['Coffee','Bar','Restaurant','Trivia / game','Spa / wellness','Shopping','Fitness activity','Show','Excursion']
   const nearbySignals = ['Great style','That was kind of you','You made us laugh','Great energy','You seemed friendly']
+
+  const resetInteraction = () => { setSent(null); setReceiverState('waiting'); setProposal(null) }
+  const selectGuest = (guest: typeof nearbyGuests[number]) => { setSelectedGuest(guest); resetInteraction() }
+  const selectDiscoveryMode = (mode: 'nearby' | 'activity' | 'interests') => {
+    setDiscoveryMode(mode)
+    if (mode === 'activity') setSelectedGuest(nearbyGuests[2])
+    if (mode === 'interests') setSelectedGuest(nearbyGuests[0])
+    resetInteraction()
+  }
 
   useEffect(() => {
     const onOnline = () => setOnline(true)
@@ -411,11 +450,11 @@ function PassengerModule() {
     const onQueue = () => setQueuedCount(getQueuedActionCount())
     window.addEventListener('online', onOnline)
     window.addEventListener('offline', onOffline)
-    window.addEventListener('cruise-connection-queue-change', onQueue)
+    window.addEventListener('regreenity-queue-change', onQueue)
     return () => {
       window.removeEventListener('online', onOnline)
       window.removeEventListener('offline', onOffline)
-      window.removeEventListener('cruise-connection-queue-change', onQueue)
+      window.removeEventListener('regreenity-queue-change', onQueue)
     }
   }, [])
 
@@ -436,14 +475,14 @@ function PassengerModule() {
   const sendAffirmation = (signal: string) => {
     setSent(signal)
     setReceiverState('waiting')
-    const sentToHost = notifyAffirmation('GUEST-DANIEL-208', signal)
-    if (!sentToHost && !navigator.onLine) queueOfflineAction('PASSENGER_AFFIRMATION', { recipientGuestId: 'GUEST-DANIEL-208', affirmationId: signal }, launchContext.sailingId)
+    const sentToHost = notifyAffirmation(selectedGuest.id, signal)
+    if (!sentToHost && !navigator.onLine) queueOfflineAction('PASSENGER_AFFIRMATION', { recipientGuestId: selectedGuest.id, affirmationId: signal }, launchContext.sailingId)
   }
 
   const chooseProposal = (venue: string) => {
     setProposal(venue)
-    const sentToHost = notifyPublicMeetProposal('GUEST-DANIEL-208', venue)
-    if (!sentToHost && !navigator.onLine) queueOfflineAction('PUBLIC_MEET_PROPOSAL', { recipientGuestId: 'GUEST-DANIEL-208', venueType: venue }, launchContext.sailingId)
+    const sentToHost = notifyPublicMeetProposal(selectedGuest.id, venue)
+    if (!sentToHost && !navigator.onLine) queueOfflineAction('PUBLIC_MEET_PROPOSAL', { recipientGuestId: selectedGuest.id, venueType: venue }, launchContext.sailingId)
   }
 
   const sharePassengerSummary = async () => {
@@ -478,28 +517,26 @@ function PassengerModule() {
         <PhoneShell label="Traveller view · proximity + positive affirmation">
           <div className="mobile-head"><div><small>Positive moments</small><strong>Connect onboard</strong></div><div className="avatar">MA</div></div>
           <div className="offline-status"><span className={online ? 'status-dot online' : 'status-dot'} /><div><b>{online ? 'Ship mode ready' : 'No public internet required'}</b><small>{queuedCount ? `${queuedCount} action${queuedCount === 1 ? '' : 's'} queued for sync` : 'Core interaction remains available onboard'}</small></div></div>
-          <div className="discovery-tabs three"><button className={discoveryMode==='nearby'?'active':''} onClick={()=>setDiscoveryMode('nearby')}>Nearby</button><button className={discoveryMode==='activity'?'active':''} onClick={()=>setDiscoveryMode('activity')}>Shared activity</button><button className={discoveryMode==='interests'?'active':''} onClick={()=>setDiscoveryMode('interests')}>Interests</button></div>
+          {launchContext.ageBand === 'minor' ? <div className="minor-safety-state"><Icon name="shield" size={24}/><h3>Peer discovery is unavailable</h3><p>Minor accounts are excluded by default. The cruise line must explicitly approve any age-appropriate experience under its safeguarding rules.</p></div> : <>
+          <div className="discovery-tabs three"><button className={discoveryMode==='nearby'?'active':''} onClick={()=>selectDiscoveryMode('nearby')}>Nearby</button><button className={discoveryMode==='activity'?'active':''} onClick={()=>selectDiscoveryMode('activity')}>Shared activity</button><button className={discoveryMode==='interests'?'active':''} onClick={()=>selectDiscoveryMode('interests')}>Interests</button></div>
 
           {discoveryMode === 'nearby' && <>
             <div className="nearby-control"><div><small>NEARBY VISIBILITY</small><b>{nearbyEnabled ? 'Visible while using this screen' : 'You are not visible nearby'}</b></div><button className={nearbyEnabled ? 'active' : ''} onClick={toggleNearby}>{nearbyEnabled ? 'On' : 'Off'}</button></div>
             <div className="nearby-context"><Icon name="people" size={16}/><span>People shown here are opted-in and physically nearby. Exact distance is never displayed.</span></div>
-            <div className="nearby-people">
-              <button className="nearby-person selected"><span className="profile-photo daniel">DA</span><span><b>Daniel</b><small>Nearby · Shopping · Food</small></span><em>Choose</em></button>
-              <button className="nearby-person"><span className="profile-photo">SK</span><span><b>Sofia</b><small>Nearby · Fitness · Wellness</small></span><em>Choose</em></button>
-              <button className="nearby-person"><span className="profile-photo">JL</span><span><b>Jonas</b><small>Nearby · Trivia · Culture</small></span><em>Choose</em></button>
-            </div>
+            <div className="nearby-people">{nearbyGuests.map(guest => <button key={guest.id} className={`nearby-person ${selectedGuest.id===guest.id?'selected':''}`} onClick={()=>selectGuest(guest)}><span className={`profile-photo ${guest.className}`}>{guest.initials}</span><span><b>{guest.name}</b><small>{guest.detail}</small></span><em>{selectedGuest.id===guest.id?'Selected':'Choose'}</em></button>)}</div>
           </>}
 
           {discoveryMode === 'activity' && <><div className="activity-context"><small>YOU BOTH ATTENDED</small><b>Trivia Night · Deck 6</b><span>Only opted-in guests from this activity appear.</span></div><div className="person-card"><div className="person-avatar">JL</div><div><strong>Jonas</strong><small>Trivia Night · shared activity</small></div><span>Verified</span></div></>}
 
           {discoveryMode === 'interests' && <><div className="activity-context"><small>SHARED INTEREST</small><b>Shopping & local food</b><span>Guests choose which interests they are willing to share.</span></div><div className="person-card"><div className="person-avatar">DA</div><div><strong>Daniel</strong><small>Shopping · Food experiences</small></div><span>2 shared</span></div></>}
 
-          <p className="mobile-prompt">Send Daniel a positive affirmation</p>
+          <p className="mobile-prompt">Send {selectedGuest.name} a positive affirmation</p>
           <div className="signal-list compact-signals">{nearbySignals.map(signal => <button disabled={Boolean(sent)} className={sent === signal ? 'selected' : ''} key={signal} onClick={() => sendAffirmation(signal)}><Icon name="heart" size={16}/>{signal}{sent === signal && <span>Sent</span>}</button>)}</div>
 
-          {sent && <div className="receiver-gate"><small>AFFIRMATION SENT</small><b>{sent}</b>{receiverState === 'waiting' && <><p>Daniel may acknowledge or ignore it. No meeting proposal is available until he responds.</p><div className="demo-response"><button onClick={() => setReceiverState('acknowledged')}>Demo: Daniel responds</button><button className="muted" onClick={() => setReceiverState('ignored')}>Demo: Ignore</button></div></>}{receiverState === 'ignored' && <p>Daniel ignored the affirmation. The interaction ends here. No further contact route is exposed.</p>}{receiverState === 'acknowledged' && <><div className="mutual-positive"><Icon name="check" size={14}/> Daniel acknowledged your affirmation.</div><p className="meeting-rule">You may now suggest a <b>public onboard place or activity</b>. Cabins/staterooms are never offered.</p><div className="public-meet-grid">{publicMeetOptions.map(place => <button key={place} className={proposal===place?'selected':''} onClick={() => chooseProposal(place)}>{place}</button>)}</div>{proposal && <div className="proposal-sent"><Icon name="check" size={13}/> {proposal} proposal sent</div>}</> }</div>}
+          {sent && <div className="receiver-gate"><small>AFFIRMATION SENT</small><b>{sent}</b>{receiverState === 'waiting' && <><p>{selectedGuest.name} may acknowledge or ignore it. No meeting proposal is available until they respond.</p><div className="demo-response"><button onClick={() => setReceiverState('acknowledged')}>Simulate acknowledgement</button><button className="muted" onClick={() => setReceiverState('ignored')}>Simulate ignore</button></div></>}{receiverState === 'ignored' && <><p>{selectedGuest.name} ignored the affirmation. The interaction ends here. No further contact route is exposed.</p><button className="receiver-reset" onClick={resetInteraction}>Start another walkthrough</button></>}{receiverState === 'acknowledged' && <><div className="mutual-positive"><Icon name="check" size={14}/> {selectedGuest.name} acknowledged your affirmation.</div><p className="meeting-rule">You may now suggest a <b>public onboard place or activity</b>. Cabins/staterooms are never offered.</p><div className="public-meet-grid">{publicMeetOptions.map(place => <button key={place} className={proposal===place?'selected':''} onClick={() => chooseProposal(place)}>{place}</button>)}</div>{proposal && <><div className="proposal-sent"><Icon name="check" size={13}/> {proposal} proposal sent</div><button className="receiver-reset" onClick={resetInteraction}>Start another walkthrough</button></>}</> }</div>}
 
           <div className="safety-note"><Icon name="shield" size={16}/><span>No unrestricted messaging. No dating mode. No cabin meeting option. One affirmation per sender → recipient → sailing day. Block/report remain available.</span></div>
+          </>}
         </PhoneShell>
 
         <div className="explain-stack">
@@ -513,7 +550,7 @@ function PassengerModule() {
 
       <section className="recipient-experience">
         <div className="recipient-copy"><div className="section-kicker">WHAT THE RECEIVER SEES</div><h2>The recipient stays in control.</h2><p>Daniel sees the positive affirmation and a minimal sender profile. He can acknowledge or ignore it. Ignoring ends the interaction; acknowledgement allows Maria to propose an approved public onboard place or activity.</p><div className="privacy-note"><Icon name="lock" size={18}/><span>No cabin, phone number or private contact detail is revealed. A response is consent to the next structured step—not consent to unrestricted messaging.</span></div></div>
-        <div className="receiver-preview-card"><div className="receiver-profile"><span className="profile-photo">MA</span><div><small>POSITIVE AFFIRMATION FROM</small><b>Maria</b><span>Nearby · same sailing</span></div></div><blockquote>“That was kind of you.”</blockquote><div className="receiver-actions"><button className="primary-receiver"><Icon name="check" size={14}/> Acknowledge</button><button>Ignore</button><button className="text-action">Block / report</button></div><small className="receiver-foot">Acknowledging does not open chat. It only allows a public-place/activity proposal.</small></div>
+        <div className="receiver-preview-card"><div className="receiver-profile"><span className="profile-photo">MA</span><div><small>POSITIVE AFFIRMATION FROM</small><b>Maria</b><span>Nearby · same sailing</span></div></div><blockquote>“That was kind of you.”</blockquote><div className="receiver-actions"><button className="primary-receiver" disabled={previewAction!==null} onClick={()=>setPreviewAction('acknowledged')}><Icon name="check" size={14}/> Acknowledge</button><button disabled={previewAction!==null} onClick={()=>setPreviewAction('ignored')}>Ignore</button><button className="text-action" disabled={previewAction!==null} onClick={()=>setPreviewAction('blocked')}>Block / report</button></div><small className="receiver-foot">{previewAction === 'acknowledged' ? 'Acknowledged. Maria may now propose an approved public place or activity.' : previewAction === 'ignored' ? 'Ignored. The interaction ended and no further route was exposed.' : previewAction === 'blocked' ? 'Blocked and reported. Maria cannot contact this account again in the walkthrough.' : 'Acknowledging does not open chat. It only allows a public-place/activity proposal.'}</small>{previewAction && <button className="receiver-preview-reset" onClick={()=>setPreviewAction(null)}>Reset receiver state</button>}</div>
       </section>
 
       <section className="offline-passenger-section">
@@ -529,7 +566,8 @@ function PassengerModule() {
 
 function CrewRecognition() {
   const launchContext = useMemo(() => getLaunchContext(), [])
-  const [selectedReasons, setSelectedReasons] = useState<string[]>(['Made us feel welcome'])
+  const [badgeCaptured, setBadgeCaptured] = useState(false)
+  const [selectedReasons, setSelectedReasons] = useState<string[]>([])
   const [sent, setSent] = useState(false)
   const sendCrewRecognition = () => {
     if (selectedReasons.length === 0) return
@@ -539,8 +577,10 @@ function CrewRecognition() {
   }
   const toggleReason = (reason: string) => {
     if (sent) return
-    if (selectedReasons.includes(reason)) setSelectedReasons(selectedReasons.filter(r => r !== reason))
-    else if (selectedReasons.length < 2) setSelectedReasons([...selectedReasons, reason])
+    setSelectedReasons(current => {
+      if (current.includes(reason)) return current.filter(r => r !== reason)
+      return current.length < 2 ? [...current, reason] : current
+    })
   }
   return (
     <main className="page section-shell">
@@ -548,11 +588,11 @@ function CrewRecognition() {
       <div className="crew-page-grid">
         <PhoneShell label="Recognition flow">
           <div className="mobile-head"><div><small>Crew recognition</small><strong>Say thank you now</strong></div><div className="avatar"><Icon name="crew" size={18}/></div></div>
-          <div className="badge-capture"><div className="camera-ring"><Icon name="camera" size={28}/></div><h3>Photograph the crew badge</h3><p>Capture the visible employee identifier. No facial recognition.</p><button>Open camera</button></div>
-          <div className="identified"><span className="crew-photo">AN</span><div><small>IDENTIFIED CREW MEMBER</small><strong>Ana · Dining team</strong><span>Meridian Restaurant · 8:14 PM</span></div><Icon name="check"/></div>
+          <div className="badge-capture"><div className="camera-ring"><Icon name="camera" size={28}/></div><h3>Photograph the crew badge</h3><p>Capture the visible employee identifier. No facial recognition.</p><button onClick={()=>setBadgeCaptured(true)} disabled={badgeCaptured}>{badgeCaptured ? 'Sample badge captured ✓' : 'Scan sample badge'}</button></div>
+          {badgeCaptured && <div className="identified"><span className="crew-photo">AN</span><div><small>IDENTIFIED CREW MEMBER</small><strong>Ana · Dining team</strong><span>Meridian Restaurant · 8:14 PM</span></div><Icon name="check"/></div>}
           <div className="recognition-selector-head"><p className="mobile-prompt">Choose up to two reasons</p><span>{selectedReasons.length}/2</span></div>
-          <div className="recognition-chips">{recognitionReasons.map(r => <button onClick={() => toggleReason(r)} disabled={sent || (!selectedReasons.includes(r) && selectedReasons.length >= 2)} className={selectedReasons.includes(r) ? 'active' : ''} key={r}>{r}</button>)}</div>
-          <button className="mobile-primary" disabled={sent || selectedReasons.length === 0} onClick={sendCrewRecognition}>{sent ? 'Recognition sent for today ✓' : 'Send recognition'}</button>
+          <div className="recognition-chips">{recognitionReasons.map(r => <button onClick={() => toggleReason(r)} disabled={!badgeCaptured || sent || (!selectedReasons.includes(r) && selectedReasons.length >= 2)} className={selectedReasons.includes(r) ? 'active' : ''} key={r}>{r}</button>)}</div>
+          <button className="mobile-primary" disabled={!badgeCaptured || sent || selectedReasons.length === 0} onClick={sendCrewRecognition}>{sent ? 'Recognition sent for today ✓' : badgeCaptured ? 'Send recognition' : 'Scan a badge to continue'}</button>
           <div className="daily-rule"><Icon name="clock" size={15}/><span>{sent ? 'You can recognize Ana again after another interaction tomorrow.' : 'One recognition per guest → crew member → calendar day.'}</span></div>
         </PhoneShell>
         <div className="crew-data-story"><div className="section-kicker">FROM THANK-YOU TO USEFUL SIGNAL</div><h2>Show total recognition with the context that makes it credible.</h2><p>Raw compliment totals alone are easy to misread. Regreenity separates breadth, depth and consistency.</p><div className="data-definition-grid"><div><b>84</b><span>Total recognition moments</span></div><div><b>61</b><span>Unique guests recognizing Ana</span></div><div><b>6/7</b><span>Sailing days with recognition</span></div></div><CrewRecognitionCard shareable /></div>
@@ -580,18 +620,23 @@ function RecoveryPage({ navigate }: { navigate: (v: View) => void }) {
     const sentToHost = notifyExperiencePulse(department, score)
     if (!sentToHost && !navigator.onLine) queueOfflineAction('EXPERIENCE_PULSE', { department, score }, launchContext.sailingId)
   }
+  const routePulseToHelp = () => {
+    setIssue(department === 'Dining' ? 'Dining problem' : department === 'Stateroom' ? 'Cabin issue' : 'Excursion issue')
+    setSubmitted(false)
+    window.setTimeout(() => document.getElementById('service-request')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 0)
+  }
   return (
     <main className="page section-shell">
       <div className="page-head editorial"><div><div className="section-kicker">REAL-TIME SERVICE RECOVERY</div><h1>Give the cruise line a chance to fix the problem <span>before the sailing ends.</span></h1><p>Complaints use a private operational route, completely separate from positive recognition and passenger affirmations.</p></div><div className="pill coral"><Icon name="lock" size={15}/> Private by design</div></div>
       <div className="recovery-page-grid">
-        <PhoneShell label="Private service route">
+        <div id="service-request"><PhoneShell label="Private service route">
           <div className="mobile-head"><div><small>Need help?</small><strong>Let's fix it onboard</strong></div><div className="avatar"><Icon name="help" size={18}/></div></div>
           <div className="help-intro"><div className="help-icon"><Icon name="bell"/></div><h3>Tell the right team now</h3><p>This is a private service route—not a public review.</p></div>
           <p className="mobile-prompt">What do you need help with?</p>
           <div className="issue-list">{['Cabin issue','Dining problem','Excursion issue','Billing question','Accessibility need','Lost item'].map(x => <button key={x} className={issue===x?'active':''} onClick={()=>{setIssue(x);setSubmitted(false)}}>{x}<span>›</span></button>)}</div>
-          <button className="mobile-primary warning" onClick={submitIssue}>{submitted ? 'Sent to service team ✓' : 'Send to service team'}</button>
+          <button className="mobile-primary warning" disabled={submitted} onClick={submitIssue}>{submitted ? 'Sent to service team ✓' : 'Send to service team'}</button>
           <div className="recovery-status"><span className="status-dot"/><div><b>{submitted ? 'Issue acknowledged' : 'Pilot workflow'}</b><small>{submitted ? `${issue} · assigned to onboard team` : 'Acknowledge → assign → resolve → close loop with guest'}</small></div></div>
-        </PhoneShell>
+        </PhoneShell></div>
         <div className="recovery-ops"><div className="section-kicker">OPERATIONAL LOOP</div><h2>From private signal to closed-loop recovery.</h2><div className="ops-timeline"><div><span>01</span><div><b>Capture</b><p>Ship, sailing, guest, issue type and relevant location context.</p></div></div><div><span>02</span><div><b>Route</b><p>Send the issue to the appropriate onboard team instead of a generic feedback queue.</p></div></div><div><span>03</span><div><b>Respond</b><p>Acknowledge the passenger while they are still onboard.</p></div></div><div><span>04</span><div><b>Resolve & re-check</b><p>Track resolution time, then ask whether the experience improved before closing the loop.</p></div></div></div><div className="ops-metric-panel"><div><small>DEMO PILOT</small><b>93%</b><span>resolved onboard</span></div><div><small>MEDIAN ACKNOWLEDGEMENT</small><b>2m</b><span>from guest submission</span></div><div><small>MEDIAN RESOLUTION</small><b>14m</b><span>across routed issues</span></div></div></div>
       </div>
 
@@ -602,7 +647,7 @@ function RecoveryPage({ navigate }: { navigate: (v: View) => void }) {
           <div className="department-chips">{departments.map(d=><button key={d} className={department===d?'active':''} onClick={()=>{setDepartment(d);setPulseScore(null)}}>{d}</button>)}</div>
           <div className="pulse-question"><b>{department}</b><span>Today · Sailing CC-0826-17</span></div>
           <div className="pulse-scale">{pulseLabels.map((label,i)=><button key={label} className={pulseScore===i+1?'active':''} onClick={()=>submitPulse(i+1)}><b>{i+1}</b><span>{label}</span></button>)}</div>
-          {pulseScore && pulseScore <= 2 && <div className="pulse-recovery-offer"><Icon name="help" size={17}/><div><b>Would you like us to fix this now?</b><span>Your rating stays private. We can route the issue to the right onboard team.</span></div><button onClick={()=>{setIssue(department==='Dining'?'Dining problem':department==='Stateroom'?'Cabin issue':'Service concern');setSubmitted(false)}}>Get help</button></div>}
+          {pulseScore && pulseScore <= 2 && <div className="pulse-recovery-offer"><Icon name="help" size={17}/><div><b>Would you like us to fix this now?</b><span>Your rating stays private. We can route the issue to the right onboard team.</span></div><button onClick={routePulseToHelp}>Get help</button></div>}
           {pulseScore === 3 && <div className="pulse-thanks"><Icon name="check" size={16}/> Thanks. This helps the onboard team understand today's experience.</div>}
           {pulseScore && pulseScore >= 4 && <div className="pulse-positive-route"><Icon name="heart" size={17}/><div><b>Did a crew member make this experience special?</b><span>Turn a strong department experience into named recognition.</span></div><AppLink to="crew" navigate={navigate}>Recognize crew</AppLink></div>}
         </div>
@@ -638,9 +683,21 @@ function Commerce() {
 
 function Dashboard() {
   const bars = useMemo(() => [54, 70, 61, 82, 76, 92, 88], [])
+  const [showIssues, setShowIssues] = useState(false)
+  const exportPilotReport = () => {
+    const rows = [['Metric','Value','Context'], ...kpis.map(kpi => [kpi.label,kpi.value,kpi.detail]), ['Open issues','7','Illustrative walkthrough data']]
+    const csv = rows.map(row => row.map(value => `"${String(value).replace(/"/g,'""')}"`).join(',')).join('\n')
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }))
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'regreenity-pilot-report-demo.csv'
+    link.click()
+    window.setTimeout(() => URL.revokeObjectURL(url), 0)
+  }
   return (
     <main className="page section-shell dashboard-page">
-      <div className="dash-top"><div><div className="section-kicker">CRUISE-LINE DASHBOARD</div><h1>Mediterranean Escape · <span>Sailing CC-0826-17</span></h1><p>2–9 August 2026 · White-label pilot performance · Day 4 of 7</p></div><div className="dash-actions"><button className="btn ghost">Export pilot report</button><button className="btn primary">View live issues</button></div></div>
+      <div className="dash-top"><div><div className="section-kicker">CRUISE-LINE DASHBOARD</div><h1>Mediterranean Escape · <span>Sailing CC-0826-17</span></h1><p>2–9 August 2026 · Illustrative white-label pilot performance · Day 4 of 7</p></div><div className="dash-actions"><button className="btn ghost" onClick={exportPilotReport}>Export pilot report</button><button className="btn primary" aria-expanded={showIssues} onClick={()=>setShowIssues(current => !current)}>{showIssues ? 'Hide live issues' : 'View live issues'}</button></div></div>
+      {showIssues && <section className="live-issues-panel" aria-label="Illustrative live service issues"><div><small>LIVE ISSUE QUEUE · ILLUSTRATIVE</small><h2>Seven open items, prioritized for onboard action.</h2></div><div className="live-issue-list"><article><span className="issue-priority urgent">URGENT</span><b>Accessibility support · Deck 5</b><small>Acknowledged 2 minutes ago · Guest Services</small></article><article><span className="issue-priority">IN PROGRESS</span><b>Excursion meeting-point clarification</b><small>Assigned 6 minutes ago · Shore Experiences</small></article><article><span className="issue-priority">NEW</span><b>Dining allergy confirmation</b><small>Received just now · Dining Operations</small></article></div></section>}
       <div className="kpi-grid">{kpis.map(k => <article key={k.label}><div className="kpi-top"><span>{k.label}</span><b>{k.trend}</b></div><strong>{k.value}</strong><small>{k.detail}</small></article>)}</div>
       <div className="dash-grid">
         <section className="chart-card"><div className="card-head"><div><small>POSITIVE INTERACTION</small><h3>Recognition & affirmation volume</h3></div><span>7-day sailing</span></div><div className="bar-chart">{bars.map((b,i)=><div className="bar-col" key={i}><div className="bar" style={{height:`${b}%`}}><span>{120+i*17}</span></div><small>D{i+1}</small></div>)}</div></section>
@@ -794,19 +851,20 @@ const LegalPage = ({ kind }: { kind: LegalKind }) => {
 
 
 export default function App() {
-  const { view, navigate } = useRoute()
+  const { view, navigate, isProductDemo } = useRoute()
   const [menuOpen, setMenuOpen] = useState(false)
   const launchContext = useMemo(() => getLaunchContext(), [])
   useEffect(() => { notifyHostReady(launchContext) }, [launchContext])
   useEffect(() => { setMenuOpen(false) }, [view])
   return (
     <div className="app">
+      {isProductDemo && <div className="executive-demo-banner"><span><b>INTERACTIVE PRODUCT WALKTHROUGH</b> · Illustrative sailing data</span><a href="/pilot/">Request a live demo <Icon name="arrow" size={14}/></a></div>}
       <header className="topbar">
-        <a href="/" className="brand"><span className="brand-mark"><Icon name="spark" size={19}/></span><span><b>Regreenity</b></span></a>
-        <nav aria-label="Primary navigation">{navItems.map(item => <a key={item.key} href={seo[item.key].path} className={view===item.key?'active':''}>{item.label}</a>)}</nav>
-        <button className="mobile-menu-button" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={()=>setMenuOpen(!menuOpen)}><Icon name={menuOpen?'close':'menu'} size={20}/></button>
+        {isProductDemo ? <AppLink to="overview" navigate={navigate} className="brand"><span className="brand-mark"><Icon name="spark" size={19}/></span><span><b>Regreenity</b></span></AppLink> : <a href="/" className="brand"><span className="brand-mark"><Icon name="spark" size={19}/></span><span><b>Regreenity</b></span></a>}
+        <nav aria-label="Primary navigation">{navItems.map(item => isProductDemo ? <AppLink key={item.key} to={item.key} navigate={navigate} className={view===item.key?'active':''}>{item.label}</AppLink> : <a key={item.key} href={seo[item.key].path} className={view===item.key?'active':''}>{item.label}</a>)}</nav>
+        <button className="mobile-menu-button" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={()=>setMenuOpen(current => !current)}><Icon name={menuOpen?'close':'menu'} size={20}/></button>
         <a href="/pilot/" className="nav-cta">Request a demo <Icon name="arrow" size={15}/></a>
-        {menuOpen && <div className="mobile-nav-panel"><a href="/crew-recognition/">Crew recognition</a><a href="/passenger-experience/">Passenger experience</a><a href="/service-recovery/">Service recovery & pulse</a><a href="/ancillary-revenue/">Commerce</a><a href="/cruise-dashboard/">Dashboard</a><a href="/integration/">Integration</a><a href="/pilot/">Request a demo</a></div>}
+        {menuOpen && <div className="mobile-nav-panel">{isProductDemo ? <><AppLink to="crew" navigate={navigate}>Crew recognition</AppLink><AppLink to="passenger" navigate={navigate}>Passenger experience</AppLink><AppLink to="recovery" navigate={navigate}>Service recovery & pulse</AppLink><AppLink to="commerce" navigate={navigate}>Commerce</AppLink><AppLink to="dashboard" navigate={navigate}>Dashboard</AppLink><AppLink to="integration" navigate={navigate}>Integration</AppLink></> : <><a href="/crew-recognition/">Crew recognition</a><a href="/passenger-experience/">Passenger experience</a><a href="/service-recovery/">Service recovery & pulse</a><a href="/ancillary-revenue/">Commerce</a><a href="/cruise-dashboard/">Dashboard</a><a href="/integration/">Integration</a></>}<a href="/pilot/">Request a demo</a></div>}
       </header>
       {view === 'overview' && <Overview navigate={navigate}/>} 
       {view === 'passenger' && <PassengerModule/>}
@@ -820,7 +878,7 @@ export default function App() {
       {view === 'privacy' && <LegalPage kind="privacy"/>}
       {view === 'terms' && <LegalPage kind="terms"/>}
       {view === 'cookies' && <LegalPage kind="cookies"/>}
-      <footer><div className="footer-brand"><span className="brand-mark"><Icon name="spark" size={17}/></span><span>Regreenity</span></div><p>One white-label add-on inside the cruise line’s existing app.</p><div className="footer-links"><a href="/crew-recognition/">Crew recognition</a><a href="/service-recovery/">Service recovery</a><a href="/integration/">Integration</a><a href="/pilot/">Request a demo</a></div><div className="footer-legal"><a href="/imprint/">Imprint</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/cookies/">Cookies</a></div><span className="demo-disclaimer">Demo data only · No cruise-line affiliation implied</span></footer>
+      <footer><div className="footer-brand"><span className="brand-mark"><Icon name="spark" size={17}/></span><span>Regreenity</span></div><p>One white-label add-on inside the cruise line’s existing app.</p><div className="footer-links">{isProductDemo ? <><AppLink to="crew" navigate={navigate}>Crew recognition</AppLink><AppLink to="recovery" navigate={navigate}>Service recovery</AppLink><AppLink to="integration" navigate={navigate}>Integration</AppLink></> : <><a href="/crew-recognition/">Crew recognition</a><a href="/service-recovery/">Service recovery</a><a href="/integration/">Integration</a></>}<a href="/pilot/">Request a demo</a></div><div className="footer-legal"><a href="/imprint/">Imprint</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/cookies/">Cookies</a></div><span className="demo-disclaimer">Interactive walkthrough · Illustrative data · No cruise-line affiliation implied</span></footer>
     </div>
   )
 }
