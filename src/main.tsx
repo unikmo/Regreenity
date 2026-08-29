@@ -2,8 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import MarketingSite from './MarketingSite'
+import ExecutiveWalkthrough from './ExecutiveWalkthrough'
 import './styles.css'
 import './marketing.css'
+import './executive-walkthrough.css'
 import { registerOfflineShell } from './offline'
 
 registerOfflineShell()
@@ -14,6 +16,6 @@ const useLegacyLegalShell = ['/imprint/', '/privacy/', '/terms/', '/cookies/'].s
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    {useLegacyProductShell || useLegacyLegalShell ? <App /> : <MarketingSite />}
+    {useLegacyProductShell ? <ExecutiveWalkthrough /> : useLegacyLegalShell ? <App /> : <MarketingSite />}
   </React.StrictMode>,
 )

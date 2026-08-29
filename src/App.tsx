@@ -5,7 +5,7 @@ import type { View } from './types'
 import { getLaunchContext, notifyHostReady, openHostBooking, publishPassengerInterest, requestNearbyDiscovery, stopNearbyDiscovery, notifyAffirmation, notifyPublicMeetProposal, notifyCrewRecognition, notifyServiceIssue, notifyExperiencePulse } from './bridge'
 import { getQueuedActionCount, queueOfflineAction } from './offline'
 
-const Icon = ({ name, size = 20 }: { name: string; size?: number }) => {
+export const Icon = ({ name, size = 20 }: { name: string; size?: number }) => {
   const common = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
   const paths: Record<string, JSX.Element> = {
     spark: <><path d="M12 3l1.7 4.3L18 9l-4.3 1.7L12 15l-1.7-4.3L6 9l4.3-1.7L12 3Z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/></>,

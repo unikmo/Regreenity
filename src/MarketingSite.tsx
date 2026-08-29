@@ -2,6 +2,7 @@ import { type ReactNode } from 'react'
 
 const Arrow = () => <span aria-hidden="true">→</span>
 const contactHref = '/pilot/#contact'
+const demoHref = '/product-app/'
 
 type StoryCrop = 'passenger' | 'crew' | 'recovery' | 'engagement' | 'revenue'
 type PageKey = 'home' | 'passenger' | 'crew' | 'recovery' | 'engagement' | 'revenue' | 'dashboard' | 'integration' | 'pilot'
@@ -140,7 +141,7 @@ const Header = ({ page }: { page: PageKey }) => (
       <a href="/engagement/">Engagement</a>
       <a href="/ancillary-revenue/">Ancillary Revenue</a>
     </nav>
-    <div className="header-actions"><a className="header-cta" href={contactHref}>Request a demo <Arrow /></a><a className="menu-link" href="/integration/">How it integrates <span className="menu-lines" aria-hidden="true"><i/><i/><i/></span></a></div>
+    <div className="header-actions"><a className="header-cta" href={page === 'pilot' ? contactHref : demoHref}>{page === 'pilot' ? 'Request a pilot' : 'View product demo'} <Arrow /></a><a className="menu-link" href="/integration/">How it integrates <span className="menu-lines" aria-hidden="true"><i/><i/><i/></span></a></div>
   </header>
 )
 
@@ -180,7 +181,7 @@ const Home = () => (
     </section>
     <section className="hero-after" aria-labelledby="hero-after-title">
       <p id="hero-after-title" className="hero-after-copy">Regreenity helps your team personalise interactions, recognise excellence and create more timely opportunities to improve the guest journey.</p>
-      <a className="pilot-link" href={contactHref}>REQUEST A DEMO <Arrow /></a>
+      <a className="pilot-link" href={demoHref}>VIEW PRODUCT DEMO <Arrow /></a>
     </section>
     <section className="manifesto" aria-label="Regreenity promise"><p className="eyebrow">FOR THE CRUISE JOURNEY</p><h2>Built to feel natural onboard.</h2><p className="manifesto-copy">A quieter interaction layer for guests, crew and the moments between the itinerary.</p></section>
     <Section id="passenger-experience" eyebrow="PASSENGER EXPERIENCE" title="Make the app feel more alive." crop="passenger" alt="Multicultural cruise passengers of different ages relaxing together"><p>Give guests more relevant reasons to interact throughout the sailing—without making the experience feel busy, intrusive or transactional.</p></Section>
@@ -190,14 +191,14 @@ const Home = () => (
     <Section id="ancillary-revenue" eyebrow="ANCILLARY REVENUE" title="Make relevance commercial." crop="revenue" alt="A multicultural family choosing an onboard experience together"><p>When the guest is already engaged, relevant experiences and offers can appear naturally—while checkout, pricing and payment stay with the cruise line.</p></Section>
     <EntityDefinition />
     <section className="quiet-proof"><p className="eyebrow">BUILT TO FIT THE CRUISE JOURNEY</p><div className="proof-grid"><article><strong>Inside the existing app</strong><span>No competing destination for the guest.</span></article><article><strong>Designed for shipboard reality</strong><span>Offline-first architecture with host integration where required.</span></article><article><strong>Pilot before scale</strong><span>Validate behavior, recovery and commercial signals first.</span></article></div></section>
-    <section id="pilot" className="pilot-section"><p className="eyebrow">ONE SHIP. THE COMPLETE EXPERIENCE.</p><h2>Pilot Regreenity inside the cruise app guests already use.</h2><p>Deploy the connected product experience, measure the full guest journey and decide how to scale across the fleet.</p><a className="pilot-button" href={contactHref}>Request a demo <Arrow /></a></section>
+    <section id="pilot" className="pilot-section"><p className="eyebrow">ONE SHIP. THE COMPLETE EXPERIENCE.</p><h2>See the product, then pilot it inside the cruise app guests already use.</h2><p>Walk through the connected passenger and management experience, then request a complete one-ship pilot.</p><div className="pilot-actions"><a className="pilot-button" href={demoHref}>View product demo <Arrow /></a><a className="pilot-button pilot-button--secondary" href={contactHref}>Request a pilot <Arrow /></a></div></section>
   </>
 )
 
 const PilotContactForm = () => {
   const sent = new URLSearchParams(window.location.search).get('sent') === '1'
   return <section id="contact" className="contact-form-section" aria-labelledby="pilot-contact-title">
-    <div className="contact-form-copy"><p className="eyebrow">REQUEST A DEMO</p><h1 id="pilot-contact-title">Let’s discuss Regreenity for your cruise line.</h1><p>You have seen the product. Tell us about your existing app, target ship and timing, and we’ll respond personally about a complete one-ship pilot.</p><div className="contact-confidence"><span>One short form</span><span>Direct response from PlanetHike</span><span>No mailing list</span></div><a href="mailto:hello@planethike.org">hello@planethike.org <Arrow /></a></div>
+    <div className="contact-form-copy"><p className="eyebrow">REQUEST A PILOT</p><h1 id="pilot-contact-title">Plan a complete one-ship Regreenity pilot.</h1><p>You have seen the product. Tell us about your existing app, target ship and timing, and we’ll respond personally about a complete one-ship pilot.</p><div className="contact-confidence"><span>One short form</span><span>Direct response from PlanetHike</span><span>No mailing list</span></div><a href="mailto:hello@planethike.org">hello@planethike.org <Arrow /></a></div>
     <form className="pilot-contact-form" action="https://formsubmit.co/hello@planethike.org" method="POST" acceptCharset="UTF-8">
       <input type="hidden" name="_subject" value="Regreenity pilot enquiry" />
       <input type="hidden" name="_template" value="table" />
@@ -209,7 +210,7 @@ const PilotContactForm = () => {
       <label>Cruise line or company<input required name="company" autoComplete="organization" placeholder="Organisation" /></label>
       <label>What should we know about your current app or pilot?<textarea required name="message" rows={5} placeholder="Current cruise app, target ship or sailing, integration priorities, timing…" /></label>
       <label className="form-consent"><input required type="checkbox" name="privacy_consent" value="I agree to the privacy policy" /><span>I agree that PlanetHike may use these details to respond to my enquiry, as described in the <a href="/privacy/">privacy policy</a>.</span></label>
-      <button className="pilot-button contact-submit" type="submit">Request the complete demo <Arrow /></button>
+      <button className="pilot-button contact-submit" type="submit">Request a pilot conversation <Arrow /></button>
     </form>
   </section>
 }
@@ -222,7 +223,7 @@ const DetailPage = ({ page }: { page: Exclude<PageKey, 'home'> }) => {
     <section className="detail-facts" id="details">{detail.facts.map((fact,index)=><article key={fact.title}><span>0{index+1}</span><h2>{fact.title}</h2><p>{fact.body}</p></article>)}</section>
     {detail.note && <p className="architecture-note">{detail.note}</p>}
     <EntityDefinition />
-    <section className="detail-next"><p className="eyebrow">ONE COMPLETE PILOT</p><h2>See how this connects to the full Regreenity experience.</h2><a className="pilot-button" href={contactHref}>Request a demo <Arrow /></a></section>
+    <section className="detail-next"><p className="eyebrow">THE CONNECTED PRODUCT</p><h2>See how this fits into the complete Regreenity experience.</h2><a className="pilot-button" href={demoHref}>View product demo <Arrow /></a></section>
   </>
 }
 

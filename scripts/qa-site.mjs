@@ -74,6 +74,10 @@ if (/Cruise Connection/i.test(clientBundles)) fail('client bundle contains legac
 if (/does not transmit data yet|production CRM\/API connection is intentionally pending/i.test(clientBundles)) fail('client bundle contains a disconnected demo-form path')
 if (!clientBundles.includes('/pilot/#contact')) fail('client bundle does not contain the single pilot contact destination')
 if (/Open the interactive product walkthrough|EXPLORE THE WORKFLOWS/.test(clientBundles)) fail('pilot journey contains a circular link back to product workflows')
+if (!clientBundles.includes('CruiseConnect appears inside the app guests already use')) fail('executive walkthrough is missing the host-app CruiseConnect entry')
+if (!clientBundles.includes('Management sees the connected operational picture')) fail('executive walkthrough is missing the management experience')
+if (!clientBundles.includes('Connectors fit CruiseConnect into the existing stack')) fail('executive walkthrough is missing the connector model')
+if (!clientBundles.includes('Request a pilot conversation')) fail('executive walkthrough is missing the final pilot handoff')
 
 for (const file of files.filter(file => /\.(?:jpg|jpeg|png)$/i.test(file))) {
   const data = readFileSync(file)

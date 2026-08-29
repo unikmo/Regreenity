@@ -86,6 +86,9 @@ img { display: block; width: 100%; }
 .pilot-section > p:not(.eyebrow) { max-width: 620px; margin: 22px auto 27px; font-size: clamp(15px,1.05vw,18px); line-height: 1.62; color: var(--muted); }
 .pilot-button { display: inline-flex; align-items: center; gap: 24px; padding: 14px 22px; border: 1px solid var(--ink); border-radius: 999px; font-size: 11px; letter-spacing: .1em; transition: background .2s ease,color .2s ease; margin-top: 28px; }
 .pilot-button:hover { background: var(--ink); color: var(--paper); }
+.pilot-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.pilot-actions .pilot-button { margin-top: 28px; }
+.pilot-button--secondary { background: transparent; color: var(--ink); border-color: rgba(31,27,24,.28); }
 .detail-hero { padding: clamp(44px,6vw,82px) clamp(22px,5vw,72px) 0; text-align: center; }
 .detail-hero h1 { max-width: 880px; margin: 0 auto 18px; font-size: clamp(40px,4.2vw,64px); line-height: 1.04; letter-spacing: -.048em; font-weight: 400; }
 .detail-intro { max-width: 720px; margin: 0 auto 34px; color: var(--muted); font-size: clamp(16px,1.15vw,19px); line-height: 1.68; }
