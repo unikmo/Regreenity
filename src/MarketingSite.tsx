@@ -1,6 +1,7 @@
-import { useState, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 
 const Arrow = () => <span aria-hidden="true">→</span>
+const contactHref = '/pilot/#contact'
 
 type StoryCrop = 'passenger' | 'crew' | 'recovery' | 'engagement' | 'revenue'
 type PageKey = 'home' | 'passenger' | 'crew' | 'recovery' | 'engagement' | 'revenue' | 'dashboard' | 'integration' | 'pilot'
@@ -139,7 +140,7 @@ const Header = ({ page }: { page: PageKey }) => (
       <a href="/engagement/">Engagement</a>
       <a href="/ancillary-revenue/">Ancillary Revenue</a>
     </nav>
-    <div className="header-actions"><a className="header-cta" href={page === 'pilot' ? '#contact' : '/pilot/'}>Request a demo <Arrow /></a><a className="menu-link" href="/integration/">How it integrates <span className="menu-lines" aria-hidden="true"><i/><i/><i/></span></a></div>
+    <div className="header-actions"><a className="header-cta" href={contactHref}>Request a demo <Arrow /></a><a className="menu-link" href="/integration/">How it integrates <span className="menu-lines" aria-hidden="true"><i/><i/><i/></span></a></div>
   </header>
 )
 
@@ -147,7 +148,7 @@ const Footer = () => (
   <footer className="site-footer">
     <div><strong>REGREENITY</strong><span>A PlanetHike project</span></div>
     <p>Passenger experience, crew recognition, service recovery, engagement and ancillary-revenue discovery for cruise lines.</p>
-    <nav className="footer-links" aria-label="Footer navigation"><a href="mailto:hello@planethike.org">Contact</a><a href="/imprint/">Imprint</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/cookies/">Cookies</a></nav>
+    <nav className="footer-links" aria-label="Footer navigation"><a href={contactHref}>Contact</a><a href="/imprint/">Imprint</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/cookies/">Cookies</a></nav>
   </footer>
 )
 
@@ -179,7 +180,7 @@ const Home = () => (
     </section>
     <section className="hero-after" aria-labelledby="hero-after-title">
       <p id="hero-after-title" className="hero-after-copy">Regreenity helps your team personalise interactions, recognise excellence and create more timely opportunities to improve the guest journey.</p>
-      <a className="pilot-link" href="/pilot/">REQUEST A DEMO <Arrow /></a>
+      <a className="pilot-link" href={contactHref}>REQUEST A DEMO <Arrow /></a>
     </section>
     <section className="manifesto" aria-label="Regreenity promise"><p className="eyebrow">FOR THE CRUISE JOURNEY</p><h2>Built to feel natural onboard.</h2><p className="manifesto-copy">A quieter interaction layer for guests, crew and the moments between the itinerary.</p></section>
     <Section id="passenger-experience" eyebrow="PASSENGER EXPERIENCE" title="Make the app feel more alive." crop="passenger" alt="Multicultural cruise passengers of different ages relaxing together"><p>Give guests more relevant reasons to interact throughout the sailing—without making the experience feel busy, intrusive or transactional.</p></Section>
@@ -189,42 +190,18 @@ const Home = () => (
     <Section id="ancillary-revenue" eyebrow="ANCILLARY REVENUE" title="Make relevance commercial." crop="revenue" alt="A multicultural family choosing an onboard experience together"><p>When the guest is already engaged, relevant experiences and offers can appear naturally—while checkout, pricing and payment stay with the cruise line.</p></Section>
     <EntityDefinition />
     <section className="quiet-proof"><p className="eyebrow">BUILT TO FIT THE CRUISE JOURNEY</p><div className="proof-grid"><article><strong>Inside the existing app</strong><span>No competing destination for the guest.</span></article><article><strong>Designed for shipboard reality</strong><span>Offline-first architecture with host integration where required.</span></article><article><strong>Pilot before scale</strong><span>Validate behavior, recovery and commercial signals first.</span></article></div></section>
-    <section id="pilot" className="pilot-section"><p className="eyebrow">ONE SHIP. THE COMPLETE EXPERIENCE.</p><h2>Pilot Regreenity inside the cruise app guests already use.</h2><p>Deploy the connected product experience, measure the full guest journey and decide how to scale across the fleet.</p><a className="pilot-button" href="/pilot/">Request a demo <Arrow /></a></section>
+    <section id="pilot" className="pilot-section"><p className="eyebrow">ONE SHIP. THE COMPLETE EXPERIENCE.</p><h2>Pilot Regreenity inside the cruise app guests already use.</h2><p>Deploy the connected product experience, measure the full guest journey and decide how to scale across the fleet.</p><a className="pilot-button" href={contactHref}>Request a demo <Arrow /></a></section>
   </>
 )
-
-const productPreviewSlides = [
-  { crop: 'passenger' as StoryCrop, eyebrow: 'PASSENGER INTERACTION', title: 'Create safe, relevant reasons to connect.', body: 'Opt-in discovery, structured positive first contact and public-place progression—without unrestricted stranger messaging.' },
-  { crop: 'crew' as StoryCrop, eyebrow: 'CREW RECOGNITION', title: 'Capture great service while it is fresh.', body: 'Turn a guest’s appreciation into contextual recognition for the crew member and useful evidence for the operator.' },
-  { crop: 'recovery' as StoryCrop, eyebrow: 'PRIVATE SERVICE RECOVERY', title: 'Resolve friction before the sailing ends.', body: 'Capture, route, acknowledge and close the loop privately, with a follow-up signal that shows whether recovery worked.' },
-  { crop: 'engagement' as StoryCrop, eyebrow: 'ENGAGEMENT', title: 'Surface the right onboard moments.', body: 'Use voluntary interests and sailing context to make activities and participation feel more relevant.' },
-  { crop: 'revenue' as StoryCrop, eyebrow: 'ANCILLARY DISCOVERY', title: 'Make relevance commercial.', body: 'Create intent around onboard experiences, then hand guests back to the cruise line’s inventory, checkout and payment flow.' },
-]
-
-const ProductPreviewCarousel = () => {
-  const [active, setActive] = useState(0)
-  const slide = productPreviewSlides[active]
-  const move = (direction: number) => setActive(current => (current + direction + productPreviewSlides.length) % productPreviewSlides.length)
-  return <section className="product-preview" aria-labelledby="product-preview-title">
-    <div className="product-preview-head"><div><p className="eyebrow">THE COMPLETE PRODUCT EXPERIENCE</p><h2 id="product-preview-title">See what Regreenity adds to the cruise journey.</h2></div><p>One integrated add-on, presented here as five connected moments. Use the controls to preview the full service before contacting us.</p></div>
-    <div className="product-preview-stage" aria-live="polite">
-      <figure className={`product-preview-visual story-visual--${slide.crop}`} role="img" aria-label={slide.eyebrow} />
-      <article><span>{String(active + 1).padStart(2, '0')} / {String(productPreviewSlides.length).padStart(2, '0')}</span><p className="eyebrow">{slide.eyebrow}</p><h3>{slide.title}</h3><p>{slide.body}</p></article>
-    </div>
-    <div className="carousel-controls"><button type="button" onClick={() => move(-1)} aria-label="Previous capability">←</button><div role="tablist" aria-label="Product capabilities">{productPreviewSlides.map((item,index)=><button key={item.eyebrow} type="button" role="tab" aria-selected={active===index} aria-label={`Show ${item.eyebrow.toLowerCase()}`} className={active===index?'active':''} onClick={()=>setActive(index)}><span /></button>)}</div><button type="button" onClick={() => move(1)} aria-label="Next capability">→</button></div>
-    <p className="product-readiness-note">This website demonstrates the product workflows. Production identity, ship systems, native proximity, secure offline storage and operational integrations are implemented with the cruise-line partner during pilot deployment.</p>
-    <a className="product-walkthrough-link" href="/product-app/">Open the interactive product walkthrough <Arrow /></a>
-  </section>
-}
 
 const PilotContactForm = () => {
   const sent = new URLSearchParams(window.location.search).get('sent') === '1'
   return <section id="contact" className="contact-form-section" aria-labelledby="pilot-contact-title">
-    <div className="contact-form-copy"><p className="eyebrow">REQUEST A DEMO</p><h2 id="pilot-contact-title">Tell us about your ship and existing app.</h2><p>We’ll show the complete Regreenity experience and discuss what a one-ship deployment requires. No mailing list and no automated sales sequence.</p><a href="mailto:hello@planethike.org">hello@planethike.org <Arrow /></a></div>
+    <div className="contact-form-copy"><p className="eyebrow">REQUEST A DEMO</p><h1 id="pilot-contact-title">Let’s discuss Regreenity for your cruise line.</h1><p>You have seen the product. Tell us about your existing app, target ship and timing, and we’ll respond personally about a complete one-ship pilot.</p><div className="contact-confidence"><span>One short form</span><span>Direct response from PlanetHike</span><span>No mailing list</span></div><a href="mailto:hello@planethike.org">hello@planethike.org <Arrow /></a></div>
     <form className="pilot-contact-form" action="https://formsubmit.co/hello@planethike.org" method="POST" acceptCharset="UTF-8">
       <input type="hidden" name="_subject" value="Regreenity pilot enquiry" />
       <input type="hidden" name="_template" value="table" />
-      <input type="hidden" name="_next" value="https://regreenity.com/pilot/?sent=1" />
+      <input type="hidden" name="_next" value="https://regreenity.com/pilot/?sent=1#contact" />
       <input className="form-honeypot" type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       {sent && <p className="form-success" role="status">Thank you. Your Regreenity enquiry has been sent.</p>}
       <label>Work email<input required name="email" type="email" autoComplete="email" placeholder="name@cruiseline.com" /></label>
@@ -239,13 +216,13 @@ const PilotContactForm = () => {
 
 const DetailPage = ({ page }: { page: Exclude<PageKey, 'home'> }) => {
   const detail = details[page]
+  if (page === 'pilot') return <PilotContactForm />
   return <>
     <section className="detail-hero"><p className="eyebrow">{detail.eyebrow}</p><h1>{detail.title}</h1><p className="detail-intro">{detail.intro}</p><figure className={`detail-visual story-visual--${detail.crop}`} role="img" aria-label={detail.alt} /></section>
     <section className="detail-facts" id="details">{detail.facts.map((fact,index)=><article key={fact.title}><span>0{index+1}</span><h2>{fact.title}</h2><p>{fact.body}</p></article>)}</section>
     {detail.note && <p className="architecture-note">{detail.note}</p>}
-    {page === 'pilot' && <><ProductPreviewCarousel /><PilotContactForm /></>}
     <EntityDefinition />
-    {page !== 'pilot' ? <section className="detail-next"><p className="eyebrow">ONE COMPLETE PILOT</p><h2>See how this connects to the full Regreenity experience.</h2><a className="pilot-button" href="/pilot/">Request a demo <Arrow /></a></section> : <section className="detail-next"><p className="eyebrow">EXPLORE THE WORKFLOWS</p><h2>Review each part of the connected experience.</h2><div className="entity-links"><a href="/crew-recognition/">Crew recognition</a><a href="/service-recovery/">Service recovery</a><a href="/passenger-experience/">Passenger experience</a><a href="/ancillary-revenue/">Ancillary revenue</a></div></section>}
+    <section className="detail-next"><p className="eyebrow">ONE COMPLETE PILOT</p><h2>See how this connects to the full Regreenity experience.</h2><a className="pilot-button" href={contactHref}>Request a demo <Arrow /></a></section>
   </>
 }
 

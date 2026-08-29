@@ -31,6 +31,9 @@ const staticSeoFallback = () => ({
     const details = fallbackDetails[path] || fallbackDetails['/']
     const contact = path === '/pilot/' ? '<section id="contact"><h2>Request the complete Regreenity demo</h2><p>Regreenity is an add-on inside the cruise line’s existing app—not a separate guest app.</p><form action="https://formsubmit.co/hello@planethike.org" method="POST"><input type="hidden" name="_subject" value="Regreenity pilot enquiry"/><input type="hidden" name="_next" value="https://regreenity.com/pilot/?sent=1"/><p><label>Work email<br/><input required name="email" type="email"/></label></p><p><label>Name<br/><input required name="name"/></label></p><p><label>Cruise line or company<br/><input required name="company"/></label></p><p><label>What should we know about your current app or pilot?<br/><textarea required name="message" rows="5"></textarea></label></p><p><label><input required type="checkbox" name="privacy_consent" value="I agree to the privacy policy"/> I agree to the <a href="/privacy/">privacy policy</a>.</label></p><button type="submit">Request the complete demo</button></form><p>Or email <a href="mailto:hello@planethike.org">hello@planethike.org</a>.</p></section>' : ''
     const fallback = `<main class="seo-fallback" style="max-width:980px;margin:0 auto;padding:48px 24px 72px;font-family:Inter,Arial,sans-serif;color:#171715;background:#faf8f4"><nav aria-label="Primary"><a href="/">Regreenity</a> · <a href="/passenger-experience/">Passenger experience</a> · <a href="/crew-recognition/">Crew recognition</a> · <a href="/service-recovery/">Service recovery</a> · <a href="/engagement/">Engagement</a> · <a href="/ancillary-revenue/">Ancillary revenue</a> · <a href="/pilot/">Pilot</a></nav><article><p style="margin-top:64px;letter-spacing:.18em;font-size:12px;color:#8a613f">REGREENITY · A PLANETHIKE PROJECT</p><h1 style="max-width:850px;font-size:clamp(38px,6vw,72px);line-height:1.02;font-weight:400">${escapeHtml(title)}</h1><p style="max-width:760px;font-size:19px;line-height:1.65;color:#5f5a54">${escapeHtml(description)}</p><h2>What this page covers</h2><ul>${details.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>${contact}</article><footer style="margin-top:64px"><a href="mailto:hello@planethike.org">hello@planethike.org</a> · <a href="/privacy/">Privacy</a> · <a href="/imprint/">Imprint</a></footer></main>`
+    const routedFallback = fallback
+      .replace('href="/pilot/">Pilot</a>', 'href="/pilot/#contact">Contact</a>')
+      .replace('https://regreenity.com/pilot/?sent=1"', 'https://regreenity.com/pilot/?sent=1#contact"')
     const socialTags = [
       html.includes('property="og:type"') ? '' : '<meta property="og:type" content="website"/>',
       html.includes('property="og:description"') ? '' : `<meta property="og:description" content="${escapeHtml(description)}"/>`,
@@ -39,7 +42,7 @@ const staticSeoFallback = () => ({
       html.includes('name="twitter:description"') ? '' : `<meta name="twitter:description" content="${escapeHtml(description)}"/>`,
       html.includes('name="twitter:image"') ? '' : '<meta name="twitter:image" content="https://regreenity.com/og-card.png"/>',
     ].join('')
-    return html.replace('</head>', `${socialTags}</head>`).replace('<div id="root"></div>', `<div id="root">${fallback}</div>`)
+    return html.replace('</head>', `${socialTags}</head>`).replace('<div id="root"></div>', `<div id="root">${routedFallback}</div>`)
   },
 })
 

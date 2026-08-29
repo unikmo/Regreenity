@@ -112,6 +112,7 @@ const seo: Record<View, { title: string; description: string; path: string }> = 
 }
 
 const normalizePath = (path: string) => path === '/' ? '/' : `${path.replace(/\/+$/, '')}/`
+const pilotContactPath = '/pilot/#contact'
 const productViews = new Set<View>(['overview', 'passenger', 'crew', 'recovery', 'commerce', 'dashboard', 'integration'])
 
 const resolveView = (isProductDemo: boolean): View => {
@@ -260,7 +261,7 @@ function Overview({ navigate }: { navigate: (v: View) => void }) {
             <h1>Make every positive onboard interaction <span>more valuable.</span></h1>
             <p className="lead">Regreenity adds real-time crew recognition, private service recovery, safe passenger interaction and measurable social commerce to the cruise app you already have.</p>
             <div className="hero-actions">
-              <AppLink to="pilot" navigate={navigate} className="btn primary xl">Request a pilot <Icon name="arrow" size={18}/></AppLink>
+              <a href={pilotContactPath} className="btn primary xl">Request a demo <Icon name="arrow" size={18}/></a>
               <AppLink to="crew" navigate={navigate} className="btn glass xl">See the platform</AppLink>
             </div>
             <div className="trust-row premium-trust">
@@ -406,7 +407,7 @@ function Overview({ navigate }: { navigate: (v: View) => void }) {
       </section>
 
       <section className="pilot-cta section-shell">
-        <div className="pilot-cta-inner"><div><small>PROVE IT ON ONE SHIP</small><h2>Pilot the complete experience. Measure what changes.</h2><p>One ship. Selected sailings. Connected workflows. Predetermined KPIs. Commercial review date.</p></div><a href="/pilot/" className="btn primary inverted xl">Request a demo <Icon name="arrow" size={18}/></a></div>
+        <div className="pilot-cta-inner"><div><small>PROVE IT ON ONE SHIP</small><h2>Pilot the complete experience. Measure what changes.</h2><p>One ship. Selected sailings. Connected workflows. Predetermined KPIs. Commercial review date.</p></div><a href={pilotContactPath} className="btn primary inverted xl">Request a demo <Icon name="arrow" size={18}/></a></div>
       </section>
     </main>
   )
@@ -858,13 +859,13 @@ export default function App() {
   useEffect(() => { setMenuOpen(false) }, [view])
   return (
     <div className="app">
-      {isProductDemo && <div className="executive-demo-banner"><span><b>INTERACTIVE PRODUCT WALKTHROUGH</b> · Illustrative sailing data</span><a href="/pilot/">Request a live demo <Icon name="arrow" size={14}/></a></div>}
+      {isProductDemo && <div className="executive-demo-banner"><span><b>INTERACTIVE PRODUCT WALKTHROUGH</b> · Illustrative sailing data</span><a href={pilotContactPath}>Contact us <Icon name="arrow" size={14}/></a></div>}
       <header className="topbar">
         {isProductDemo ? <AppLink to="overview" navigate={navigate} className="brand"><span className="brand-mark"><Icon name="spark" size={19}/></span><span><b>Regreenity</b></span></AppLink> : <a href="/" className="brand"><span className="brand-mark"><Icon name="spark" size={19}/></span><span><b>Regreenity</b></span></a>}
         <nav aria-label="Primary navigation">{navItems.map(item => isProductDemo ? <AppLink key={item.key} to={item.key} navigate={navigate} className={view===item.key?'active':''}>{item.label}</AppLink> : <a key={item.key} href={seo[item.key].path} className={view===item.key?'active':''}>{item.label}</a>)}</nav>
         <button className="mobile-menu-button" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={()=>setMenuOpen(current => !current)}><Icon name={menuOpen?'close':'menu'} size={20}/></button>
-        <a href="/pilot/" className="nav-cta">Request a demo <Icon name="arrow" size={15}/></a>
-        {menuOpen && <div className="mobile-nav-panel">{isProductDemo ? <><AppLink to="crew" navigate={navigate}>Crew recognition</AppLink><AppLink to="passenger" navigate={navigate}>Passenger experience</AppLink><AppLink to="recovery" navigate={navigate}>Service recovery & pulse</AppLink><AppLink to="commerce" navigate={navigate}>Commerce</AppLink><AppLink to="dashboard" navigate={navigate}>Dashboard</AppLink><AppLink to="integration" navigate={navigate}>Integration</AppLink></> : <><a href="/crew-recognition/">Crew recognition</a><a href="/passenger-experience/">Passenger experience</a><a href="/service-recovery/">Service recovery & pulse</a><a href="/ancillary-revenue/">Commerce</a><a href="/cruise-dashboard/">Dashboard</a><a href="/integration/">Integration</a></>}<a href="/pilot/">Request a demo</a></div>}
+        <a href={pilotContactPath} className="nav-cta">Request a demo <Icon name="arrow" size={15}/></a>
+        {menuOpen && <div className="mobile-nav-panel">{isProductDemo ? <><AppLink to="crew" navigate={navigate}>Crew recognition</AppLink><AppLink to="passenger" navigate={navigate}>Passenger experience</AppLink><AppLink to="recovery" navigate={navigate}>Service recovery & pulse</AppLink><AppLink to="commerce" navigate={navigate}>Commerce</AppLink><AppLink to="dashboard" navigate={navigate}>Dashboard</AppLink><AppLink to="integration" navigate={navigate}>Integration</AppLink></> : <><a href="/crew-recognition/">Crew recognition</a><a href="/passenger-experience/">Passenger experience</a><a href="/service-recovery/">Service recovery & pulse</a><a href="/ancillary-revenue/">Commerce</a><a href="/cruise-dashboard/">Dashboard</a><a href="/integration/">Integration</a></>}<a href={pilotContactPath}>Request a demo</a></div>}
       </header>
       {view === 'overview' && <Overview navigate={navigate}/>} 
       {view === 'passenger' && <PassengerModule/>}
@@ -878,7 +879,7 @@ export default function App() {
       {view === 'privacy' && <LegalPage kind="privacy"/>}
       {view === 'terms' && <LegalPage kind="terms"/>}
       {view === 'cookies' && <LegalPage kind="cookies"/>}
-      <footer><div className="footer-brand"><span className="brand-mark"><Icon name="spark" size={17}/></span><span>Regreenity</span></div><p>One white-label add-on inside the cruise line’s existing app.</p><div className="footer-links">{isProductDemo ? <><AppLink to="crew" navigate={navigate}>Crew recognition</AppLink><AppLink to="recovery" navigate={navigate}>Service recovery</AppLink><AppLink to="integration" navigate={navigate}>Integration</AppLink></> : <><a href="/crew-recognition/">Crew recognition</a><a href="/service-recovery/">Service recovery</a><a href="/integration/">Integration</a></>}<a href="/pilot/">Request a demo</a></div><div className="footer-legal"><a href="/imprint/">Imprint</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/cookies/">Cookies</a></div><span className="demo-disclaimer">Interactive walkthrough · Illustrative data · No cruise-line affiliation implied</span></footer>
+      <footer><div className="footer-brand"><span className="brand-mark"><Icon name="spark" size={17}/></span><span>Regreenity</span></div><p>One white-label add-on inside the cruise line’s existing app.</p><div className="footer-links">{isProductDemo ? <><AppLink to="crew" navigate={navigate}>Crew recognition</AppLink><AppLink to="recovery" navigate={navigate}>Service recovery</AppLink><AppLink to="integration" navigate={navigate}>Integration</AppLink></> : <><a href="/crew-recognition/">Crew recognition</a><a href="/service-recovery/">Service recovery</a><a href="/integration/">Integration</a></>}<a href={pilotContactPath}>Contact us</a></div><div className="footer-legal"><a href="/imprint/">Imprint</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/cookies/">Cookies</a></div><span className="demo-disclaimer">Interactive walkthrough · Illustrative data · No cruise-line affiliation implied</span></footer>
     </div>
   )
 }

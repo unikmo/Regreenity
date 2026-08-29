@@ -72,6 +72,8 @@ if (existsSync(pilot)) {
 const clientBundles = files.filter(file => /assets[\\/].*\.js$/.test(file)).map(file => readFileSync(file, 'utf8')).join('\n')
 if (/Cruise Connection/i.test(clientBundles)) fail('client bundle contains legacy Cruise Connection branding')
 if (/does not transmit data yet|production CRM\/API connection is intentionally pending/i.test(clientBundles)) fail('client bundle contains a disconnected demo-form path')
+if (!clientBundles.includes('/pilot/#contact')) fail('client bundle does not contain the single pilot contact destination')
+if (/Open the interactive product walkthrough|EXPLORE THE WORKFLOWS/.test(clientBundles)) fail('pilot journey contains a circular link back to product workflows')
 
 for (const file of files.filter(file => /\.(?:jpg|jpeg|png)$/i.test(file))) {
   const data = readFileSync(file)
