@@ -56,14 +56,15 @@ const details: Record<Exclude<PageKey, 'home'>, Detail> = {
   },
   engagement: {
     eyebrow: 'ENGAGEMENT',
-    title: 'Make participation feel effortless.',
-    intro: 'Regreenity is designed to help guests discover activities, people and moments that feel relevant to the sailing while keeping the interface calm and intentional.',
+    title: 'Make participation—and feedback—feel effortless.',
+    intro: 'Regreenity helps guests discover relevant onboard moments and gives leaders immediate structured feedback after live events through three to five quick questions without free text.',
     crop: 'engagement',
     alt: 'Multigenerational passengers enjoying an inclusive deck activity',
     facts: [
       { title: 'Interest-led', body: 'Guests can voluntarily share cruise-relevant interests that help shape discovery and participation.' },
       { title: 'Context-aware', body: 'Activity and sailing context can make recommendations feel more relevant than a generic feed.' },
       { title: 'Positive interaction', body: 'The interaction model is designed around structured, positive steps rather than unrestricted stranger messaging.' },
+      { title: 'Immediate event feedback', body: 'Guests rate live events with a small set of prepared questions. Leaders see results immediately, while the cruise line controls whether aggregated ratings are published.' },
     ],
   },
   revenue: {
@@ -81,13 +82,14 @@ const details: Record<Exclude<PageKey, 'home'>, Detail> = {
   dashboard: {
     eyebrow: 'PILOT MEASUREMENT',
     title: 'Measure the signals that matter to the pilot.',
-    intro: 'Regreenity is designed to combine passenger participation, crew recognition, service-recovery and commercial signals into an operator-facing pilot view.',
+    intro: 'Regreenity combines passenger participation, crew recognition, live-event feedback, service recovery and privacy-safe attributed revenue into an operator-facing pilot view.',
     crop: 'crew',
     alt: 'Cruise hospitality team members in a service environment',
     facts: [
       { title: 'Outcome-led', body: 'A pilot should measure agreed behavior and operational outcomes, not just page opens or feature taps.' },
       { title: 'No invented proof', body: 'Public performance claims should follow real pilot evidence rather than demo data.' },
       { title: 'Management context', body: 'Signals can be grouped by sailing, team, experience area and defined pilot KPI.' },
+      { title: 'Revenue without passenger identity', body: 'Opaque handoff references can connect CruiseConnect activity to confirmed booking value without giving Regreenity passenger names, payment data or booking references.' },
     ],
   },
   integration: {
@@ -187,10 +189,10 @@ const Home = () => (
     <Section id="passenger-experience" eyebrow="PASSENGER EXPERIENCE" title="Make the app feel more alive." crop="passenger" alt="Multicultural cruise passengers of different ages relaxing together"><p>Give guests more relevant reasons to interact throughout the sailing—without making the experience feel busy, intrusive or transactional.</p></Section>
     <Section id="crew-recognition" eyebrow="CREW RECOGNITION" title="Let great service be seen." crop="crew" alt="Diverse cruise crew members sharing a candid end-of-shift moment" reverse><p>A simple moment of recognition becomes visible, measurable and memorable—for the guest, the crew member and the operator.</p></Section>
     <Section id="service-recovery" eyebrow="SERVICE RECOVERY" title="Resolve the moment while it still matters." crop="recovery" alt="Cruise crew member returning a child’s toy beside their parent"><p>Give guests a discreet way to signal friction during the journey, creating the opportunity to respond before the experience is over.</p></Section>
-    <Section id="engagement" eyebrow="ENGAGEMENT" title="Make participation feel effortless." crop="engagement" alt="Multigenerational passengers enjoying an inclusive deck activity" reverse><p>Help guests discover moments, activities and interactions that feel personally relevant—while keeping the experience calm and intentional.</p></Section>
+    <Section id="engagement" eyebrow="LIVE EXPERIENCE FEEDBACK" title="Improve events while the sailing is still underway." crop="engagement" alt="Multigenerational passengers enjoying an inclusive deck activity" reverse><p>After a live event, ask three to five structured questions with prepared response blocks. Leaders see feedback immediately; the cruise line decides which aggregated ratings to publish.</p></Section>
     <Section id="ancillary-revenue" eyebrow="ANCILLARY REVENUE" title="Make relevance commercial." crop="revenue" alt="A multicultural family choosing an onboard experience together"><p>When the guest is already engaged, relevant experiences and offers can appear naturally—while checkout, pricing and payment stay with the cruise line.</p></Section>
     <EntityDefinition />
-    <section className="quiet-proof"><p className="eyebrow">BUILT TO FIT THE CRUISE JOURNEY</p><div className="proof-grid"><article><strong>Inside the existing app</strong><span>No competing destination for the guest.</span></article><article><strong>Designed for shipboard reality</strong><span>Offline-first architecture with host integration where required.</span></article><article><strong>Pilot before scale</strong><span>Validate behavior, recovery and commercial signals first.</span></article></div></section>
+    <section className="quiet-proof"><p className="eyebrow">BUILT TO FIT THE CRUISE JOURNEY</p><div className="proof-grid"><article><strong>Inside the existing app</strong><span>No competing destination for the guest.</span></article><article><strong>Immediate operational feedback</strong><span>Structured event ratings reach leaders while they can still act.</span></article><article><strong>Revenue evidence without identity</strong><span>Confirmed booking value is attributed through opaque references and aggregated outcomes.</span></article></div></section>
     <section id="pilot" className="pilot-section"><p className="eyebrow">ONE SHIP. THE COMPLETE EXPERIENCE.</p><h2>See the product, then pilot it inside the cruise app guests already use.</h2><p>Walk through the connected passenger and management experience, then request a complete one-ship pilot.</p><div className="pilot-actions"><a className="pilot-button" href={demoHref}>View product demo <Arrow /></a><a className="pilot-button pilot-button--secondary" href={contactHref}>Request a pilot <Arrow /></a></div></section>
   </>
 )
@@ -198,8 +200,8 @@ const Home = () => (
 const PilotContactForm = () => {
   const sent = new URLSearchParams(window.location.search).get('sent') === '1'
   return <section id="contact" className="contact-form-section" aria-labelledby="pilot-contact-title">
-    <div className="contact-form-copy"><p className="eyebrow">REQUEST A PILOT</p><h1 id="pilot-contact-title">Plan a complete one-ship Regreenity pilot.</h1><p>You have seen the product. Tell us about your existing app, target ship and timing, and we’ll respond personally about a complete one-ship pilot.</p><div className="contact-confidence"><span>One short form</span><span>Direct response from PlanetHike</span><span>No mailing list</span></div><a href="mailto:hello@planethike.org">hello@planethike.org <Arrow /></a></div>
-    <form className="pilot-contact-form" action="https://formsubmit.co/hello@planethike.org" method="POST" acceptCharset="UTF-8">
+    <div className="contact-form-copy"><p className="eyebrow">REQUEST A PILOT</p><h1 id="pilot-contact-title">Plan a complete one-ship Regreenity pilot.</h1><p>You have seen the product. Tell us about your existing app, target ship and timing, and we’ll respond personally about a complete one-ship pilot.</p><div className="contact-confidence"><span>One short form</span><span>Direct response from PlanetHike</span><span>No mailing list</span></div><a href="mailto:info@regreenity.com">info@regreenity.com <Arrow /></a></div>
+    <form className="pilot-contact-form" action="https://formsubmit.co/info@regreenity.com" method="POST" acceptCharset="UTF-8">
       <input type="hidden" name="_subject" value="Regreenity pilot enquiry" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_next" value="https://regreenity.com/pilot/?sent=1#contact" />

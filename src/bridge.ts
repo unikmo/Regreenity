@@ -51,7 +51,9 @@ export function notifyHost(type: string, payload: Record<string, unknown> = {}) 
 }
 
 export function openHostBooking(inventoryItemId: string) {
-  return notifyHost('OPEN_BOOKING', { inventoryItemId })
+  const attributionRef = crypto.randomUUID()
+  notifyHost('OPEN_BOOKING', { inventoryItemId, attributionRef })
+  return attributionRef
 }
 
 export function notifyHostReady(context: CruiseLaunchContext) {
@@ -92,4 +94,23 @@ export function notifyServiceIssue(category: string) {
 
 export function notifyExperiencePulse(department: string, score: number) {
   return notifyHost('EXPERIENCE_PULSE', { department, score })
+}
+
+export function notifyEventFeedback(eventId: string, score: number, responseIds: string[]) {
+  const normalizedScore = Math.min(5, Math.max(1, Math.round(score)))
+  return notifyHost('EVENT_FEEDBACK', {
+    eventId,
+    score: normalizedScore,
+    responseIds: responseIds.slice(0, 5),
+    format: 'structured-no-free-text',
+  })
+}
+
+export type AttributedBookingOutcome = {
+  attributionRef: string
+  sailingId: string
+  productCategory: string
+  currency: string
+  confirmedValue: number
+  status: 'confirmed' | 'cancelled' | 'refunded'
 }

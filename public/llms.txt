@@ -26,7 +26,7 @@ Regreenity is a cruise-line guest-experience interaction layer designed to sit i
 Regreenity is the public product/project brand. It is a PlanetHike project.
 
 ## Contact
-Pilot and enterprise enquiries: hello@planethike.org
+Pilot and enterprise enquiries: info@regreenity.com
 
 ## Extended AI-readable reference
 https://regreenity.com/llms-full.txt

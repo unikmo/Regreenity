@@ -63,8 +63,8 @@ if (existsSync(productApp)) {
 const pilot = join(root, 'pilot', 'index.html')
 if (existsSync(pilot)) {
   const html = readFileSync(pilot, 'utf8')
-  if (!html.includes('formsubmit.co/hello@planethike.org')) fail('pilot page contact form is not connected to hello@planethike.org')
-  if (!html.includes('mailto:hello@planethike.org')) fail('pilot page lacks direct email fallback')
+  if (!html.includes('formsubmit.co/info@regreenity.com')) fail('pilot page contact form is not connected to info@regreenity.com')
+  if (!html.includes('mailto:info@regreenity.com')) fail('pilot page lacks direct email fallback')
   if (!/complete Regreenity|complete connected product/i.test(html)) fail('pilot page does not present the complete product experience')
   if (!/existing app/i.test(html)) fail('pilot page does not identify Regreenity as an add-on to the existing app')
 }
@@ -75,8 +75,11 @@ if (/does not transmit data yet|production CRM\/API connection is intentionally 
 if (!clientBundles.includes('/pilot/#contact')) fail('client bundle does not contain the single pilot contact destination')
 if (/Open the interactive product walkthrough|EXPLORE THE WORKFLOWS/.test(clientBundles)) fail('pilot journey contains a circular link back to product workflows')
 if (!clientBundles.includes('CruiseConnect appears inside the app guests already use')) fail('executive walkthrough is missing the host-app CruiseConnect entry')
-if (!clientBundles.includes('Management sees the connected operational picture')) fail('executive walkthrough is missing the management experience')
-if (!clientBundles.includes('Connectors fit CruiseConnect into the existing stack')) fail('executive walkthrough is missing the connector model')
+if (!clientBundles.includes('Management sees experience, recovery and attributed revenue together')) fail('executive walkthrough is missing the management experience')
+if (!clientBundles.includes('Connectors measure outcomes without sending us passenger identities')) fail('executive walkthrough is missing the privacy-safe connector model')
+if (!clientBundles.includes('Live event feedback reaches leaders while they can still act')) fail('executive walkthrough is missing structured live-event feedback')
+if (!clientBundles.includes('Confirmed attributed revenue')) fail('executive walkthrough is missing revenue attribution')
+if (!clientBundles.includes('Did someone make your day today?')) fail('executive walkthrough is missing the passive-guest recognition prompt')
 if (!clientBundles.includes('Request a pilot conversation')) fail('executive walkthrough is missing the final pilot handoff')
 
 for (const file of files.filter(file => /\.(?:jpg|jpeg|png)$/i.test(file))) {

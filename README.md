@@ -114,7 +114,7 @@ A lower passenger fee such as $0.50 can be negotiated against stronger minimums,
 ## Important demo notes
 
 - Demo metrics and sailing details are illustrative.
-- The public pilot request form is connected to hello@planethike.org through FormSubmit.
+- The public pilot request form is connected to info@regreenity.com through FormSubmit.
 - The repository demonstrates the complete connected product experience at the front end; production identity, native proximity, secure offline storage, operational routing, analytics and host-system integrations are implemented with the cruise-line partner during pilot deployment.
 - Nearby discovery is simulated through the host bridge contract; the real proximity layer requires native cruise-line app integration.
 - Offline action queuing in this demo uses browser local storage; production must use approved secure storage and data-retention rules.
