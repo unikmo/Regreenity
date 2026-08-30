@@ -12,3 +12,15 @@ assert.deepEqual(result,{sent:1000,remaining:0});assert.equal(host.actions.lengt
 const elapsed=Math.round(performance.now()-started)
 assert.ok(elapsed<15000,`reference load run exceeded 15s: ${elapsed}ms`)
 console.log(`CruiseConnect offline/load contract passed: 1,000 actions in ${elapsed}ms.`)
+
+const loadHost=new ReferenceCruiseHost(),loadSession=await loadHost.getSession(),concurrentStarted=performance.now()
+const clients=100,actionsPerClient=200
+await Promise.all(Array.from({length:clients},(_,client)=>Array.from({length:actionsPerClient},(_,sequence)=>loadHost.submitAction(loadSession,{
+  schemaVersion:1,idempotencyKey:`client-${client.toString().padStart(3,'0')}-${sequence.toString().padStart(4,'0')}`,
+  createdAt:new Date().toISOString(),expiresAt:new Date(Date.now()+3600000).toISOString(),sailingRef:loadSession.sailingRef,guestRef:`load-guest-${client}`,
+  action:{type:'event.feedback',feedback:{eventId:'load-event',score:5,responseIds:['positive']}}
+}))).flat())
+const concurrentElapsed=Math.round(performance.now()-concurrentStarted)
+assert.equal(loadHost.actions.length,clients*actionsPerClient)
+assert.ok(concurrentElapsed<15000,`multi-client load run exceeded 15s: ${concurrentElapsed}ms`)
+console.log(`CruiseConnect multi-client contract passed: ${clients*actionsPerClient} actions in ${concurrentElapsed}ms.`)

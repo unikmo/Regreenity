@@ -59,10 +59,10 @@ export class MemoryQueueStore implements QueueStore {
 export class HttpHostAdapter implements HostAdapter {
   private baseUrl:string
   private tokenProvider:()=>Promise<string>
-  constructor(input:{baseUrl:string;tokenProvider:()=>Promise<string>}){this.baseUrl=input.baseUrl.replace(/\/$/,'');this.tokenProvider=input.tokenProvider}
+  constructor(input:{baseUrl:string;tokenProvider:()=>Promise<string>}){const url=new URL(input.baseUrl);if(url.protocol!=='https:'&&!['localhost','127.0.0.1'].includes(url.hostname))throw new Error('operator_api_requires_https');this.baseUrl=input.baseUrl.replace(/\/$/,'');this.tokenProvider=input.tokenProvider}
   private async request<T>(path:string,init:RequestInit={}):Promise<T>{
     const token=await this.tokenProvider()
-    const response=await fetch(`${this.baseUrl}${path}`,{...init,headers:{Authorization:`Bearer ${token}`,...init.headers}})
+    const response=await fetch(`${this.baseUrl}${path}`,{...init,signal:init.signal||AbortSignal.timeout(15000),headers:{Authorization:`Bearer ${token}`,...init.headers}})
     if(!response.ok)throw new CruiseConnectError(`host_${response.status}`)
     return response.status===204?undefined as T:await response.json() as T
   }
@@ -77,11 +77,44 @@ export class HttpHostAdapter implements HostAdapter {
   async openPurchase(_session:CruiseSession,intent:PurchaseIntent){await this.request<void>('/purchase-intents',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(intent)})}
 }
 
-export class LocalStorageQueueStore implements QueueStore {
+export interface CiphertextStore { read():Promise<string|null>; write(value:string):Promise<void> }
+
+export class LocalCiphertextStore implements CiphertextStore {
   private key:string
-  constructor(key='cruiseconnect:queue:v1'){this.key=key}
-  async read(){ try{return JSON.parse(localStorage.getItem(this.key)||'[]') as ActionEnvelope[]}catch{return[]} }
-  async write(items:ActionEnvelope[]){ localStorage.setItem(this.key,JSON.stringify(items)) }
+  constructor(key='cruiseconnect:encrypted-queue:v1'){this.key=key}
+  async read(){return localStorage.getItem(this.key)}
+  async write(value:string){localStorage.setItem(this.key,value)}
+}
+
+const bytesToBase64=(value:Uint8Array)=>btoa(String.fromCharCode(...value))
+const base64ToBytes=(value:string)=>Uint8Array.from(atob(value),character=>character.charCodeAt(0))
+
+export async function importQueueEncryptionKey(rawKey:Uint8Array){
+  if(rawKey.byteLength!==32)throw new Error('queue_key_must_be_256_bits')
+  const keyBytes=Uint8Array.from(rawKey)
+  return crypto.subtle.importKey('raw',keyBytes.buffer,{name:'AES-GCM'},false,['encrypt','decrypt'])
+}
+
+export class EncryptedQueueStore implements QueueStore {
+  private ciphertext:CiphertextStore
+  private keyProvider:()=>Promise<CryptoKey>
+  constructor(ciphertext:CiphertextStore,keyProvider:()=>Promise<CryptoKey>){this.ciphertext=ciphertext;this.keyProvider=keyProvider}
+  async read(){
+    const stored=await this.ciphertext.read()
+    if(!stored)return []
+    try{
+      const value=JSON.parse(stored) as {version:number;iv:string;data:string}
+      if(value.version!==1)throw new Error('unsupported_queue_ciphertext')
+      const clear=await crypto.subtle.decrypt({name:'AES-GCM',iv:base64ToBytes(value.iv)},await this.keyProvider(),base64ToBytes(value.data))
+      return JSON.parse(new TextDecoder().decode(clear)) as ActionEnvelope[]
+    }catch{throw new Error('queue_decryption_failed')}
+  }
+  async write(items:ActionEnvelope[]){
+    const iv=crypto.getRandomValues(new Uint8Array(12))
+    const clear=new TextEncoder().encode(JSON.stringify(items))
+    const encrypted=await crypto.subtle.encrypt({name:'AES-GCM',iv},await this.keyProvider(),clear)
+    await this.ciphertext.write(JSON.stringify({version:1,iv:bytesToBase64(iv),data:bytesToBase64(new Uint8Array(encrypted))}))
+  }
 }
 
 export class CruiseConnectError extends Error {
@@ -101,6 +134,8 @@ export class CruiseConnectClient {
 
   async initialize(){
     const session=await this.host.getSession()
+    const validFeatures:Feature[]=['interests','meetups','vibes','crew-recognition','event-feedback','notifications','commerce']
+    if(!session.sessionToken||!session.tenantRef||!session.sailingRef||!session.shipRef||!session.guestRef||!['adult','minor'].includes(session.ageBand)||!Array.isArray(session.features)||session.features.some(feature=>!validFeatures.includes(feature))||!Number.isFinite(Date.parse(session.expiresAt)))throw new CruiseConnectError('invalid_session')
     if(new Date(session.expiresAt)<=new Date())throw new CruiseConnectError('session_expired')
     this.session=session
     await this.flush()
@@ -114,7 +149,7 @@ export class CruiseConnectClient {
   async events(){return this.host.listEvents(this.require('event-feedback'))}
   async meetups(){return this.host.listMeetups(this.require('meetups'))}
   async updateInterests(interests:string[]){
-    const clean=[...new Set(interests.map(x=>x.trim()).filter(Boolean))].slice(0,12)
+    const clean=[...new Set(interests.map(x=>x.trim()).filter(x=>x.length>0&&x.length<=80))].slice(0,12)
     return this.dispatch('interests',{type:'interests.updated',interests:clean})
   }
   async joinMeetup(meetupId:string,revealIdentity=false){return this.dispatch('meetups',{type:'meetup.joined',meetupId,revealIdentity})}
@@ -122,12 +157,10 @@ export class CruiseConnectClient {
   async identifyPassenger(imageBytes:Uint8Array){
     const session=this.require('vibes')
     if(session.ageBand==='minor')return {status:'ineligible',reason:'minors_excluded'} as FaceMatchResult
-    const result=await this.host.matchPassenger(session,imageBytes)
-    imageBytes.fill(0)
-    return result
+    try{return await this.host.matchPassenger(session,imageBytes)}finally{imageBytes.fill(0)}
   }
   async sendVibe(receiverToken:string,vibeId:string){return this.dispatch('vibes',{type:'vibe.sent',receiverToken,vibeId})}
-  async identifyCrew(imageBytes:Uint8Array){const result=await this.host.matchCrew(this.require('crew-recognition'),imageBytes);imageBytes.fill(0);return result}
+  async identifyCrew(imageBytes:Uint8Array){try{return await this.host.matchCrew(this.require('crew-recognition'),imageBytes)}finally{imageBytes.fill(0)}}
   async recognizeCrew(crewToken:string,reasonIds:string[]){return this.dispatch('crew-recognition',{type:'crew.recognized',crewToken,reasonIds:[...new Set(reasonIds)].slice(0,5)})}
   async submitEventFeedback(feedback:StructuredFeedback){
     if(feedback.responseIds.length>5)throw new CruiseConnectError('too_many_responses')

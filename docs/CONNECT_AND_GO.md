@@ -13,14 +13,18 @@
 ## Ten-minute Web integration
 
 ```ts
-import { CruiseConnectClient, HttpHostAdapter, LocalStorageQueueStore } from '@regreenity/cruiseconnect-sdk'
+import { CruiseConnectClient, EncryptedQueueStore, HttpHostAdapter, LocalCiphertextStore, importQueueEncryptionKey } from '@regreenity/cruiseconnect-sdk'
 
 const host = new HttpHostAdapter({
   baseUrl: 'https://ship-api.example/cruiseconnect/v1',
   tokenProvider: () => cruiseLineApp.getShortLivedSailingToken(),
 })
 
-export const cruiseConnect = new CruiseConnectClient(host, new LocalStorageQueueStore())
+const queue = new EncryptedQueueStore(
+  new LocalCiphertextStore(),
+  async () => importQueueEncryptionKey(await cruiseLineApp.getQueueKeyFromKeychain()),
+)
+export const cruiseConnect = new CruiseConnectClient(host, queue)
 await cruiseConnect.initialize()
 ```
 
