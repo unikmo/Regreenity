@@ -198,7 +198,7 @@ const faqStructuredData = JSON.stringify({
   mainEntity: buyerFaqs.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })),
 })
 
-const BuyerReadiness = () => <section className="buyer-readiness" aria-labelledby="buyer-readiness-title"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqStructuredData }}/><p className="eyebrow">BUYER FAQ</p><h2 id="buyer-readiness-title">The questions cruise-line executives will ask—answered upfront.</h2><div className="buyer-readiness-grid">{buyerFaqs.map(([question,answer],index)=><details key={question} open={index===0}><summary><span>{String(index+1).padStart(2,'0')}</span><h3>{question}</h3><i aria-hidden="true">+</i></summary><p>{answer}</p></details>)}</div></section>
+const BuyerReadiness = () => <section className="buyer-readiness" aria-labelledby="buyer-readiness-title"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqStructuredData }}/><p className="eyebrow">FAQs</p><h2 id="buyer-readiness-title">Frequently asked questions about CruiseConnect.</h2><div className="buyer-readiness-grid">{buyerFaqs.map(([question,answer],index)=><details key={question} open={index===0}><summary><span>{String(index+1).padStart(2,'0')}</span><h3>{question}</h3><i aria-hidden="true">+</i></summary><p>{answer}</p></details>)}</div></section>
 
 const Home = () => (
   <>
