@@ -5,8 +5,12 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 ## Core product areas
 
 ### Passenger experience
-- Opt-in, positive guest interaction designed for the cruise line's existing app.
-- Guardrails support respectful first contact and public onboard experiences.
+- CruiseConnect social features may be available to eligible adults by default with an opt-out; biometric receiver matching requires separate informed activation for the sailing.
+- A sender photographs an intended adult receiver inside the cruise-line app. Operator-side recognition returns only an opaque one-time token or unavailable result—never a name, profile, candidate list, match score or rejection reason.
+- Children cannot send, receive or be matched for passenger vibes. Same-cabin/booking-group and duplicate attempts are rejected operator-side.
+- The capture is discarded after matching. Compliments use prepared blocks, contain no sender identity and are delivered after randomized delay or in a batch.
+- Dense ranking gives equal valid-vibe totals the same position; Top Five means the first five score positions, not necessarily five passengers. The card is private and only its passenger may share it.
+- Event RSVP is count-only by default. A passenger may separately show a chosen name/image to confirmed attendees.
 
 ### Crew recognition
 - Guests frame the crew member and visible badge while the service moment is fresh; a crew-participating selfie is also supported.

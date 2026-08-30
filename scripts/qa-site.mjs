@@ -92,10 +92,21 @@ if (!clientBundles.includes('The default minimum reporting group is 20')) fail('
 if (!clientBundles.includes('Photo + biometric template stay operator-side')) fail('crew demo is missing the operator-side biometric boundary')
 if (!clientBundles.includes('only aggregates reach Regreenity')) fail('crew demo is missing the aggregate-only transmission boundary')
 if (!clientBundles.includes('Request a pilot conversation')) fail('executive walkthrough is missing the final pilot handoff')
+if (!clientBundles.includes('Send an anonymous vibe')) fail('product is missing the passenger-to-passenger Anonymous Vibe journey')
+if (!clientBundles.includes('Children excluded')) fail('Anonymous Vibe demo is missing child exclusion')
+if (!clientBundles.includes('different cabin/booking group')) fail('Anonymous Vibe demo is missing cabin/booking-group exclusion')
+if (!clientBundles.includes('randomized delivery')) fail('Anonymous Vibe demo is missing timing protection')
+if (!clientBundles.includes('Top Five means five score positions')) fail('passenger experience is missing dense-ranking explanation')
+if (!clientBundles.includes('Count only')) fail('passenger experience is missing count-only RSVP controls')
 
 const privacyContractSource = readFileSync(resolve('src/privacyMetrics.ts'), 'utf8')
 for (const required of ['CruiseAggregateReport', 'MINIMUM_REPORTING_GROUP = 20', 'crewmemberid', 'photo', 'biometrictemplate', 'facematchscore', 'validateCruiseAggregateReport']) {
   if (!privacyContractSource.includes(required)) fail(`aggregate contract is missing ${required}`)
+}
+
+const vibeRankingSource = readFileSync(resolve('src/vibeRanking.ts'), 'utf8')
+for (const required of ['rankPassengerVibes', 'topFive: rank <= 5', 'new Set']) {
+  if (!vibeRankingSource.includes(required)) fail(`passenger dense-ranking contract is missing ${required}`)
 }
 
 for (const file of files.filter(file => /\.(?:jpg|jpeg|png)$/i.test(file))) {

@@ -15,6 +15,7 @@ Each report contains only:
 - operational envelope: schema version, operator, ship, sailing, reporting period, generation time, privacy-gateway version and applied threshold;
 - activation: eligible guests, activated guests and positive-action totals;
 - recognition: total recognitions, recognizing-guest total, recognized-crew total, prepared-reason counts and department counts;
+- anonymous passenger vibes: valid-vibe total, adult-receiver total, operator-side suppressed same-cabin/minor totals, prepared-reason counts and dense-rank position distributions;
 - live-event feedback: response total, one-to-five rating distribution and prepared-response counts;
 - recovery: issue, acknowledgement and resolution totals, median response times and prepared category counts;
 - commerce: handoff, confirmed, cancelled and refunded totals, currency, net attributed value and product-category counts.
@@ -32,6 +33,20 @@ No row can identify a passenger or crew member. Every reason, department, respon
 6. The cruise-line privacy gateway later contributes the interaction only to threshold-protected sailing/day/department totals.
 
 The cruise line remains responsible for an Article 6 lawful basis, an applicable Article 9 condition for biometric identification, transparent crew/passenger notice, staff policies, access controls, accuracy/challenge processes, a non-biometric fallback and any required impact assessment. A camera permission prompt is not, by itself, a GDPR lawful basis.
+
+## Anonymous passenger-to-passenger vibe
+
+1. CruiseConnect may be available to eligible adult passengers by default with an accessible opt-out. Facial matching is activated separately for the sailing through an informed affirmative action; passengers who do not activate it are excluded from the recognition index.
+2. The sender photographs the intended adult receiver inside the cruise-line app. The capture is encrypted to the operator identity zone and never enters Regreenity infrastructure.
+3. The operator returns only an opaque one-time receiver token or a generic unavailable result. It does not return a name, profile, candidate list, age, reason for rejection or match score.
+4. Before accepting the vibe, the operator verifies same sailing, adult eligibility, different cabin/booking group and duplicate/abuse limits. Children cannot send, receive or be matched.
+5. The sender chooses one prepared compliment. The stored compliment record contains no sender identity, and delivery is randomized or batched so the exact time cannot identify the sender.
+6. The capture is destroyed immediately after the match transaction. The sailing-scoped opted-in reference template remains only under the operator's documented retention schedule and is deleted when no longer needed.
+7. Regreenity receives only threshold-protected totals and dense-rank distributions. It receives no sender/receiver token, image, template or person-level rank.
+
+Dense ranking assigns one position to each distinct valid-vibe total. If ten passengers tie at position four, all are position four and the next lower distinct score is position five. A Top Five badge therefore represents the first five score positions, not necessarily five passengers. It is private by default and may be shared only by the passenger who received it.
+
+Event reservations are count-only by default. A passenger may separately expose a chosen name/image to confirmed attendees. The cruise line must not publish passenger identity or rankings to social media.
 
 ## Revenue attribution
 

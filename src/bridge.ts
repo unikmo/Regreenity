@@ -80,6 +80,33 @@ export function notifyAffirmation(recipientGuestId: string, affirmationId: strin
   return notifyHost('PASSENGER_AFFIRMATION', { recipientGuestId, affirmationId })
 }
 
+export function requestPassengerFaceMatch() {
+  return notifyHost('REQUEST_PASSENGER_FACE_MATCH', {
+    purpose: 'anonymous-vibe-receiver-resolution',
+    eligibility: 'adult-explicit-face-match-activation',
+    response: 'recognized-adult-token-or-unavailable',
+    retention: 'discard-capture-after-match',
+  })
+}
+
+export function notifyAnonymousPassengerVibe(receiverToken: string, vibeId: string) {
+  return notifyHost('ANONYMOUS_PASSENGER_VIBE', {
+    receiverToken,
+    vibeId,
+    senderDisclosure: 'never',
+    delivery: 'randomized-delay-or-batch',
+    hostChecks: ['same-sailing', 'adult-receiver', 'not-same-cabin-or-booking-group', 'duplicate-limit'],
+  })
+}
+
+export function updateEventIdentityVisibility(eventId: string, visible: boolean) {
+  return notifyHost('UPDATE_EVENT_IDENTITY_VISIBILITY', {
+    eventId,
+    visible,
+    default: 'count-only',
+  })
+}
+
 export function notifyPublicMeetProposal(recipientGuestId: string, venueType: string) {
   return notifyHost('PUBLIC_MEET_PROPOSAL', { recipientGuestId, venueType })
 }

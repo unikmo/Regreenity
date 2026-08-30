@@ -4,6 +4,8 @@ type CountCell = { bucket: string; count: number }
 
 export type AggregateVocabulary = {
   recognitionReasons: ReadonlySet<string>
+  passengerVibeReasons: ReadonlySet<string>
+  passengerVibeRanks: ReadonlySet<string>
   departments: ReadonlySet<string>
   eventResponses: ReadonlySet<string>
   recoveryCategories: ReadonlySet<string>
@@ -30,6 +32,14 @@ export type CruiseAggregateReport = {
       recognizedCrewTotal: number
       reasonCounts: CountCell[]
       departmentCounts: CountCell[]
+    }
+    passengerVibes: {
+      validVibesTotal: number
+      receivingAdultsTotal: number
+      suppressedSameCabinTotal: number
+      suppressedMinorTotal: number
+      reasonCounts: CountCell[]
+      denseRankPositionCounts: CountCell[]
     }
     eventFeedback: {
       responsesTotal: number
@@ -127,7 +137,7 @@ export function validateCruiseAggregateReport(report: CruiseAggregateReport, voc
     throw new Error(`minimumReportingGroup must be at least ${MINIMUM_REPORTING_GROUP}`)
   }
 
-  const { activation, recognition, eventFeedback, recovery, commerce, serviceHealth } = report.metrics
+  const { activation, recognition, passengerVibes, eventFeedback, recovery, commerce, serviceHealth } = report.metrics
   const values: Array<[string, number]> = [
     ['activation.eligibleGuests', activation.eligibleGuests],
     ['activation.activatedGuests', activation.activatedGuests],
@@ -135,6 +145,10 @@ export function validateCruiseAggregateReport(report: CruiseAggregateReport, voc
     ['recognition.recognitionsTotal', recognition.recognitionsTotal],
     ['recognition.recognizingGuestsTotal', recognition.recognizingGuestsTotal],
     ['recognition.recognizedCrewTotal', recognition.recognizedCrewTotal],
+    ['passengerVibes.validVibesTotal', passengerVibes.validVibesTotal],
+    ['passengerVibes.receivingAdultsTotal', passengerVibes.receivingAdultsTotal],
+    ['passengerVibes.suppressedSameCabinTotal', passengerVibes.suppressedSameCabinTotal],
+    ['passengerVibes.suppressedMinorTotal', passengerVibes.suppressedMinorTotal],
     ['eventFeedback.responsesTotal', eventFeedback.responsesTotal],
     ['recovery.issuesTotal', recovery.issuesTotal],
     ['recovery.acknowledgedTotal', recovery.acknowledgedTotal],
@@ -155,6 +169,8 @@ export function validateCruiseAggregateReport(report: CruiseAggregateReport, voc
   eventFeedback.ratingCounts.forEach((count, index) => assertNonNegative(count, `eventFeedback.ratingCounts[${index}]`))
   assertSuppressedCells(recognition.reasonCounts, report.minimumReportingGroup, 'recognition.reasonCounts', vocabulary.recognitionReasons)
   assertSuppressedCells(recognition.departmentCounts, report.minimumReportingGroup, 'recognition.departmentCounts', vocabulary.departments)
+  assertSuppressedCells(passengerVibes.reasonCounts, report.minimumReportingGroup, 'passengerVibes.reasonCounts', vocabulary.passengerVibeReasons)
+  assertSuppressedCells(passengerVibes.denseRankPositionCounts, report.minimumReportingGroup, 'passengerVibes.denseRankPositionCounts', vocabulary.passengerVibeRanks)
   assertSuppressedCells(eventFeedback.preparedResponseCounts, report.minimumReportingGroup, 'eventFeedback.preparedResponseCounts', vocabulary.eventResponses)
   assertSuppressedCells(recovery.categoryCounts, report.minimumReportingGroup, 'recovery.categoryCounts', vocabulary.recoveryCategories)
   assertSuppressedCells(commerce.productCategoryCounts, report.minimumReportingGroup, 'commerce.productCategoryCounts', vocabulary.productCategories)

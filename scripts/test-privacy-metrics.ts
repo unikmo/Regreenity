@@ -2,6 +2,8 @@ import { validateCruiseAggregateReport, type CruiseAggregateReport } from '../sr
 
 const vocabulary = {
   recognitionReasons: new Set(['welcome']),
+  passengerVibeReasons: new Set(['made-my-day']),
+  passengerVibeRanks: new Set(['rank-1', 'rank-2', 'rank-3', 'rank-4', 'rank-5']),
   departments: new Set(['dining']),
   eventResponses: new Set(['great-performers']),
   recoveryCategories: new Set(['dining-service']),
@@ -17,6 +19,7 @@ const report: CruiseAggregateReport = {
   metrics: {
     activation: { eligibleGuests: 1000, activatedGuests: 520, positiveActions: 188 },
     recognition: { recognitionsTotal: 84, recognizingGuestsTotal: 61, recognizedCrewTotal: 32, reasonCounts: [{ bucket: 'welcome', count: 31 }], departmentCounts: [{ bucket: 'dining', count: 42 }] },
+    passengerVibes: { validVibesTotal: 164, receivingAdultsTotal: 88, suppressedSameCabinTotal: 22, suppressedMinorTotal: 20, reasonCounts: [{ bucket: 'made-my-day', count: 48 }], denseRankPositionCounts: [{ bucket: 'rank-4', count: 20 }] },
     eventFeedback: { responsesTotal: 428, ratingCounts: [20, 24, 60, 120, 204], preparedResponseCounts: [{ bucket: 'great-performers', count: 212 }] },
     recovery: { issuesTotal: 80, acknowledgedTotal: 78, resolvedTotal: 74, medianAcknowledgementMinutes: 2, medianResolutionMinutes: 14, categoryCounts: [{ bucket: 'dining-service', count: 24 }] },
     commerce: { handoffsTotal: 200, confirmedTotal: 84, cancelledTotal: 21, refundedTotal: 7, netAttributedValue: 18400, currency: 'USD', productCategoryCounts: [{ bucket: 'specialty-dining', count: 42 }] },

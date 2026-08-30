@@ -20,14 +20,15 @@ type Detail = {
 const details: Record<Exclude<PageKey, 'home'>, Detail> = {
   passenger: {
     eyebrow: 'PASSENGER EXPERIENCE',
-    title: 'Make the cruise-line app feel more alive.',
-    intro: 'Regreenity is designed to create more relevant reasons for guests to interact during the sailing without turning the experience into an unrestricted social network.',
+    title: 'Turn a good passenger moment into an anonymous vibe.',
+    intro: 'An adult passenger photographs another adult inside the cruise-line app. The operator privately confirms recognised or unavailable; the sender chooses a prepared compliment and the receiver never learns who sent it.',
     crop: 'passenger',
     alt: 'Multicultural cruise passengers of different ages relaxing together',
     facts: [
-      { title: 'Structured first contact', body: 'Discovery can begin through opted-in nearby context, shared activities or shared interests, followed by predefined positive signals rather than open messaging.' },
-      { title: 'Public-place progression', body: 'A next step is only available after reciprocity and is designed around approved public onboard places or activities.' },
-      { title: 'Cruise-native context', body: 'The experience is designed to sit inside the existing cruise-line app and use sailing context supplied by the host.' },
+      { title: 'No passenger directory', body: 'The sender sees no receiver name, profile, candidate list or confidence score. The capture is discarded after operator-side matching.' },
+      { title: 'Anonymous delivery', body: 'The stored vibe has no sender identity and is delivered after randomized delay or in a batch so timing cannot reveal the sender.' },
+      { title: 'Adult-only safeguards', body: 'Children are excluded. The operator also blocks same-cabin or booking-group compliments, duplicate attempts and abusive use.' },
+      { title: 'Private Top Five card', body: 'Dense ranking gives tied passengers the same position. The passenger—not the cruise line—decides whether to share their own Vibe Card.' },
     ],
   },
   crew: {
@@ -181,7 +182,9 @@ const buyerFaqs = [
   ['How much IT integration is required?', 'One embedded feature connects to scoped host interfaces for launch context, operator-side identity, ship operations, booking outcomes and aggregate reporting. The pilot defines each interface before deployment.'],
   ['What happens when ship connectivity is limited?', 'The interface is cacheable and core actions can use device and ship-local services. Public internet is not required for every interaction; approved aggregate reports synchronize later.'],
   ['How does Regreenity pass cybersecurity and vendor review?', 'The production requirements include signed requests, tenant separation, role-based access, replay protection, allow-listed aggregate schemas, body-free analytics logs and independent security testing.'],
-  ['How are passenger safety and minors handled?', 'Discovery is opt-in, first contact is predefined, progression requires reciprocity, meeting suggestions are public-place only, and block/report controls remain available. Peer discovery is off for minors by default.'],
+  ['How are anonymous passenger vibes, safety and minors handled?', 'Anonymous Vibes are adult-only. The operator resolves a photographed receiver inside its identity zone, returns no name, rejects same-cabin/booking-group and duplicate attempts, discards the capture after matching and delivers prepared compliments without sender identity or exact timing. Children cannot send, receive or be matched for passenger vibes.'],
+  ['Is facial recognition switched on by default?', 'CruiseConnect social features can be available to eligible adults by default with an opt-out, but biometric matching requires a separate informed activation for the sailing. Passengers who do not activate it are excluded from the recognition index.'],
+  ['Can the cruise line publish passenger rankings or identities?', 'No. Top Five uses dense score positions and the result is private. Only the passenger can choose to share their own Vibe Card. Event RSVPs show a count by default; chosen name/image visibility is a separate passenger choice limited to confirmed attendees.'],
   ['Does crew recognition become employee ranking?', 'No public leaderboard or passenger-facing crew rating is created. Identity verification stays operator-side, recognition uses prepared positive reasons, and employment decisions remain solely with the cruise line.'],
   ['Will this create additional operational workload?', 'Prepared response blocks, routing rules and priority states turn activity into structured operational signals instead of another free-text inbox.'],
   ['Can the revenue attribution be trusted?', 'The operator resolves bookings locally and sends signed confirmed, cancelled, refunded and net-value totals. Regreenity does not rely on self-reported clicks or receive booking references.'],
