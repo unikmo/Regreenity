@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { useState, type FormEvent, type ReactNode } from 'react'
 
 const Arrow = () => <span aria-hidden="true">→</span>
 const contactHref = '/pilot/#contact'
@@ -226,21 +226,44 @@ const Home = () => (
 )
 
 const PilotContactForm = () => {
-  const sent = new URLSearchParams(window.location.search).get('sent') === '1'
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const submitEnquiry = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setStatus('sending')
+    const form = new FormData(event.currentTarget)
+    try {
+      const response = await fetch('/api/pilot-requests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          workEmail: form.get('email'),
+          name: form.get('name'),
+          roleTitle: form.get('role') || '',
+          company: form.get('company'),
+          message: form.get('message'),
+          privacyConsent: form.get('privacy_consent') === 'yes',
+          website: form.get('website') || '',
+        }),
+      })
+      if (!response.ok) throw new Error('request_failed')
+      event.currentTarget.reset()
+      setStatus('sent')
+    } catch {
+      setStatus('error')
+    }
+  }
   return <section id="contact" className="contact-form-section" aria-labelledby="pilot-contact-title">
     <div className="contact-form-copy"><p className="eyebrow">REQUEST A PILOT</p><h1 id="pilot-contact-title">Plan a complete one-ship Regreenity pilot.</h1><p>You have seen the product. Tell us about your existing app, target ship and timing, and we’ll respond personally about a complete one-ship pilot.</p><div className="contact-confidence"><span>One short form</span><span>Direct response from PlanetHike</span><span>No mailing list</span></div><a href="mailto:info@regreenity.com">info@regreenity.com <Arrow /></a></div>
-    <form className="pilot-contact-form" action="https://formsubmit.co/info@regreenity.com" method="POST" acceptCharset="UTF-8">
-      <input type="hidden" name="_subject" value="Regreenity pilot enquiry" />
-      <input type="hidden" name="_template" value="table" />
-      <input type="hidden" name="_next" value="https://regreenity.com/pilot/?sent=1#contact" />
-      <input className="form-honeypot" type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-      {sent && <p className="form-success" role="status">Thank you. Your Regreenity enquiry has been sent.</p>}
+    <form className="pilot-contact-form" onSubmit={submitEnquiry}>
+      <input className="form-honeypot" type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+      {status === 'sent' && <p className="form-success" role="status">Thank you. Your Regreenity enquiry is safely recorded. We’ll reply personally.</p>}
+      {status === 'error' && <p className="form-error" role="alert">The secure form is temporarily unavailable. Please email <a href="mailto:info@regreenity.com">info@regreenity.com</a>.</p>}
       <label>Work email<input required name="email" type="email" autoComplete="email" placeholder="name@cruiseline.com" /></label>
       <div className="contact-form-row"><label>Name<input required name="name" autoComplete="name" placeholder="Your name" /></label><label>Role<input name="role" autoComplete="organization-title" placeholder="Guest Experience, Digital…" /></label></div>
       <label>Cruise line or company<input required name="company" autoComplete="organization" placeholder="Organisation" /></label>
       <label>What should we know about your current app or pilot?<textarea required name="message" rows={5} placeholder="Current cruise app, target ship or sailing, integration priorities, timing…" /></label>
-      <label className="form-consent"><input required type="checkbox" name="privacy_consent" value="I agree to the privacy policy" /><span>I agree that PlanetHike may use these details to respond to my enquiry, as described in the <a href="/privacy/">privacy policy</a>.</span></label>
-      <button className="pilot-button contact-submit" type="submit">Request a pilot conversation <Arrow /></button>
+      <label className="form-consent"><input required type="checkbox" name="privacy_consent" value="yes" /><span>I agree that PlanetHike may use these details to respond to my enquiry, as described in the <a href="/privacy/">privacy policy</a>.</span></label>
+      <button className="pilot-button contact-submit" type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Sending securely…' : <>Request a pilot conversation <Arrow /></>}</button>
     </form>
   </section>
 }

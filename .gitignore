@@ -1,5 +1,8 @@
 ﻿node_modules/
 dist/
+.vercel/
+.npm-cache-regreenity/
+*.tsbuildinfo
 .env
 .env.*
 *.log
