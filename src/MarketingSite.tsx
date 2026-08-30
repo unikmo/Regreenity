@@ -173,6 +173,21 @@ const EntityDefinition = () => (
   </section>
 )
 
+const buyerConcerns = [
+    ['Passenger privacy', 'No passenger database in Regreenity analytics. The operator aggregates locally; Regreenity stores outcome totals and suppresses small groups.'],
+    ['IT integration', 'One embedded feature plus scoped connectors for launch context, operations, booking outcomes and aggregate reporting.'],
+    ['Ship connectivity', 'The interface is cacheable and core actions can use ship-local services; public internet is not required for every interaction.'],
+    ['Cybersecurity', 'Signed connector requests, tenant separation, role-based access, replay protection and body-free analytics logs are production requirements.'],
+    ['Safety and minors', 'Opt-in discovery, predefined first contact, public-place progression, block/report controls and peer discovery off for minors by default.'],
+    ['Crew impact', 'Recognition is contextual appreciation, not a public employee leaderboard; employment decisions remain with the operator.'],
+    ['Operational workload', 'Prepared response blocks and routing rules create prioritised signals instead of another unstructured inbox.'],
+    ['Revenue credibility', 'Confirmed bookings, cancellations and refunds return as signed aggregate deltas—not self-reported clicks.'],
+    ['Brand and ratings', 'The cruise line controls feature naming, branding and whether any aggregated event rating is published.'],
+    ['Lock-in and ownership', 'The operator keeps identity, commerce and source records. Regreenity can be removed without migrating a passenger database.'],
+]
+
+const BuyerReadiness = () => <section className="buyer-readiness" aria-labelledby="buyer-readiness-title"><p className="eyebrow">EXECUTIVE READINESS</p><h2 id="buyer-readiness-title">The questions buyers will ask—answered upfront.</h2><div className="buyer-readiness-grid">{buyerConcerns.map(([title,body],index)=><article key={title}><span>{String(index+1).padStart(2,'0')}</span><div><h3>{title}</h3><p>{body}</p></div></article>)}</div></section>
+
 const Home = () => (
   <>
     <section id="top" className="hero">
@@ -193,6 +208,7 @@ const Home = () => (
     <Section id="ancillary-revenue" eyebrow="ANCILLARY REVENUE" title="Make relevance commercial." crop="revenue" alt="A multicultural family choosing an onboard experience together"><p>When the guest is already engaged, relevant experiences and offers can appear naturally—while checkout, pricing and payment stay with the cruise line.</p></Section>
     <EntityDefinition />
     <section className="quiet-proof"><p className="eyebrow">BUILT TO FIT THE CRUISE JOURNEY</p><div className="proof-grid"><article><strong>Inside the existing app</strong><span>No competing destination for the guest.</span></article><article><strong>Immediate operational feedback</strong><span>Structured event ratings reach leaders while they can still act.</span></article><article><strong>Revenue evidence without identity</strong><span>Confirmed booking value is attributed through opaque references and aggregated outcomes.</span></article></div></section>
+    <BuyerReadiness />
     <section id="pilot" className="pilot-section"><p className="eyebrow">ONE SHIP. THE COMPLETE EXPERIENCE.</p><h2>See the product, then pilot it inside the cruise app guests already use.</h2><p>Walk through the connected passenger and management experience, then request a complete one-ship pilot.</p><div className="pilot-actions"><a className="pilot-button" href={demoHref}>View product demo <Arrow /></a><a className="pilot-button pilot-button--secondary" href={contactHref}>Request a pilot <Arrow /></a></div></section>
   </>
 )
@@ -225,6 +241,7 @@ const DetailPage = ({ page }: { page: Exclude<PageKey, 'home'> }) => {
     <section className="detail-facts" id="details">{detail.facts.map((fact,index)=><article key={fact.title}><span>0{index+1}</span><h2>{fact.title}</h2><p>{fact.body}</p></article>)}</section>
     {detail.note && <p className="architecture-note">{detail.note}</p>}
     <EntityDefinition />
+    {page === 'integration' && <BuyerReadiness />}
     <section className="detail-next"><p className="eyebrow">THE CONNECTED PRODUCT</p><h2>See how this fits into the complete Regreenity experience.</h2><a className="pilot-button" href={demoHref}>View product demo <Arrow /></a></section>
   </>
 }

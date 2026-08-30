@@ -76,10 +76,12 @@ if (!clientBundles.includes('/pilot/#contact')) fail('client bundle does not con
 if (/Open the interactive product walkthrough|EXPLORE THE WORKFLOWS/.test(clientBundles)) fail('pilot journey contains a circular link back to product workflows')
 if (!clientBundles.includes('CruiseConnect appears inside the app guests already use')) fail('executive walkthrough is missing the host-app CruiseConnect entry')
 if (!clientBundles.includes('Management sees experience, recovery and attributed revenue together')) fail('executive walkthrough is missing the management experience')
-if (!clientBundles.includes('Connectors measure outcomes without sending us passenger identities')) fail('executive walkthrough is missing the privacy-safe connector model')
+if (!clientBundles.includes('The privacy gateway aggregates before anything reaches us')) fail('executive walkthrough is missing the privacy-safe connector model')
 if (!clientBundles.includes('Live event feedback reaches leaders while they can still act')) fail('executive walkthrough is missing structured live-event feedback')
 if (!clientBundles.includes('Confirmed attributed revenue')) fail('executive walkthrough is missing revenue attribution')
 if (!clientBundles.includes('Did someone make your day today?')) fail('executive walkthrough is missing the passive-guest recognition prompt')
+if (!clientBundles.includes('The questions buyers will ask—answered upfront')) fail('site is missing the buyer-readiness objection handling')
+if (!clientBundles.includes('processed in memory, converted into an aggregate and destroyed')) fail('privacy policy is missing source-event destruction')
 if (!clientBundles.includes('Request a pilot conversation')) fail('executive walkthrough is missing the final pilot handoff')
 
 for (const file of files.filter(file => /\.(?:jpg|jpeg|png)$/i.test(file))) {

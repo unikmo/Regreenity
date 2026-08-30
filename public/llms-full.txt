@@ -19,6 +19,15 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 ### Engagement and ancillary discovery
 - Voluntary interests and onboard context can surface relevant activities or experiences.
 - The cruise line retains inventory, pricing, checkout, payment and fulfilment.
+- Live-event feedback uses three to five structured questions and prepared response blocks without free text.
+- Authorized leaders receive immediate aggregate feedback; the cruise line controls publication.
+
+### Aggregate-only measurement
+- The default architecture does not create a Regreenity passenger analytics database.
+- A cruise-line or ship-local privacy gateway aggregates activity before transmission.
+- If a temporary opaque source event reaches Regreenity, it is processed in memory, excluded from logs and destroyed after its aggregate bucket updates.
+- Regreenity retains only benchmark-safe aggregate outcomes such as activation, ratings, recovery, conversion and net attributed revenue.
+- Small groups and breakdowns that could single out a person are suppressed.
 
 ## Integration
 - Regreenity is designed as an add-on to the cruise line's existing guest app and operating systems.
@@ -29,6 +38,7 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 - Public demonstrations and metrics are illustrative and do not imply a cruise-line affiliation.
 - The public interactive walkthrough uses illustrative data and is not a production deployment.
 - Performance claims should follow real pilot evidence.
+- Minimised and anonymised analytics reduce privacy risk but are not described as "privacy-free" or "compliance-free."
 
 ## Operator and contact
 - Operator: PlanetHike OÜ, Tallinn, Estonia.

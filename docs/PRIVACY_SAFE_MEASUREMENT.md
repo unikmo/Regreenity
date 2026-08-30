@@ -4,19 +4,21 @@
 
 The cruise line retains passenger and crew identity, booking references, cabin data, payment data and detailed service records. Regreenity does not require a copy of the passenger database.
 
-Regreenity receives only approved activity events, opaque sailing-scoped references and aggregated outcomes. Pseudonymous events are handled as personal data until they are irreversibly anonymized and aggregated.
+The preferred deployment places a privacy gateway inside the cruise-line or ship-local environment. That gateway validates passenger activity, updates minimum-size aggregate buckets and sends Regreenity only signed aggregate deltas. Passenger-scoped references do not cross into Regreenity systems.
+
+If a deployment temporarily sends an opaque event to a Regreenity ingestion service, the service processes it in memory, updates an aggregate and destroys the source payload. Request bodies are excluded from application logs, queues and backups. A short-lived digest may be retained only for replay protection and cannot be used to reconstruct the source event.
 
 ## Revenue attribution
 
 1. CruiseConnect creates a random `attributionRef` when a guest follows a recommendation into the cruise line's booking flow.
 2. The cruise line keeps the passenger, inventory, checkout and payment relationship.
-3. The cruise line returns the `attributionRef`, sailing, product category, currency, confirmed value and outcome status.
-4. Regreenity calculates conversion and attributed revenue without receiving passenger identity, booking reference or payment details.
-5. Cancelled or refunded outcomes update the attributed total.
+3. The cruise line resolves the reference and aggregates confirmed value, product category, currency and outcome status inside its privacy gateway.
+4. Regreenity receives the signed aggregate delta, not the booking reference, passenger identity, payment details or individual attribution reference.
+5. Cancelled or refunded aggregate deltas update the net attributed total.
 
 ## Structured live-event feedback
 
-Each event-feedback submission contains an operator event reference, a one-to-five score, up to five prepared response-block identifiers and a time bucket. There is no free-text field in the standard flow.
+Each event-feedback submission contains an operator event reference, a one-to-five score, up to five prepared response-block identifiers and a time bucket. There is no free-text field in the standard flow. The privacy gateway converts submissions into count, distribution and trend buckets before transmission to Regreenity.
 
 Authorized cruise-line leaders receive feedback immediately. The cruise line controls whether any aggregated rating is published.
 
@@ -33,6 +35,8 @@ Regreenity may report activation, structured ratings, recognition, recovery, con
 - tenant and sailing separation;
 - server-side validation of operator outcome events;
 - signed connector requests and replay protection;
+- body-free ingestion logs and backups;
+- in-memory aggregation with source-event destruction;
 - role-based dashboard access;
 - short retention for event-level records;
 - deletion and aggregation schedules;
