@@ -81,8 +81,16 @@ if (!clientBundles.includes('Live event feedback reaches leaders while they can 
 if (!clientBundles.includes('Confirmed attributed revenue')) fail('executive walkthrough is missing revenue attribution')
 if (!clientBundles.includes('Did someone make your day today?')) fail('executive walkthrough is missing the passive-guest recognition prompt')
 if (!clientBundles.includes('The questions buyers will ask—answered upfront')) fail('site is missing the buyer-readiness objection handling')
-if (!clientBundles.includes('processed in memory, converted into an aggregate and destroyed')) fail('privacy policy is missing source-event destruction')
+if (!clientBundles.includes('accepts only the predefined aggregate report')) fail('privacy policy is missing the aggregate-only ingestion boundary')
+if (!clientBundles.includes('The default minimum reporting group is 20')) fail('privacy policy is missing the minimum reporting group')
+if (!clientBundles.includes('Photo discarded after confirmation')) fail('crew demo is missing temporary-photo destruction')
+if (!clientBundles.includes('never sent to Regreenity')) fail('crew demo is missing the image transmission boundary')
 if (!clientBundles.includes('Request a pilot conversation')) fail('executive walkthrough is missing the final pilot handoff')
+
+const privacyContractSource = readFileSync(resolve('src/privacyMetrics.ts'), 'utf8')
+for (const required of ['CruiseAggregateReport', 'MINIMUM_REPORTING_GROUP = 20', 'crewmemberid', 'photo', 'validateCruiseAggregateReport']) {
+  if (!privacyContractSource.includes(required)) fail(`aggregate contract is missing ${required}`)
+}
 
 for (const file of files.filter(file => /\.(?:jpg|jpeg|png)$/i.test(file))) {
   const data = readFileSync(file)

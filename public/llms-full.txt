@@ -9,8 +9,10 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 - Guardrails support respectful first contact and public onboard experiences.
 
 ### Crew recognition
-- Guests can recognize a crew member while the service moment is fresh.
-- Recognition is contextual and avoids public crew rankings.
+- Guests frame the crew member's visible name badge and confirm the name while the service moment is fresh.
+- A selfie may be used only when the crew member voluntarily participates and the printed name remains readable.
+- The cruise-line app does not use facial recognition and discards the image after confirmation/send; Regreenity never receives the image.
+- Recognition uses prepared positive reasons and avoids public crew rankings.
 
 ### Service recovery
 - Guests receive a private route to signal friction during the sailing.
@@ -23,11 +25,11 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 - Authorized leaders receive immediate aggregate feedback; the cruise line controls publication.
 
 ### Aggregate-only measurement
-- The default architecture does not create a Regreenity passenger analytics database.
-- A cruise-line or ship-local privacy gateway aggregates activity before transmission.
-- If a temporary opaque source event reaches Regreenity, it is processed in memory, excluded from logs and destroyed after its aggregate bucket updates.
-- Regreenity retains only benchmark-safe aggregate outcomes such as activation, ratings, recovery, conversion and net attributed revenue.
-- Small groups and breakdowns that could single out a person are suppressed.
+- The default architecture has no Regreenity passenger/crew source-event analytics endpoint.
+- A cruise-line or ship-local privacy gateway sends only a predefined aggregate report covering activation, recognition, structured ratings, recovery and net attributed revenue.
+- Names, passenger or crew identifiers, photos, booking/attribution references, exact event timestamps, free text and payment data cannot enter that report.
+- The default minimum reporting group is 20; smaller cells are suppressed or rolled up before transmission.
+- Cross-customer benchmarks use ranges or percentiles across at least five independently operated sailings and 100 qualifying responses, and customers may opt out.
 
 ## Integration
 - Regreenity is designed as an add-on to the cruise line's existing guest app and operating systems.

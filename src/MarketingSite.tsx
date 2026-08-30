@@ -33,13 +33,14 @@ const details: Record<Exclude<PageKey, 'home'>, Detail> = {
   crew: {
     eyebrow: 'CREW RECOGNITION',
     title: 'Let great service be seen while it is happening.',
-    intro: 'Regreenity captures a recognition moment with the crew member, sailing context and reason while the experience is still fresh.',
+    intro: 'A passenger frames the visible crew name badge, confirms the match and sends instant recognition while the service moment is still fresh.',
     crop: 'crew',
     alt: 'Diverse cruise crew members sharing a candid end-of-shift moment',
     facts: [
-      { title: 'Recognition, not ranking', body: 'The design supports contextual appreciation rather than public crew leaderboards or passenger-facing star ratings.' },
-      { title: 'Useful context', body: 'Recognition can be tied to the ship, sailing, date and selected reason, giving operators more context than a raw compliment count.' },
-      { title: 'Repeat excellence', body: 'The product can distinguish breadth, depth and consistency of recognition across a sailing.' },
+      { title: 'Easy identification', body: 'Take a badge photo—or a voluntary selfie with the crew member—with the printed name readable. The host app confirms the match without facial recognition.' },
+      { title: 'Image discarded', body: 'The cruise-line app discards the temporary image after confirmation/send. Regreenity never receives it.' },
+      { title: 'Recognition, not ranking', body: 'Passengers choose up to two prepared positive reasons. Public crew leaderboards and passenger-facing star ratings are excluded.' },
+      { title: 'Aggregate evidence', body: 'Regreenity receives only threshold-protected sailing, reason and department totals; individual records remain with the operator.' },
     ],
   },
   recovery: {
@@ -174,14 +175,14 @@ const EntityDefinition = () => (
 )
 
 const buyerConcerns = [
-    ['Passenger privacy', 'No passenger database in Regreenity analytics. The operator aggregates locally; Regreenity stores outcome totals and suppresses small groups.'],
+    ['Passenger privacy', 'No passenger or crew source events in Regreenity analytics. The operator sends only a defined aggregate report; cells below 20 are suppressed.'],
     ['IT integration', 'One embedded feature plus scoped connectors for launch context, operations, booking outcomes and aggregate reporting.'],
     ['Ship connectivity', 'The interface is cacheable and core actions can use ship-local services; public internet is not required for every interaction.'],
     ['Cybersecurity', 'Signed connector requests, tenant separation, role-based access, replay protection and body-free analytics logs are production requirements.'],
     ['Safety and minors', 'Opt-in discovery, predefined first contact, public-place progression, block/report controls and peer discovery off for minors by default.'],
-    ['Crew impact', 'Recognition is contextual appreciation, not a public employee leaderboard; employment decisions remain with the operator.'],
+    ['Crew impact', 'A visible badge photo is used only inside the cruise-line app, without facial recognition, then discarded. Recognition is appreciation—not a public employee leaderboard.'],
     ['Operational workload', 'Prepared response blocks and routing rules create prioritised signals instead of another unstructured inbox.'],
-    ['Revenue credibility', 'Confirmed bookings, cancellations and refunds return as signed aggregate deltas—not self-reported clicks.'],
+    ['Revenue credibility', 'The operator resolves bookings locally; only confirmed, cancelled, refunded and net-value totals enter the signed aggregate report.'],
     ['Brand and ratings', 'The cruise line controls feature naming, branding and whether any aggregated event rating is published.'],
     ['Lock-in and ownership', 'The operator keeps identity, commerce and source records. Regreenity can be removed without migrating a passenger database.'],
 ]

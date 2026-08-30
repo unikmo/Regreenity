@@ -8,7 +8,9 @@ Regreenity is a cruise-line guest-experience interaction layer designed to sit i
 ## Product boundaries
 - Regreenity is designed as an add-on interaction layer, not a replacement for the cruise line's app or core commerce stack.
 - Inventory, pricing, checkout and payment remain with the cruise line.
-- The default analytics architecture stores aggregate outcomes, not a passenger database; source events are aggregated in the cruise-line environment wherever possible.
+- The default analytics architecture accepts only a predefined aggregate report from the cruise-line environment; it has no passenger/crew source-event endpoint.
+- Crew recognition can use a visible badge photo or voluntary selfie inside the cruise-line app. The printed name must be readable; there is no facial recognition, and the image is discarded after confirmation without reaching Regreenity.
+- Aggregate cells below 20 are suppressed or rolled up before transmission.
 - Live-event feedback uses three to five prepared questions without free text, and the cruise line controls publication of aggregated ratings.
 - Native proximity and ship-local integrations require host integration.
 - Offline-first operation is an architecture design direction; it should not be read as evidence of a production deployment.
