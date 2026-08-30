@@ -18,4 +18,6 @@ create policy product_configuration_admin_insert on public.tenant_product_config
 grant select,insert,update on public.tenant_product_configuration to authenticated;
 grant select,insert,update on public.tenant_product_configuration to service_role;
 revoke all on public.tenant_product_configuration from anon;
+insert into public.tenant_product_configuration (tenant_id)
+select id from public.tenants on conflict (tenant_id) do nothing;
 comment on table public.tenant_product_configuration is 'Tenant feature and white-label settings only; contains no passenger or crew data.';
