@@ -63,6 +63,7 @@ export default defineConfig({
         'product-app/index.html',
         'pilot/index.html',
         'portal/index.html',
+        'sandbox/index.html',
         'imprint/index.html',
         'privacy/index.html',
         'terms/index.html',

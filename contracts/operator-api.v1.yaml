@@ -1,0 +1,34 @@
+openapi: 3.1.0
+info:
+  title: CruiseConnect Operator Edge API
+  version: 1.0.0
+  description: Operator-hosted contract. Passenger and crew records never traverse the Regreenity cloud boundary.
+servers: [{url: https://ship-api.cruiseline.example/cruiseconnect/v1}]
+security: [{sailingToken: []}]
+paths:
+  /session:
+    get: {operationId: getSession, responses: {'200': {description: Sailing-scoped entitlement}}}
+  /sailings/{sailingRef}/events:
+    get: {operationId: listEvents, parameters: [{$ref: '#/components/parameters/SailingRef'}], responses: {'200': {description: Entitled events}}}
+  /sailings/{sailingRef}/meetups:
+    get: {operationId: listMeetups, parameters: [{$ref: '#/components/parameters/SailingRef'}], responses: {'200': {description: Interest meetups with count-only membership by default}}}
+  /actions:
+    post:
+      operationId: submitAction
+      parameters: [{name: Idempotency-Key, in: header, required: true, schema: {type: string, format: uuid}}]
+      responses: {'202': {description: Accepted}, '409': {description: Duplicate accepted idempotently}}
+  /recognition/passenger-match:
+    post: {operationId: matchAdultPassenger, description: Operator-zone ephemeral image match; capture destroyed after resolution., responses: {'200': {description: Recognition result}}}
+  /recognition/crew-match:
+    post: {operationId: matchCrew, description: Operator roster match with QR/NFC fallback., responses: {'200': {description: Operator-local crew token or no match}}}
+  /purchase-intents:
+    post: {operationId: openPurchase, description: Cruise-line-owned inventory and checkout handoff., responses: {'204': {description: Accepted}}}
+  /purchases/{attributionRef}:
+    get: {operationId: getPurchaseOutcome, parameters: [{name: attributionRef, in: path, required: true, schema: {type: string}}], responses: {'200': {description: Purchase outcome}}}
+  /notifications:
+    post: {operationId: scheduleNotification, description: Host-app local or push notification., responses: {'204': {description: Accepted}}}
+components:
+  securitySchemes:
+    sailingToken: {type: http, scheme: bearer, bearerFormat: short-lived signed JWT}
+  parameters:
+    SailingRef: {name: sailingRef, in: path, required: true, schema: {type: string, maxLength: 100}}
