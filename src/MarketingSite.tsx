@@ -226,7 +226,7 @@ const Home = () => (
 )
 
 const PilotContactForm = () => {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>(new URLSearchParams(window.location.search).get('sent') === '1' ? 'sent' : 'idle')
   const submitEnquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setStatus('sending')
@@ -246,16 +246,20 @@ const PilotContactForm = () => {
         }),
       })
       if (!response.ok) throw new Error('request_failed')
-      event.currentTarget.reset()
+      const submittedForm = event.currentTarget
       setStatus('sent')
+      HTMLFormElement.prototype.submit.call(submittedForm)
     } catch {
       setStatus('error')
     }
   }
   return <section id="contact" className="contact-form-section" aria-labelledby="pilot-contact-title">
     <div className="contact-form-copy"><p className="eyebrow">REQUEST A PILOT</p><h1 id="pilot-contact-title">Plan a complete one-ship Regreenity pilot.</h1><p>You have seen the product. Tell us about your existing app, target ship and timing, and we’ll respond personally about a complete one-ship pilot.</p><div className="contact-confidence"><span>One short form</span><span>Direct response from PlanetHike</span><span>No mailing list</span></div><a href="mailto:info@regreenity.com">info@regreenity.com <Arrow /></a></div>
-    <form className="pilot-contact-form" onSubmit={submitEnquiry}>
-      <input className="form-honeypot" type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+    <form className="pilot-contact-form" action="https://formsubmit.co/info@regreenity.com" method="POST" acceptCharset="UTF-8" onSubmit={submitEnquiry}>
+      <input type="hidden" name="_subject" value="Regreenity pilot enquiry" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_next" value="https://regreenity.com/pilot/?sent=1#contact" />
+      <input className="form-honeypot" type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       {status === 'sent' && <p className="form-success" role="status">Thank you. Your Regreenity enquiry is safely recorded. We’ll reply personally.</p>}
       {status === 'error' && <p className="form-error" role="alert">The secure form is temporarily unavailable. Please email <a href="mailto:info@regreenity.com">info@regreenity.com</a>.</p>}
       <label>Work email<input required name="email" type="email" autoComplete="email" placeholder="name@cruiseline.com" /></label>
