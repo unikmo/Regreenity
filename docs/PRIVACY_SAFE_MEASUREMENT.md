@@ -36,7 +36,7 @@ The cruise line remains responsible for an Article 6 lawful basis, an applicable
 
 ## Anonymous passenger-to-passenger vibe
 
-1. CruiseConnect may be available to eligible adult passengers by default with an accessible opt-out. Facial matching is activated separately for the sailing through an informed affirmative action; passengers who do not activate it are excluded from the recognition index.
+1. The cruise line may include CruiseConnect passenger recognition as a clearly stated purpose in its adult boarding imaging enrolment. An adult who accepts that combined enrolment joins the sailing recognition pool once and receives no second in-app confirmation; adults who decline or later opt out are excluded.
 2. The sender photographs the intended adult receiver inside the cruise-line app. The capture is encrypted to the operator identity zone and never enters Regreenity infrastructure.
 3. The operator returns only an opaque one-time receiver token or a generic unavailable result. It does not return a name, profile, candidate list, age, reason for rejection or match score.
 4. Before accepting the vibe, the operator verifies same sailing, adult eligibility, different cabin/booking group and duplicate/abuse limits. Children cannot send, receive or be matched.

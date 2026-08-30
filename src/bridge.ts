@@ -83,7 +83,7 @@ export function notifyAffirmation(recipientGuestId: string, affirmationId: strin
 export function requestPassengerFaceMatch() {
   return notifyHost('REQUEST_PASSENGER_FACE_MATCH', {
     purpose: 'anonymous-vibe-receiver-resolution',
-    eligibility: 'adult-explicit-face-match-activation',
+    eligibility: 'adult-boarded-with-cruiseconnect-recognition-enrolment',
     response: 'recognized-adult-token-or-unavailable',
     retention: 'discard-capture-after-match',
   })

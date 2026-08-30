@@ -5,7 +5,7 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 ## Core product areas
 
 ### Passenger experience
-- CruiseConnect social features may be available to eligible adults by default with an opt-out; biometric receiver matching requires separate informed activation for the sailing.
+- The cruise line may include CruiseConnect recognition as a clearly stated purpose in its adult boarding imaging enrolment. Adults who accept are enrolled once for the sailing with no second Anonymous Vibe confirmation; adults who decline or opt out are excluded from matching.
 - A sender photographs an intended adult receiver inside the cruise-line app. Operator-side recognition returns only an opaque one-time token or unavailable result—never a name, profile, candidate list, match score or rejection reason.
 - Children cannot send, receive or be matched for passenger vibes. Same-cabin/booking-group and duplicate attempts are rejected operator-side.
 - The capture is discarded after matching. Compliments use prepared blocks, contain no sender identity and are delivered after randomized delay or in a batch.

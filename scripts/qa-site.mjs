@@ -98,6 +98,8 @@ if (!clientBundles.includes('different cabin/booking group')) fail('Anonymous Vi
 if (!clientBundles.includes('randomized delivery')) fail('Anonymous Vibe demo is missing timing protection')
 if (!clientBundles.includes('Top Five means five score positions')) fail('passenger experience is missing dense-ranking explanation')
 if (!clientBundles.includes('Count only')) fail('passenger experience is missing count-only RSVP controls')
+if (!clientBundles.includes('no second in-app confirmation')) fail('Anonymous Vibe does not document one-time boarding enrolment')
+if (clientBundles.includes('Activate face matching first')) fail('Anonymous Vibe still contains a redundant in-app face-matching confirmation')
 
 const privacyContractSource = readFileSync(resolve('src/privacyMetrics.ts'), 'utf8')
 for (const required of ['CruiseAggregateReport', 'MINIMUM_REPORTING_GROUP = 20', 'crewmemberid', 'photo', 'biometrictemplate', 'facematchscore', 'validateCruiseAggregateReport']) {
