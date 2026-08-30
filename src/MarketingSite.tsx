@@ -242,7 +242,7 @@ const PilotContactForm = () => {
           company: form.get('company'),
           message: form.get('message'),
           privacyConsent: form.get('privacy_consent') === 'yes',
-          website: form.get('website') || '',
+          website: form.get('_honey') || '',
         }),
       })
       if (!response.ok) throw new Error('request_failed')

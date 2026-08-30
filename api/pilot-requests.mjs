@@ -9,7 +9,7 @@ export const enquirySchema = z.object({
   roleTitle: z.string().trim().max(120).optional().default(''),
   message: z.string().trim().min(10).max(4000),
   privacyConsent: z.literal(true),
-  website: z.string().max(0).optional().default(''),
+  website: z.string().max(200).optional().default(''),
 }).strict()
 
 export default async function handler(request, response) {
