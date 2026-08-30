@@ -80,15 +80,21 @@ if (!clientBundles.includes('The privacy gateway aggregates before anything reac
 if (!clientBundles.includes('Live event feedback reaches leaders while they can still act')) fail('executive walkthrough is missing structured live-event feedback')
 if (!clientBundles.includes('Confirmed attributed revenue')) fail('executive walkthrough is missing revenue attribution')
 if (!clientBundles.includes('Did someone make your day today?')) fail('executive walkthrough is missing the passive-guest recognition prompt')
-if (!clientBundles.includes('The questions buyers will ask—answered upfront')) fail('site is missing the buyer-readiness objection handling')
+if (!clientBundles.includes('The questions cruise-line executives will ask—answered upfront')) fail('site is missing the buyer FAQ')
+if (!clientBundles.includes('Where does Regreenity run?')) fail('buyer FAQ is missing the deployment architecture answer')
+if (!clientBundles.includes('How do passenger privacy and data residency work?')) fail('buyer FAQ is missing privacy and data residency')
+if (!clientBundles.includes('Does the cruise line retain ownership and avoid lock-in?')) fail('buyer FAQ is missing ownership and lock-in')
+if (!clientBundles.includes('FAQPage')) fail('buyer FAQ is missing structured FAQ data')
+if (!clientBundles.includes('OPERATOR-SIDE FACE + ROSTER MATCH')) fail('crew demo is missing duplicate-name identity resolution')
+if (!clientBundles.includes('biometric templates, face-match scores')) fail('privacy policy is missing the biometric exclusion boundary')
 if (!clientBundles.includes('accepts only the predefined aggregate report')) fail('privacy policy is missing the aggregate-only ingestion boundary')
 if (!clientBundles.includes('The default minimum reporting group is 20')) fail('privacy policy is missing the minimum reporting group')
-if (!clientBundles.includes('Photo discarded after confirmation')) fail('crew demo is missing temporary-photo destruction')
-if (!clientBundles.includes('never sent to Regreenity')) fail('crew demo is missing the image transmission boundary')
+if (!clientBundles.includes('Photo + biometric template stay operator-side')) fail('crew demo is missing the operator-side biometric boundary')
+if (!clientBundles.includes('only aggregates reach Regreenity')) fail('crew demo is missing the aggregate-only transmission boundary')
 if (!clientBundles.includes('Request a pilot conversation')) fail('executive walkthrough is missing the final pilot handoff')
 
 const privacyContractSource = readFileSync(resolve('src/privacyMetrics.ts'), 'utf8')
-for (const required of ['CruiseAggregateReport', 'MINIMUM_REPORTING_GROUP = 20', 'crewmemberid', 'photo', 'validateCruiseAggregateReport']) {
+for (const required of ['CruiseAggregateReport', 'MINIMUM_REPORTING_GROUP = 20', 'crewmemberid', 'photo', 'biometrictemplate', 'facematchscore', 'validateCruiseAggregateReport']) {
   if (!privacyContractSource.includes(required)) fail(`aggregate contract is missing ${required}`)
 }
 

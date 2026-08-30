@@ -9,9 +9,9 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 - Guardrails support respectful first contact and public onboard experiences.
 
 ### Crew recognition
-- Guests frame the crew member's visible name badge and confirm the name while the service moment is fresh.
-- A selfie may be used only when the crew member voluntarily participates and the printed name remains readable.
-- The cruise-line app does not use facial recognition and discards the image after confirmation/send; Regreenity never receives the image.
+- Guests frame the crew member and visible badge while the service moment is fresh; a crew-participating selfie is also supported.
+- When duplicate names make text insufficient, the operator's identity service may perform face matching under its own approved biometric controls.
+- Images, biometric templates, candidate lists and match scores remain on-device, ship-local or in cruise-line systems; Regreenity never receives them.
 - Recognition uses prepared positive reasons and avoids public crew rankings.
 
 ### Service recovery
@@ -28,6 +28,8 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 - The default architecture has no Regreenity passenger/crew source-event analytics endpoint.
 - A cruise-line or ship-local privacy gateway sends only a predefined aggregate report covering activation, recognition, structured ratings, recovery and net attributed revenue.
 - Names, passenger or crew identifiers, photos, booking/attribution references, exact event timestamps, free text and payment data cannot enter that report.
+- Randomized or hashed person-level identifiers are also excluded because pseudonymous data may remain personal data.
+- Non-identifying service-health totals may include uptime, latency buckets, sync success, deployed version and error counts.
 - The default minimum reporting group is 20; smaller cells are suppressed or rolled up before transmission.
 - Cross-customer benchmarks use ranges or percentiles across at least five independently operated sailings and 100 qualifying responses, and customers may opt out.
 

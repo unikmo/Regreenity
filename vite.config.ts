@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 const fallbackDetails: Record<string, string[]> = {
-  '/': ['Passenger interaction inside the existing cruise-line app', 'Contextual crew recognition while service is still fresh', 'Private service recovery before the sailing ends', 'Engagement and ancillary discovery grounded in cruise context'],
+  '/': ['Passenger interaction inside the existing cruise-line app', 'Operator-side crew identity and face matching when duplicate names require it', 'Aggregate-only Regreenity cloud reporting', 'Buyer FAQ covering privacy, IT, connectivity, security, safety, workload, revenue, brand and ownership'],
   '/passenger-experience/': ['Opt-in discovery through nearby, activity or interest context', 'Predefined positive first contact', 'Public-place progression only after acknowledgement'],
   '/crew-recognition/': ['Contextual recognition during the sailing', 'Recognition without public rankings', 'Signals grouped by sailing, team and experience area'],
   '/service-recovery/': ['A private route for guests to signal friction', 'Capture, route, acknowledge, resolve and follow up', 'Department-level Experience Pulse'],
@@ -10,7 +10,7 @@ const fallbackDetails: Record<string, string[]> = {
   '/ancillary-revenue/': ['Context before offer', 'Cruise-line-owned inventory and checkout', 'Pilot-defined attribution'],
   '/social-commerce/': ['Contextual recommendations', 'Cruise-line-owned commerce', 'Pilot-defined attribution'],
   '/cruise-dashboard/': ['Outcome-led pilot measurement', 'No invented proof', 'Signals grouped by sailing and experience area'],
-  '/integration/': ['Cached device interface', 'Ship-local host integration', 'Deferred cloud synchronization'],
+  '/integration/': ['White-label experience inside the cruise-line app', 'Operator-side identity, biometrics and source records', 'Aggregate KPI and non-identifying health telemetry to Regreenity cloud', 'Buyer FAQ covering the ten common executive objections'],
   '/product-app/': ['Private interactive walkthrough with illustrative data', 'Public product information is available on the main Regreenity pages'],
   '/pilot/': ['Deploy the complete connected product experience', 'Integrate inside the cruise line’s existing app', 'Measure passenger, crew, recovery, engagement and commercial outcomes end to end'],
   '/imprint/': ['PlanetHike OÜ operator information', 'Regreenity contact details'],

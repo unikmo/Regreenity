@@ -85,7 +85,7 @@ export function notifyPublicMeetProposal(recipientGuestId: string, venueType: st
 }
 
 export function notifyCrewRecognition(crewMemberId: string, reasonIds: string[]) {
-  return notifyHost('CREW_RECOGNITION', { crewMemberId, reasonIds, verification: 'visible-badge-confirmed' })
+  return notifyHost('CREW_RECOGNITION', { crewMemberId, reasonIds, verification: 'operator-face-roster-match' })
 }
 
 export function notifyServiceIssue(category: string) {

@@ -6,6 +6,8 @@ const vocabulary = {
   eventResponses: new Set(['great-performers']),
   recoveryCategories: new Set(['dining-service']),
   productCategories: new Set(['specialty-dining']),
+  healthErrorCodes: new Set(['sync-timeout']),
+  latencyBuckets: new Set(['under-250ms']),
 }
 
 const report: CruiseAggregateReport = {
@@ -18,6 +20,7 @@ const report: CruiseAggregateReport = {
     eventFeedback: { responsesTotal: 428, ratingCounts: [20, 24, 60, 120, 204], preparedResponseCounts: [{ bucket: 'great-performers', count: 212 }] },
     recovery: { issuesTotal: 80, acknowledgedTotal: 78, resolvedTotal: 74, medianAcknowledgementMinutes: 2, medianResolutionMinutes: 14, categoryCounts: [{ bucket: 'dining-service', count: 24 }] },
     commerce: { handoffsTotal: 200, confirmedTotal: 84, cancelledTotal: 21, refundedTotal: 7, netAttributedValue: 18400, currency: 'USD', productCategoryCounts: [{ bucket: 'specialty-dining', count: 42 }] },
+    serviceHealth: { measurementMinutes: 1440, availableMinutes: 1438, syncAttempts: 230, syncSuccesses: 226, deployedVersion: '1.0.0', errorCounts: [{ bucket: 'sync-timeout', count: 4 }], latencyCounts: [{ bucket: 'under-250ms', count: 221 }] },
   },
 }
 
@@ -32,7 +35,9 @@ const expectRejected = (mutate: (candidate: Record<string, unknown>) => void, la
 }
 
 expectRejected(candidate => { candidate.photo = 'data:image/jpeg;base64,...' }, 'photo field')
+expectRejected(candidate => { candidate.faceMatchScore = 0.991 }, 'biometric match score')
+expectRejected(candidate => { candidate.randomizedPassengerId = 'random-123' }, 'randomized person identifier')
 expectRejected(candidate => { ((candidate.metrics as CruiseAggregateReport['metrics']).recognition.reasonCounts[0].count) = 3 }, 'small cell')
 expectRejected(candidate => { ((candidate.metrics as CruiseAggregateReport['metrics']).recognition.departmentCounts[0].bucket) = 'Ana Rodrigues' }, 'unapproved bucket text')
 
-console.log('Privacy metric contract passed: safe aggregate accepted; photo, small-cell and arbitrary-bucket leakage rejected.')
+console.log('Privacy metric contract passed: safe aggregate accepted; photo, biometric, randomized-ID, small-cell and arbitrary-bucket leakage rejected.')

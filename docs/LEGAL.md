@@ -13,7 +13,7 @@ Cruise Connection is operated as a product/trade name of **PlanetHike OÜ**, reg
 
 ## Product-specific privacy design reflected in the policy
 
-The policy distinguishes the public website/business relationship from a future cruise-line deployment. In a typical deployment, the cruise line is the controller for operational passenger/crew data and PlanetHike OÜ acts as processor under the cruise-line agreement. It expressly covers opt-in nearby discovery, interests, shared activity context, structured affirmations, public-place proposals, crew recognition/badge images, Experience Pulse, service recovery, commerce attribution, ship-local/offline queues, social summaries, minors and data-subject rights.
+The policy distinguishes the public website/business relationship from a future cruise-line deployment. In the default deployment, the cruise line controls operational passenger/crew identity and operator-side biometric face matching, while Regreenity receives only allow-listed aggregate reports and non-identifying service-health totals. It expressly covers opt-in nearby discovery, structured affirmations, public-place proposals, crew recognition, Experience Pulse, service recovery, commerce attribution, ship-local/offline queues, social summaries, minors and data-subject rights.
 
 ## Cookies/storage
 

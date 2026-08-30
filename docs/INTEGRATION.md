@@ -1,4 +1,4 @@
-# Cruise Connection — Cruise-App + Offline-First Integration Contract
+# CruiseConnect — Cruise-App + Offline-First Integration Contract
 
 The repository contains a front-end demonstration contract. It is not an authentication backend or production proximity implementation.
 
@@ -19,7 +19,7 @@ The passenger should not have to understand which transport is currently being u
 1. Cruise-line app pre-bundles/pre-caches the Cruise Connection shell during install/pre-sailing sync, or makes it available from the ship-local network.
 2. Cruise-line app opens Cruise Connection.
 3. Host obtains/refreshes a short-lived signed sailing entitlement while it has trusted backend connectivity.
-4. Cruise Connection validates the entitlement server-side and binds it to a pseudonymous guest + sailing scope.
+4. The operator validates the entitlement and binds it to the guest and sailing inside its own identity environment.
 5. The host app can retain an approved offline entitlement for the active sailing.
 6. Embedded UI receives only the minimum session context.
 7. Native host bridge provides device-only capabilities such as nearby discovery and local notifications.
@@ -39,11 +39,19 @@ Recommended characteristics:
 - coarse "nearby" presentation rather than exact distance
 - no live passenger map
 - no cabin/stateroom exposure
-- no facial recognition
+- operator-side face matching for crew identification only where approved, with a badge/QR/manual fallback
 - minors excluded by default
 - native platform permissions respected
 
-The host should resolve a rotating proximity identifier to a limited passenger discovery profile only after verifying both guests are entitled to the same sailing and have opted in.
+The host should resolve a rotating proximity identifier to a limited passenger discovery profile only after verifying both guests are entitled to the same sailing and have opted in. Rotating or hashed person-level identifiers stay operator-side and are not Regreenity analytics inputs.
+
+## Crew identity boundary
+
+Crew face matching belongs in the cruise line's identity zone—not Regreenity cloud. The capture image and biometric template may be processed on-device, ship-local or in the operator's own service. The host returns the selected internal crew record to its own recognition workflow; the Regreenity bridge receives no image, template, candidate list or match score. A non-biometric badge QR/NFC/manual route remains required for deployments where biometric processing is not approved or a match is uncertain.
+
+## Regreenity cloud boundary
+
+Regreenity cloud receives only the allow-listed aggregate report and non-identifying operational health totals: uptime, latency buckets, sync success/failure counts, deployed version and error counts. It does not receive passenger/crew source events, device IDs, randomized person IDs, biometric data or exact event timestamps.
 
 ## Demo bridge events
 
@@ -92,7 +100,7 @@ Cruise Connection should not require a cabin number, raw reservation locator, pa
 Minimum useful context:
 
 - cruise-line/tenant reference
-- pseudonymous guest ID
+- operator-local guest ID (never a Regreenity analytics field)
 - ship
 - sailing
 - age band / family entitlement

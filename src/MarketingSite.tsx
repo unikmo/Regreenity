@@ -37,8 +37,8 @@ const details: Record<Exclude<PageKey, 'home'>, Detail> = {
     crop: 'crew',
     alt: 'Diverse cruise crew members sharing a candid end-of-shift moment',
     facts: [
-      { title: 'Easy identification', body: 'Take a badge photo—or a voluntary selfie with the crew member—with the printed name readable. The host app confirms the match without facial recognition.' },
-      { title: 'Image discarded', body: 'The cruise-line app discards the temporary image after confirmation/send. Regreenity never receives it.' },
+      { title: 'Reliable identification', body: 'Take a badge photo—or a voluntary selfie with the crew member. When names are duplicated, an operator-controlled face match can resolve the correct crew record.' },
+      { title: 'Biometrics stay operator-side', body: 'The image, face template and match score remain on-device, ship-local or in the cruise line’s own identity service. Regreenity never receives them.' },
       { title: 'Recognition, not ranking', body: 'Passengers choose up to two prepared positive reasons. Public crew leaderboards and passenger-facing star ratings are excluded.' },
       { title: 'Aggregate evidence', body: 'Regreenity receives only threshold-protected sailing, reason and department totals; individual records remain with the operator.' },
     ],
@@ -96,13 +96,14 @@ const details: Record<Exclude<PageKey, 'home'>, Detail> = {
   integration: {
     eyebrow: 'HOW IT INTEGRATES',
     title: 'Designed to fit the cruise app you already have.',
-    intro: 'The architecture is designed as an interaction layer rather than a replacement for the cruise line’s existing app, booking stack or operational systems.',
+    intro: 'The passenger experience sits inside the cruise line’s existing app. Identity and real-time source records stay in the operator environment; Regreenity cloud receives aggregate outcomes and non-identifying service-health telemetry.',
     crop: 'passenger',
     alt: 'Guest experience in a modern hospitality setting',
     facts: [
-      { title: 'Device', body: 'The architecture supports a cached interface, preferences and pending actions on-device.' },
-      { title: 'Ship-local', body: 'Native proximity and onboard APIs require host integration and can operate through ship-local capabilities exposed by the operator.' },
-      { title: 'Deferred cloud', body: 'Non-urgent analytics, replication and external sharing can complete when connectivity is available.' },
+      { title: 'Inside the cruise app', body: 'A white-label SDK or embedded web module provides the passenger interface; it can be pre-bundled or cached for the sailing.' },
+      { title: 'Operator identity zone', body: 'Passenger/crew identity, badge photos, face templates, source actions and payments stay on-device, ship-local or in cruise-line systems.' },
+      { title: 'Regreenity aggregate cloud', body: 'Regreenity receives threshold-protected KPI reports plus uptime, latency, version, sync-success and error-count telemetry—with no person-level identifier.' },
+      { title: 'Offline and ship-local', body: 'Core actions use host-approved device storage and ship-local APIs, then aggregate reporting synchronizes when approved connectivity is available.' },
     ],
     note: 'Architecture direction, not a claim of production deployment. Native proximity and host-system integrations require cruise-line implementation.'
   },
@@ -174,20 +175,27 @@ const EntityDefinition = () => (
   </section>
 )
 
-const buyerConcerns = [
-    ['Passenger privacy', 'No passenger or crew source events in Regreenity analytics. The operator sends only a defined aggregate report; cells below 20 are suppressed.'],
-    ['IT integration', 'One embedded feature plus scoped connectors for launch context, operations, booking outcomes and aggregate reporting.'],
-    ['Ship connectivity', 'The interface is cacheable and core actions can use ship-local services; public internet is not required for every interaction.'],
-    ['Cybersecurity', 'Signed connector requests, tenant separation, role-based access, replay protection and body-free analytics logs are production requirements.'],
-    ['Safety and minors', 'Opt-in discovery, predefined first contact, public-place progression, block/report controls and peer discovery off for minors by default.'],
-    ['Crew impact', 'A visible badge photo is used only inside the cruise-line app, without facial recognition, then discarded. Recognition is appreciation—not a public employee leaderboard.'],
-    ['Operational workload', 'Prepared response blocks and routing rules create prioritised signals instead of another unstructured inbox.'],
-    ['Revenue credibility', 'The operator resolves bookings locally; only confirmed, cancelled, refunded and net-value totals enter the signed aggregate report.'],
-    ['Brand and ratings', 'The cruise line controls feature naming, branding and whether any aggregated event rating is published.'],
-    ['Lock-in and ownership', 'The operator keeps identity, commerce and source records. Regreenity can be removed without migrating a passenger database.'],
+const buyerFaqs = [
+  ['Where does Regreenity run?', 'The passenger experience runs inside the cruise line’s existing app as a white-label SDK or embedded module. Identity resolution and source actions run on-device, ship-local or in the operator’s systems. Regreenity cloud receives only aggregate KPI reports and non-identifying service-health telemetry.'],
+  ['How do passenger privacy and data residency work?', 'Passenger and crew source records remain in the operator-controlled environment and residency region. Regreenity receives no names, photos, biometric templates, face-match scores or person-level identifiers; cells below 20 are suppressed.'],
+  ['How much IT integration is required?', 'One embedded feature connects to scoped host interfaces for launch context, operator-side identity, ship operations, booking outcomes and aggregate reporting. The pilot defines each interface before deployment.'],
+  ['What happens when ship connectivity is limited?', 'The interface is cacheable and core actions can use device and ship-local services. Public internet is not required for every interaction; approved aggregate reports synchronize later.'],
+  ['How does Regreenity pass cybersecurity and vendor review?', 'The production requirements include signed requests, tenant separation, role-based access, replay protection, allow-listed aggregate schemas, body-free analytics logs and independent security testing.'],
+  ['How are passenger safety and minors handled?', 'Discovery is opt-in, first contact is predefined, progression requires reciprocity, meeting suggestions are public-place only, and block/report controls remain available. Peer discovery is off for minors by default.'],
+  ['Does crew recognition become employee ranking?', 'No public leaderboard or passenger-facing crew rating is created. Identity verification stays operator-side, recognition uses prepared positive reasons, and employment decisions remain solely with the cruise line.'],
+  ['Will this create additional operational workload?', 'Prepared response blocks, routing rules and priority states turn activity into structured operational signals instead of another free-text inbox.'],
+  ['Can the revenue attribution be trusted?', 'The operator resolves bookings locally and sends signed confirmed, cancelled, refunded and net-value totals. Regreenity does not rely on self-reported clicks or receive booking references.'],
+  ['Who controls the brand and published ratings?', 'The cruise line controls the feature name, co-branding, placement and whether any aggregate event rating is published.'],
+  ['Does the cruise line retain ownership and avoid lock-in?', 'Yes. The operator keeps identity, commerce and all source records. Regreenity can be removed without migrating a passenger or biometric database from us.'],
 ]
 
-const BuyerReadiness = () => <section className="buyer-readiness" aria-labelledby="buyer-readiness-title"><p className="eyebrow">EXECUTIVE READINESS</p><h2 id="buyer-readiness-title">The questions buyers will ask—answered upfront.</h2><div className="buyer-readiness-grid">{buyerConcerns.map(([title,body],index)=><article key={title}><span>{String(index+1).padStart(2,'0')}</span><div><h3>{title}</h3><p>{body}</p></div></article>)}</div></section>
+const faqStructuredData = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: buyerFaqs.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })),
+})
+
+const BuyerReadiness = () => <section className="buyer-readiness" aria-labelledby="buyer-readiness-title"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqStructuredData }}/><p className="eyebrow">BUYER FAQ</p><h2 id="buyer-readiness-title">The questions cruise-line executives will ask—answered upfront.</h2><div className="buyer-readiness-grid">{buyerFaqs.map(([question,answer],index)=><details key={question} open={index===0}><summary><span>{String(index+1).padStart(2,'0')}</span><h3>{question}</h3><i aria-hidden="true">+</i></summary><p>{answer}</p></details>)}</div></section>
 
 const Home = () => (
   <>

@@ -8,6 +8,8 @@ export type AggregateVocabulary = {
   eventResponses: ReadonlySet<string>
   recoveryCategories: ReadonlySet<string>
   productCategories: ReadonlySet<string>
+  healthErrorCodes: ReadonlySet<string>
+  latencyBuckets: ReadonlySet<string>
 }
 
 export type CruiseAggregateReport = {
@@ -51,6 +53,15 @@ export type CruiseAggregateReport = {
       currency: string
       productCategoryCounts: CountCell[]
     }
+    serviceHealth: {
+      measurementMinutes: number
+      availableMinutes: number
+      syncAttempts: number
+      syncSuccesses: number
+      deployedVersion: string
+      errorCounts: CountCell[]
+      latencyCounts: CountCell[]
+    }
   }
 }
 
@@ -58,10 +69,19 @@ const forbiddenIdentityKeys = new Set([
   'name', 'firstname', 'lastname', 'email', 'guestid', 'crewid', 'crewmemberid',
   'passengerid', 'bookingreference', 'attributionref', 'cabin', 'stateroom',
   'phone', 'payment', 'card', 'photo', 'image', 'selfie', 'face', 'freetext',
-  'comment', 'message', 'exacttimestamp', 'ipaddress', 'deviceid',
+  'comment', 'message', 'exacttimestamp', 'ipaddress', 'deviceid', 'biometric',
+  'biometrictemplate', 'facetemplate', 'faceembedding', 'facematchscore', 'matchscore',
+  'randomizedid', 'hashedid', 'pseudonymousid', 'sessionid', 'errormessage', 'stacktrace',
 ])
 
 const normalizedKey = (key: string) => key.toLowerCase().replace(/[^a-z0-9]/g, '')
+
+const isForbiddenIdentityKey = (key: string) => {
+  const normalized = normalizedKey(key)
+  return forbiddenIdentityKeys.has(normalized)
+    || /(?:randomized|hashed|pseudonymous).*(?:guest|passenger|crew|person|user|device).*id/.test(normalized)
+    || /(?:biometric|facetemplate|faceembedding|facematchscore)/.test(normalized)
+}
 
 export function assertAggregateSafe(payload: unknown, path = 'report'): void {
   if (Array.isArray(payload)) {
@@ -70,7 +90,7 @@ export function assertAggregateSafe(payload: unknown, path = 'report'): void {
   }
   if (!payload || typeof payload !== 'object') return
   for (const [key, value] of Object.entries(payload as Record<string, unknown>)) {
-    if (forbiddenIdentityKeys.has(normalizedKey(key))) {
+    if (isForbiddenIdentityKey(key)) {
       throw new Error(`Identity-bearing field is not permitted in aggregate telemetry: ${path}.${key}`)
     }
     assertAggregateSafe(value, `${path}.${key}`)
@@ -92,6 +112,13 @@ function assertSuppressedCells(cells: CountCell[], threshold: number, label: str
   })
 }
 
+function assertOperationalCells(cells: CountCell[], label: string, allowedBuckets: ReadonlySet<string>) {
+  cells.forEach((cell, index) => {
+    if (!allowedBuckets.has(cell.bucket)) throw new Error(`${label}[${index}].bucket is not in the approved operational vocabulary`)
+    assertNonNegative(cell.count, `${label}[${index}].count`)
+  })
+}
+
 /** The only analytics payload Regreenity accepts by default. */
 export function validateCruiseAggregateReport(report: CruiseAggregateReport, vocabulary: AggregateVocabulary): CruiseAggregateReport {
   assertAggregateSafe(report)
@@ -100,7 +127,7 @@ export function validateCruiseAggregateReport(report: CruiseAggregateReport, voc
     throw new Error(`minimumReportingGroup must be at least ${MINIMUM_REPORTING_GROUP}`)
   }
 
-  const { activation, recognition, eventFeedback, recovery, commerce } = report.metrics
+  const { activation, recognition, eventFeedback, recovery, commerce, serviceHealth } = report.metrics
   const values: Array<[string, number]> = [
     ['activation.eligibleGuests', activation.eligibleGuests],
     ['activation.activatedGuests', activation.activatedGuests],
@@ -119,6 +146,10 @@ export function validateCruiseAggregateReport(report: CruiseAggregateReport, voc
     ['commerce.cancelledTotal', commerce.cancelledTotal],
     ['commerce.refundedTotal', commerce.refundedTotal],
     ['commerce.netAttributedValue', commerce.netAttributedValue],
+    ['serviceHealth.measurementMinutes', serviceHealth.measurementMinutes],
+    ['serviceHealth.availableMinutes', serviceHealth.availableMinutes],
+    ['serviceHealth.syncAttempts', serviceHealth.syncAttempts],
+    ['serviceHealth.syncSuccesses', serviceHealth.syncSuccesses],
   ]
   values.forEach(([label, value]) => assertNonNegative(value, label))
   eventFeedback.ratingCounts.forEach((count, index) => assertNonNegative(count, `eventFeedback.ratingCounts[${index}]`))
@@ -127,5 +158,7 @@ export function validateCruiseAggregateReport(report: CruiseAggregateReport, voc
   assertSuppressedCells(eventFeedback.preparedResponseCounts, report.minimumReportingGroup, 'eventFeedback.preparedResponseCounts', vocabulary.eventResponses)
   assertSuppressedCells(recovery.categoryCounts, report.minimumReportingGroup, 'recovery.categoryCounts', vocabulary.recoveryCategories)
   assertSuppressedCells(commerce.productCategoryCounts, report.minimumReportingGroup, 'commerce.productCategoryCounts', vocabulary.productCategories)
+  assertOperationalCells(serviceHealth.errorCounts, 'serviceHealth.errorCounts', vocabulary.healthErrorCodes)
+  assertOperationalCells(serviceHealth.latencyCounts, 'serviceHealth.latencyCounts', vocabulary.latencyBuckets)
   return report
 }

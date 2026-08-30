@@ -18,19 +18,20 @@ Each report contains only:
 - live-event feedback: response total, one-to-five rating distribution and prepared-response counts;
 - recovery: issue, acknowledgement and resolution totals, median response times and prepared category counts;
 - commerce: handoff, confirmed, cancelled and refunded totals, currency, net attributed value and product-category counts.
+- service health: measurement/availability minutes, sync attempts/successes, deployed version, allow-listed error counts and latency buckets without device or person identifiers.
 
 No row can identify a passenger or crew member. Every reason, department, response and product bucket must match a server-side vocabulary agreed during configuration; arbitrary bucket text is rejected. Individual recognition may remain available to authorized cruise-line leaders in their own system, but it is not transmitted to Regreenity.
 
 ## Instant crew recognition with a photo
 
 1. The passenger opens crew recognition inside the cruise-line app.
-2. The camera asks the passenger to frame the visible crew name badge. A selfie is acceptable only when the crew member voluntarily participates and the badge/name remains readable.
-3. The host app reads the printed identifier or lets the passenger confirm a directory match. It does not perform facial recognition.
+2. The camera asks the passenger to frame the crew member and visible badge. A crew-participating selfie is also supported.
+3. The host app narrows the candidate from badge/roster context and, where the operator has approved the necessary legal and security controls, performs an operator-side face match to resolve duplicate names.
 4. The passenger selects up to two prepared positive reasons and sends the recognition to the cruise line's service.
-5. The image is discarded immediately after confirmation/send. It is not put in analytics, logs, queues or backups and never reaches Regreenity.
+5. The image, biometric template, candidate list and match score remain on-device, ship-local or in the cruise line's own identity service. They never reach Regreenity and are retained or deleted under the operator's documented biometric policy.
 6. The cruise-line privacy gateway later contributes the interaction only to threshold-protected sailing/day/department totals.
 
-The cruise line remains responsible for an appropriate lawful basis, transparent crew/passenger notice, staff policies, access controls and any deployment-specific impact assessment. A camera permission prompt is not, by itself, a GDPR lawful basis.
+The cruise line remains responsible for an Article 6 lawful basis, an applicable Article 9 condition for biometric identification, transparent crew/passenger notice, staff policies, access controls, accuracy/challenge processes, a non-biometric fallback and any required impact assessment. A camera permission prompt is not, by itself, a GDPR lawful basis.
 
 ## Revenue attribution
 
@@ -55,7 +56,7 @@ Regreenity may report activation, structured ratings, recognition, recovery, con
 - signed connector requests and replay protection;
 - strict report schema, recursive identity-field rejection and server-side bucket allow-lists;
 - no raw-event endpoint;
-- cruise-line-side deletion of temporary badge images;
+- operator-controlled biometric processing, retention, accuracy testing and non-biometric fallback;
 - role-based dashboard access;
 - deletion and aggregation schedules inside the cruise-line environment;
 - audit logs without identity payloads;
