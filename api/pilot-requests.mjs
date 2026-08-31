@@ -33,8 +33,13 @@ export default async function handler(request, response) {
     }).select('id').single()
     if (error) throw error
     const { error: outboxError } = await database.from('pilot_request_notifications').insert({ pilot_request_id: enquiry.id })
-    if (outboxError) throw outboxError
-    await deliverEnquiryNotification(database, enquiry.id)
+    if (outboxError) {
+      // The enquiry is already durably stored. Notification infrastructure must
+      // never turn a successful conversion into a customer-visible failure.
+      console.error('pilot-request-notification-queue-failed', outboxError.message)
+    } else {
+      await deliverEnquiryNotification(database, enquiry.id)
+    }
     return sendJson(response, 201, { accepted: true })
   } catch (error) {
     if (error instanceof SyntaxError) return sendJson(response, 400, { error: 'invalid_json' })
