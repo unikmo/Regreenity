@@ -1,4 +1,4 @@
-import type { ActionEnvelope, Connectivity, CruiseEvent, CruiseSession, FaceMatchResult, HostAdapter, Meetup, PurchaseIntent } from '../../sdk/src/index.ts'
+import type { ActionEnvelope, Connectivity, CruiseEvent, CruiseSession, FaceMatchResult, HostAdapter, Meetup, PurchaseIntent, VConnectRequest, VConnectUpdate } from '../../sdk/src/index.ts'
 
 export class ReferenceCruiseHost implements HostAdapter {
   connectivity:Connectivity='online'
@@ -22,6 +22,8 @@ export class ReferenceCruiseHost implements HostAdapter {
   async getConnectivity(){return this.connectivity}
   async listEvents(){return structuredClone(this.eventRows)}
   async listMeetups(){return structuredClone(this.meetupRows)}
+  async listVConnectInbox():Promise<VConnectRequest[]>{return []}
+  async listVConnectUpdates():Promise<VConnectUpdate[]>{return []}
   private sailingLocalDay(){return new Intl.DateTimeFormat('en-CA',{timeZone:this.sailingTimezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
   async submitAction(_session:CruiseSession,envelope:ActionEnvelope){
     if(this.seen.has(envelope.idempotencyKey))return {accepted:true,duplicate:true}

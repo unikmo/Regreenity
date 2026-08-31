@@ -1,7 +1,7 @@
 {
   "name": "cruiseconnect",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,10 +11,18 @@
     "test:sdk-security": "node --experimental-strip-types scripts/test-sdk-security.ts",
     "test:native-contracts": "node scripts/test-native-contracts.mjs",
     "test:deployment-security": "node scripts/test-deployment-security.mjs",
+    "test:operator-edge": "node scripts/test-operator-edge.mjs",
+    "test:ui": "node scripts/test-ui-contracts.mjs",
     "test:load": "node --experimental-strip-types scripts/test-sdk-load.ts",
-    "test": "npm run test:privacy && npm run test:sdk && npm run test:sdk-security && npm run test:native-contracts && npm run test:deployment-security && npm run test:load",
+    "test": "npm run test:privacy && npm run test:sdk && npm run test:sdk-security && npm run test:native-contracts && npm run test:deployment-security && npm run test:operator-edge && npm run test:ui && npm run test:load",
     "build:sdk": "tsc -p packages/sdk/tsconfig.json",
     "release:sdk": "npm run build:sdk && npm pack ./packages/sdk --pack-destination releases",
+    "release:edge": "npm pack ./packages/operator-edge --pack-destination releases",
+    "release:packages": "npm run release:sdk && npm run release:edge && npm run release:manifest && npm run release:verify",
+    "release:manifest": "node scripts/release-manifest.mjs",
+    "release:verify": "node scripts/verify-release.mjs",
+    "release:rollback": "node scripts/rollback-release.mjs",
+    "edge:start": "node packages/operator-edge/src/index.mjs",
     "qa:site": "node scripts/qa-site.mjs",
     "preview": "vite preview",
     "seo:generate": "node scripts/generate-sitemap.mjs"

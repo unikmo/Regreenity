@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { Icon } from './App'
+import { Icon } from './Icon'
 
 type DemoStep = {
   phase: 'Overview' | 'Cruise app' | 'Passenger' | 'Management' | 'Integration' | 'Pilot'

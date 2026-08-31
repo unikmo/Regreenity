@@ -7,3 +7,6 @@ dist/
 .env.*
 *.log
 .DS_Store
+.release-secrets/
+.tmp-conformance.sqlite*
+supabase/.temp/

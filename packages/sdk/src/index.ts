@@ -21,7 +21,9 @@ export interface PurchaseIntent { productId:string; category:string; attribution
 export interface PurchaseOutcome { attributionRef:string; status:'confirmed'|'cancelled'|'refunded'; value:number; currency:string }
 export interface FaceMatchResult { status:'recognized'|'not-recognized'|'ineligible'; receiverToken?:string; reason?:string }
 export interface StructuredFeedback { eventId:string; score:1|2|3|4|5; responseIds:string[] }
-export type VConnectResponse = 'accepted'|'declined'
+export type VConnectResponse = 'accepted'|'declined'|'blocked'|'reported'
+export interface VConnectRequest { requestToken:string; requesterDisplayName:string; requestOptionId:string; createdAt:string; expiresAt:string }
+export interface VConnectUpdate { requestId:string; connectionToken:string; requestOptionId:string; acceptedAt:string }
 
 export type Action =
   | { type:'interests.updated'; interests:string[] }
@@ -45,6 +47,8 @@ export interface HostAdapter {
   getConnectivity():Promise<Connectivity>
   listEvents(session:CruiseSession):Promise<CruiseEvent[]>
   listMeetups(session:CruiseSession):Promise<Meetup[]>
+  listVConnectInbox(session:CruiseSession):Promise<VConnectRequest[]>
+  listVConnectUpdates(session:CruiseSession):Promise<VConnectUpdate[]>
   submitAction(session:CruiseSession,envelope:ActionEnvelope):Promise<{accepted:boolean; duplicate?:boolean; rejectionReason?:string}>
   matchPassenger(session:CruiseSession,imageBytes:Uint8Array):Promise<FaceMatchResult>
   matchCrew(session:CruiseSession,imageBytes:Uint8Array):Promise<FaceMatchResult>
@@ -74,6 +78,8 @@ export class HttpHostAdapter implements HostAdapter {
   async getConnectivity(){return typeof navigator!=='undefined'&&!navigator.onLine?'offline':'online' as Connectivity}
   async listEvents(session:CruiseSession){return this.request<CruiseEvent[]>(`/sailings/${encodeURIComponent(session.sailingRef)}/events`)}
   async listMeetups(session:CruiseSession){return this.request<Meetup[]>(`/sailings/${encodeURIComponent(session.sailingRef)}/meetups`)}
+  async listVConnectInbox(_session:CruiseSession){return this.request<VConnectRequest[]>('/vconnect/inbox')}
+  async listVConnectUpdates(_session:CruiseSession){return this.request<VConnectUpdate[]>('/vconnect/updates')}
   async submitAction(_session:CruiseSession,envelope:ActionEnvelope){return this.request<{accepted:boolean;duplicate?:boolean;rejectionReason?:string}>('/actions',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':envelope.idempotencyKey},body:JSON.stringify(envelope)})}
   async matchPassenger(_session:CruiseSession,imageBytes:Uint8Array){return this.request<FaceMatchResult>('/recognition/passenger-match',{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:imageBytes as BodyInit})}
   async matchCrew(_session:CruiseSession,imageBytes:Uint8Array){return this.request<FaceMatchResult>('/recognition/crew-match',{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:imageBytes as BodyInit})}
@@ -152,6 +158,8 @@ export class CruiseConnectClient {
   }
   async events(){return this.host.listEvents(this.require('event-feedback'))}
   async meetups(){return this.host.listMeetups(this.require('meetups'))}
+  async vconnectInbox(){return this.host.listVConnectInbox(this.require('vconnect'))}
+  async vconnectUpdates(){return this.host.listVConnectUpdates(this.require('vconnect'))}
   async updateInterests(interests:string[]){
     const clean=[...new Set(interests.map(x=>x.trim()).filter(x=>x.length>0&&x.length<=80))].slice(0,12)
     return this.dispatch('interests',{type:'interests.updated',interests:clean})

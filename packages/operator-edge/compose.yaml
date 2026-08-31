@@ -1,0 +1,18 @@
+services:
+  cruiseconnect-edge:
+    build:
+      context: ../..
+      dockerfile: packages/operator-edge/Dockerfile
+    ports: ["8787:8787"]
+    environment:
+      CRUISECONNECT_EDGE_JWT_SECRET: "replace-with-at-least-32-random-characters"
+      CRUISECONNECT_EDGE_HASH_SALT: "replace-with-a-separate-random-secret"
+      CRUISECONNECT_EDGE_ALLOWED_ORIGINS: "https://app.cruiseline.example"
+    volumes: ["cruiseconnect-edge-data:/data"]
+    read_only: true
+    tmpfs: ["/tmp"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    restart: unless-stopped
+volumes:
+  cruiseconnect-edge-data: {}

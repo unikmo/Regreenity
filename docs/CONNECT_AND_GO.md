@@ -1,4 +1,4 @@
-# CruiseConnect 1.0 — Connect-and-go deployment
+# CruiseConnect 1.1 — Connect-and-go deployment
 
 ## What ships
 
@@ -7,6 +7,7 @@
 - `packages/native-android`: Android library bridge for a cruise-line `WebView`.
 - `contracts/operator-api.v1.yaml`: standard operator-edge HTTP contract.
 - `packages/reference-host`: executable synthetic cruise host used by the sandbox and tests.
+- `packages/operator-edge`: persistent operator-controlled service with signed sailing sessions, daily safety limits, VConnect consent states, audit, retention and identifier-free metrics.
 - `/sandbox/`: reference app exercising every passenger and management journey.
 - `/portal/`: tenant-isolated configuration, aggregate outcomes and operational health.
 
@@ -45,13 +46,13 @@ Passenger and crew profiles, bookings, captures, recognition templates, source a
 
 ## Release gates
 
-Run `npm test`, `npm run build`, `npm run build:sdk`, then `npm run release:sdk`. A customer release must also pass operator API conformance, iOS/Android host-app builds, accessibility/device QA, penetration review and a ship-connectivity rehearsal using customer infrastructure.
+Run `npm test`, `npm run build`, `npm run release:sdk`, `npm run release:manifest` and `npm run release:verify`. Run the conformance script against the deployed operator edge. A customer release must also pass iOS/Android host-app builds, accessibility/device QA, penetration review and a ship-connectivity rehearsal using customer infrastructure.
 
 ## Deployment sequence
 
 1. Create the operator tenant and invite operator administrators.
 2. Select features and white-label settings in `/portal/`.
-3. Deploy the operator-edge API against the OpenAPI contract.
+3. Deploy `packages/operator-edge` or an equivalent service against the OpenAPI contract; replace the bundled synthetic adapter with customer mappings.
 4. Add the Web SDK and one native bridge to the existing app.
 5. Run `/sandbox/` and the automated test suite against the operator adapter.
 6. Complete a non-production sailing rehearsal, then promote the same versioned packages to the pilot.
@@ -59,3 +60,7 @@ Run `npm test`, `npm run build`, `npm run build:sdk`, then `npm run release:sdk`
 ## Privacy default
 
 The minimum reporting group is 20. No small cell, person-level token, image, biometric, free text, device identifier, cabin, booking reference or exact source timestamp is accepted by the Regreenity aggregate API.
+
+## What still requires the cruise line
+
+Production mappings and credentials for identity/roster, booking and sailing, events, commerce, notifications and ship connectivity; operator security and data-residency approval; mobile signing identities; and a rehearsal on the actual vessel network. The reference adapter proves the journeys but cannot truthfully replace those customer systems.

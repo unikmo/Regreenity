@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: CruiseConnect Operator Edge API
-  version: 1.0.0
+  version: 1.1.0
   description: Operator-hosted contract. Passenger and crew records never traverse the Regreenity cloud boundary.
 servers: [{url: https://ship-api.cruiseline.example/cruiseconnect/v1}]
 security: [{sailingToken: []}]
@@ -17,6 +17,10 @@ paths:
       operationId: submitAction
       parameters: [{name: Idempotency-Key, in: header, required: true, schema: {type: string, format: uuid}}]
       responses: {'202': {description: Accepted}, '409': {description: Duplicate accepted idempotently}, '429': {description: Sailing-local daily safety limit reached}}
+  /vconnect/inbox:
+    get: {operationId: listVConnectInbox, description: Adult recipient's pending prepared-text requests. Includes no cabin or free-text route., responses: {'200': {description: Pending requests}}}
+  /vconnect/updates:
+    get: {operationId: listVConnectUpdates, description: Requester sees accepted updates only; decline, block, report and expiry remain private., responses: {'200': {description: Accepted updates}}}
   /recognition/passenger-match:
     post: {operationId: matchAdultPassenger, description: Operator-zone ephemeral image match; capture destroyed after resolution., responses: {'200': {description: Recognition result}}}
   /recognition/crew-match:
@@ -27,6 +31,15 @@ paths:
     get: {operationId: getPurchaseOutcome, parameters: [{name: attributionRef, in: path, required: true, schema: {type: string}}], responses: {'200': {description: Purchase outcome}}}
   /notifications:
     post: {operationId: scheduleNotification, description: Host-app local or push notification., responses: {'204': {description: Accepted}}}
+  /admin/config:
+    get: {operationId: getConfiguration, security: [{sailingToken: []}], responses: {'200': {description: Operator-controlled limits, templates, venues, times, retention and flags}}}
+    put: {operationId: updateConfiguration, security: [{sailingToken: []}], responses: {'200': {description: Validated configuration}, '400': {description: Unsafe or invalid option rejected}}}
+  /admin/audit:
+    get: {operationId: getAudit, security: [{sailingToken: []}], responses: {'200': {description: Identifier-minimised administrative audit}}}
+  /admin/blocks:
+    get: {operationId: listBlocks, security: [{sailingToken: []}], responses: {'200': {description: Sailing-scoped participant blocks}}}
+  /admin/cleanup:
+    post: {operationId: cleanupRetention, security: [{sailingToken: []}], responses: {'200': {description: Bounded-retention cleanup result}}}
 components:
   securitySchemes:
     sailingToken: {type: http, scheme: bearer, bearerFormat: short-lived signed JWT}

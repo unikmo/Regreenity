@@ -14,6 +14,7 @@ if (!existsSync(root)) fail('dist/ does not exist; run the production build firs
 
 const files = existsSync(root) ? walk(root) : []
 const htmlFiles = files.filter(file => extname(file) === '.html')
+const clientBundles = files.filter(file => /assets[\\/].*\.js$/.test(file)).map(file => readFileSync(file, 'utf8')).join('\n')
 
 for (const file of htmlFiles) {
   const name = relative(root, file).replaceAll('\\', '/')
@@ -63,13 +64,13 @@ if (existsSync(productApp)) {
 const pilot = join(root, 'pilot', 'index.html')
 if (existsSync(pilot)) {
   const html = readFileSync(pilot, 'utf8')
-  if (!html.includes('formsubmit.co/info@regreenity.com')) fail('pilot page contact form is not connected to info@regreenity.com')
+  if (!clientBundles.includes('/api/pilot-requests')) fail('pilot page contact form is not connected to the first-party enquiry API')
+  if (html.includes('formsubmit.co') || clientBundles.includes('formsubmit.co')) fail('pilot page still exposes a third-party form relay')
   if (!html.includes('mailto:info@regreenity.com')) fail('pilot page lacks direct email fallback')
   if (!/complete Regreenity|complete connected product/i.test(html)) fail('pilot page does not present the complete product experience')
   if (!/existing app/i.test(html)) fail('pilot page does not identify Regreenity as an add-on to the existing app')
 }
 
-const clientBundles = files.filter(file => /assets[\\/].*\.js$/.test(file)).map(file => readFileSync(file, 'utf8')).join('\n')
 if (/Cruise Connection/i.test(clientBundles)) fail('client bundle contains legacy Cruise Connection branding')
 if (/does not transmit data yet|production CRM\/API connection is intentionally pending/i.test(clientBundles)) fail('client bundle contains a disconnected demo-form path')
 if (!clientBundles.includes('/pilot/#contact')) fail('client bundle does not contain the single pilot contact destination')
