@@ -46,7 +46,8 @@ export async function registerOfflineShell() {
   // Never let an old offline shell hide fresh UI changes during local development.
   // Production/offboard preview environments still register the offline-first shell normally.
   const host = window.location.hostname
-  if (host === 'localhost' || host === '127.0.0.1') {
+  const localOfflineTest = new URLSearchParams(window.location.search).get('offline-test') === '1'
+  if ((host === 'localhost' || host === '127.0.0.1') && !localOfflineTest) {
     try {
       const registrations = await navigator.serviceWorker.getRegistrations()
       await Promise.all(registrations.map(registration => registration.unregister()))

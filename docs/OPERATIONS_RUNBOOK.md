@@ -4,6 +4,8 @@
 
 Build and test from a clean commit. Pack the SDK, generate the Ed25519 manifest, and verify it before promoting the exact digest to a staging ship environment. Release configuration starts disabled and is enabled by sailing and feature only after identity, safety, offline and rollback checks pass.
 
+Tagged public releases additionally use GitHub OIDC provenance and SBOM attestations; GHCR operator-edge images are signed keylessly with Sigstore. The persistent staging blueprint is `render.yaml` and starts with automatic deployment disabled, generated secrets, managed TLS, a health check and a 10 GB persistent disk.
+
 ## Health and monitoring
 
 Use `/health` for process liveness, `/ready` for database readiness and `/metrics` for identifier-free Prometheus counters. Alert on readiness failures, sustained 5xx responses, queue backlog, rejected authentication and retention cleanup failure. Never place passenger, crew, booking, cabin or image identifiers in metrics or logs.

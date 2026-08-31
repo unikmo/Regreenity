@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { allowPost, isSameSiteRequest, readJson, sendJson } from './_lib/http.mjs'
 import { adminDatabase } from './_lib/supabase.mjs'
+import { deliverEnquiryNotification } from './_lib/enquiry-notification.mjs'
 
 export const enquirySchema = z.object({
   name: z.string().trim().min(2).max(120),
@@ -23,14 +24,17 @@ export default async function handler(request, response) {
     if (website) return sendJson(response, 202, { accepted: true })
 
     const database = adminDatabase()
-    const { error } = await database.from('pilot_requests').insert({
+    const { data: enquiry, error } = await database.from('pilot_requests').insert({
       ...rest,
       work_email: workEmail.toLowerCase(),
       role_title: roleTitle || null,
       consented_at: new Date().toISOString(),
       source_path: '/pilot/',
-    })
+    }).select('id').single()
     if (error) throw error
+    const { error: outboxError } = await database.from('pilot_request_notifications').insert({ pilot_request_id: enquiry.id })
+    if (outboxError) throw outboxError
+    await deliverEnquiryNotification(database, enquiry.id)
     return sendJson(response, 201, { accepted: true })
   } catch (error) {
     if (error instanceof SyntaxError) return sendJson(response, 400, { error: 'invalid_json' })

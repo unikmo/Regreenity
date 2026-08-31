@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: cruiseconnect-edge-staging
+    runtime: docker
+    dockerfilePath: ./packages/operator-edge/Dockerfile
+    dockerContext: .
+    healthCheckPath: /ready
+    autoDeploy: false
+    plan: starter
+    disk:
+      name: cruiseconnect-edge-data
+      mountPath: /data
+      sizeGB: 10
+    envVars:
+      - key: CRUISECONNECT_EDGE_DB
+        value: /data/cruiseconnect-edge.sqlite
+      - key: CRUISECONNECT_EDGE_JWT_SECRET
+        generateValue: true
+      - key: CRUISECONNECT_EDGE_HASH_SALT
+        generateValue: true
+      - key: CRUISECONNECT_EDGE_ALLOWED_ORIGINS
+        sync: false
+      - key: NODE_ENV
+        value: production

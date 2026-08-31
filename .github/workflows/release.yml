@@ -1,0 +1,38 @@
+name: Signed release
+on:
+  push: { tags: ['v*'] }
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+jobs:
+  packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: mkdir -p release-output && npm pack ./packages/sdk --pack-destination release-output && npm pack ./packages/operator-edge --pack-destination release-output
+      - run: npm run sbom
+      - uses: actions/attest-build-provenance@v2
+        with: { subject-path: 'release-output/*.tgz' }
+      - uses: actions/attest-sbom@v2
+        with: { subject-path: 'release-output/*.tgz', sbom-path: 'artifacts/sbom.cdx.json' }
+      - uses: softprops/action-gh-release@v2
+        with: { files: 'release-output/*' }
+  container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with: { registry: ghcr.io, username: '${{ github.actor }}', password: '${{ secrets.GITHUB_TOKEN }}' }
+      - id: build
+        uses: docker/build-push-action@v6
+        with: { context: ., file: packages/operator-edge/Dockerfile, push: true, tags: 'ghcr.io/${{ github.repository_owner }}/cruiseconnect-edge:${{ github.ref_name }}' }
+      - uses: sigstore/cosign-installer@v3
+      - run: cosign sign --yes ghcr.io/${{ github.repository_owner }}/cruiseconnect-edge@${{ steps.build.outputs.digest }}

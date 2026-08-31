@@ -10,3 +10,8 @@ dist/
 .release-secrets/
 .tmp-conformance.sqlite*
 supabase/.temp/
+artifacts/
+playwright-report/
+test-results/
+.playwright-browsers/
+backups/

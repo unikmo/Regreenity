@@ -55,7 +55,7 @@ export function createOperatorEdge(options = {}) {
     }
     try {
       const url = new URL(request.url || '/', 'http://edge.local'), path = url.pathname
-      if (path === '/health' && request.method === 'GET') return json(response, 200, { status: 'ok', version: '1.1.0' })
+      if (path === '/health' && request.method === 'GET') return json(response, 200, { status: 'ok', version: '1.1.1' })
       if (path === '/ready' && request.method === 'GET') { database.db.prepare('select 1').get(); return json(response, 200, { status: 'ready' }) }
       if (path === '/metrics' && request.method === 'GET') { response.writeHead(200, { 'Content-Type': 'text/plain; version=0.0.4', 'Cache-Control': 'no-store' }); return response.end(service.metricsText()) }
 
