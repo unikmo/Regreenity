@@ -228,9 +228,11 @@ const Home = () => (
 
 const PilotContactForm = () => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>(new URLSearchParams(window.location.search).get('sent') === '1' ? 'sent' : 'idle')
+  const [errorMessage, setErrorMessage] = useState('')
   const submitEnquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setStatus('sending')
+    setErrorMessage('')
     const form = new FormData(event.currentTarget)
     try {
       const response = await fetch('/api/pilot-requests', {
@@ -246,10 +248,20 @@ const PilotContactForm = () => {
           website: form.get('_honey') || '',
         }),
       })
-      if (!response.ok) throw new Error('request_failed')
+      if (!response.ok) {
+        const problem = await response.json().catch(() => ({})) as { error?: string, invalidFields?: string[] }
+        if (response.status === 400 && problem.error === 'invalid_enquiry') {
+          const labels: Record<string,string> = { workEmail:'work email', name:'name', company:'company', roleTitle:'role', message:'pilot details', privacyConsent:'privacy consent' }
+          const fields = (problem.invalidFields || []).map(field => labels[field] || field).join(', ')
+          setErrorMessage(fields ? `Please check: ${fields}.` : 'Please check the form details and try again.')
+        } else setErrorMessage('The secure form is temporarily unavailable. Please email info@regreenity.com.')
+        setStatus('error')
+        return
+      }
       setStatus('sent')
       event.currentTarget.reset()
     } catch {
+      setErrorMessage('The secure form is temporarily unavailable. Please email info@regreenity.com.')
       setStatus('error')
     }
   }
@@ -258,7 +270,7 @@ const PilotContactForm = () => {
     <form className="pilot-contact-form" onSubmit={submitEnquiry}>
       <input className="form-honeypot" type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       {status === 'sent' && <p className="form-success" role="status">Thank you. Your Regreenity enquiry is safely recorded. We’ll reply personally.</p>}
-      {status === 'error' && <p className="form-error" role="alert">The secure form is temporarily unavailable. Please email <a href="mailto:info@regreenity.com">info@regreenity.com</a>.</p>}
+      {status === 'error' && <p className="form-error" role="alert">{errorMessage || <>The secure form is temporarily unavailable. Please email <a href="mailto:info@regreenity.com">info@regreenity.com</a>.</>}</p>}
       <label>Work email<input required name="email" type="email" autoComplete="email" placeholder="name@cruiseline.com" /></label>
       <div className="contact-form-row"><label>Name<input required name="name" autoComplete="name" placeholder="Your name" /></label><label>Role<input name="role" autoComplete="organization-title" placeholder="Guest Experience, Digital…" /></label></div>
       <label>Cruise line or company<input required name="company" autoComplete="organization" placeholder="Organisation" /></label>

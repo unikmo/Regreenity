@@ -13,13 +13,30 @@ export const enquirySchema = z.object({
   website: z.string().max(200).optional().default(''),
 }).strict()
 
+export function normalizeEnquiry(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return value
+  return {
+    name: value.name ?? value.fullName,
+    workEmail: value.workEmail ?? value.email,
+    company: value.company ?? value.organisation ?? value.organization,
+    roleTitle: value.roleTitle ?? value.role ?? '',
+    message: value.message ?? value.details,
+    privacyConsent: value.privacyConsent === true || value.privacyConsent === 'true' || value.privacy_consent === 'yes',
+    website: value.website ?? value._honey ?? '',
+  }
+}
+
 export default async function handler(request, response) {
   if (!allowPost(request, response)) return
   if (!isSameSiteRequest(request)) return sendJson(response, 403, { error: 'origin_not_allowed' })
 
   try {
-    const parsed = enquirySchema.safeParse(await readJson(request, 16_000))
-    if (!parsed.success) return sendJson(response, 400, { error: 'invalid_enquiry' })
+    const parsed = enquirySchema.safeParse(normalizeEnquiry(await readJson(request, 16_000)))
+    if (!parsed.success) {
+      const invalidFields = [...new Set(parsed.error.issues.map(issue => String(issue.path[0] || 'request')))]
+      console.warn('pilot-request-validation-failed', invalidFields.join(','))
+      return sendJson(response, 400, { error: 'invalid_enquiry', invalidFields })
+    }
     const { website, privacyConsent, workEmail, roleTitle, ...rest } = parsed.data
     if (website) return sendJson(response, 202, { accepted: true })
 
