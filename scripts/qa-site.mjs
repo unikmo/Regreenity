@@ -102,6 +102,19 @@ if (!clientBundles.includes('no second in-app confirmation')) fail('Anonymous Vi
 if (clientBundles.includes('Activate face matching first')) fail('Anonymous Vibe still contains a redundant in-app face-matching confirmation')
 if (clientBundles.includes('voluntary selfie') || clientBundles.includes('crew-participating selfie')) fail('Crew recognition still suggests a guest selfie')
 if (!clientBundles.includes('face and visible name badge')) fail('Crew recognition does not require face-and-name-badge framing')
+if (!clientBundles.includes('VConnect opens only after both adults agree')) fail('product is missing the separate mutual-consent VConnect journey')
+if (!clientBundles.includes('One request per sailing day')) fail('VConnect demo is missing the daily request limit')
+if (!clientBundles.includes('requester receives no rejection')) fail('VConnect demo is missing non-acceptance privacy')
+if (!clientBundles.includes('Eight vibes maximum per sailing day')) fail('Anonymous Vibe demo is missing the daily send cap')
+
+const sdkSource = readFileSync(resolve('packages/sdk/src/index.ts'), 'utf8')
+for (const required of ['requestVConnect', 'respondToVConnect', 'proposeVConnectPlan', "'vconnect.requested'", "'vconnect.responded'", "'vconnect.plan.proposed'"]) {
+  if (!sdkSource.includes(required)) fail(`SDK is missing VConnect contract ${required}`)
+}
+const referenceHostSource = readFileSync(resolve('packages/reference-host/src/index.ts'), 'utf8')
+for (const required of [">=8)return {accepted:false,rejectionReason:'daily_vibe_limit'", ">=1)return {accepted:false,rejectionReason:'daily_vconnect_limit'"]) {
+  if (!referenceHostSource.includes(required)) fail(`reference host is missing enforced safety limit ${required}`)
+}
 
 const privacyContractSource = readFileSync(resolve('src/privacyMetrics.ts'), 'utf8')
 for (const required of ['CruiseAggregateReport', 'MINIMUM_REPORTING_GROUP = 20', 'crewmemberid', 'photo', 'biometrictemplate', 'facematchscore', 'validateCruiseAggregateReport']) {

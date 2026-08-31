@@ -58,6 +58,8 @@ Recommended positive-signal rate limit:
 
 `UNIQUE (sailing_id, sender_passenger_id, recipient_passenger_id, service_date_local)`
 
+In addition, an authenticated passenger may send no more than eight positive signals in one sailing-local day. The ninth attempt pauses sending until the next sailing day. This limit is enforced in the cruise line's operator environment before an interaction is accepted.
+
 For shareable passenger summaries, each sender should contribute at most one count to a given affirmation label across the sailing. This prevents repeated signals from one person inflating the recipient's public summary. Activity invitations should be deduplicated separately by activity/context.
 
 ### CrewRecognition
@@ -140,8 +142,8 @@ Service issues are private operational records and never enter the public recogn
 - No dating preference or dating mode.
 - Public sharing excludes private sender identity by default.
 - Service issues are private operational records.
-- Badge capture is for the visible employee identifier, not facial recognition.
-- Badge images should be retained only as long as operationally necessary and replaced by structured identifiers where integration permits.
+- Crew capture must show the crew member's face and visible name badge. Operator-side face matching resolves the crew roster record; badge text is a supporting check and is not used alone.
+- Crew images and biometric match artefacts remain operator-side and should be discarded under the cruise line's documented retention policy after identity resolution.
 - Block/report controls remain available for passenger interaction.
 
 ### PassengerDiscoveryPreference
@@ -203,6 +205,19 @@ An ignored signal terminates the interaction. A public meeting/activity proposal
 - created_at
 
 Allowed types are configured from approved public onboard venues/activities (coffee, bar, restaurant, game, spa/wellness, shopping, fitness, show, excursion, etc.). Cabins/staterooms are explicitly excluded from the allowed enum/configuration.
+
+### VConnectRequest
+
+- id
+- sailing_id
+- requester_passenger_id
+- recipient_passenger_id
+- predefined_request_option_id
+- service_date_local
+- status (`pending` | `accepted` | `declined` | `blocked` | `expired`)
+- created_at / responded_at / expires_at
+
+Only one request may be created by a passenger per sailing-local day. The requester receives a status event only for `accepted`; all other terminal states remain undisclosed. An accepted request produces a sailing-scoped connection token that permits prepared public-venue/activity and time proposals. It never enables free text, cabin or room-number exchange, exact live location, or dating-oriented templates.
 
 ### OfflineAction
 - idempotency_key

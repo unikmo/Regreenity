@@ -39,12 +39,16 @@ The cruise line remains responsible for an Article 6 lawful basis, an applicable
 1. The cruise line may include CruiseConnect passenger recognition as a clearly stated purpose in its adult boarding imaging enrolment. An adult who accepts that combined enrolment joins the sailing recognition pool once and receives no second in-app confirmation; adults who decline or later opt out are excluded.
 2. The sender photographs the intended adult receiver inside the cruise-line app. The capture is encrypted to the operator identity zone and never enters Regreenity infrastructure.
 3. The operator returns only an opaque one-time receiver token or a generic unavailable result. It does not return a name, profile, candidate list, age, reason for rejection or match score.
-4. Before accepting the vibe, the operator verifies same sailing, adult eligibility, different cabin/booking group and duplicate/abuse limits. Children cannot send, receive or be matched.
+4. Before accepting the vibe, the operator verifies same sailing, adult eligibility, different cabin/booking group and duplicate/abuse limits. Each sender is capped at eight vibes per sailing-local day; a ninth attempt pauses sending until the next sailing day. Children cannot send, receive or be matched.
 5. The sender chooses one prepared compliment. The stored compliment record contains no sender identity, and delivery is randomized or batched so the exact time cannot identify the sender.
 6. The capture is destroyed immediately after the match transaction. The sailing-scoped opted-in reference template remains only under the operator's documented retention schedule and is deleted when no longer needed.
 7. Regreenity receives only threshold-protected totals and dense-rank distributions. It receives no sender/receiver token, image, template or person-level rank.
 
 Dense ranking assigns one position to each distinct valid-vibe total. If ten passengers tie at position four, all are position four and the next lower distinct score is position five. A Top Five badge therefore represents the first five score positions, not necessarily five passengers. It is private by default and may be shared only by the passenger who received it.
+
+## VConnect mutual-consent request
+
+VConnect is operationally separate from Anonymous Vibes. An eligible adult may send one predefined request per sailing-local day. The recipient sees a limited requester profile inside the cruise-line app and can accept, decline, block or report. Only acceptance is disclosed to the requester; an ignored, declined or reported request exposes no read receipt, reason or status. After acceptance, interaction remains limited to operator-approved public venues, activities and time windows. No free-text message, cabin, room number or exact live location is accepted. These person-level records remain inside the cruise line's environment and are not Regreenity analytics inputs.
 
 Event reservations are count-only by default. A passenger may separately expose a chosen name/image to confirmed attendees. The cruise line must not publish passenger identity or rankings to social media.
 

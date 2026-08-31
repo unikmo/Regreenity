@@ -45,6 +45,8 @@ Recommended characteristics:
 
 The host should resolve a rotating proximity identifier to a limited passenger discovery profile only after verifying both guests are entitled to the same sailing and have opted in. Rotating or hashed person-level identifiers stay operator-side and are not Regreenity analytics inputs.
 
+The operator edge must enforce passenger-to-passenger limits against authenticated sailing-local identity: no more than eight Anonymous Vibes sent per passenger per sailing-local day and no more than one VConnect request per passenger per sailing-local day. A ninth vibe attempt is rejected and the sender remains paused until the next sailing day. VConnect accepts only configured request, public-venue/activity and time option identifiers. A requester-facing status is emitted only after the recipient accepts; declines, ignores, blocks and reports are not disclosed to the requester.
+
 ## Crew identity boundary
 
 Crew face matching belongs in the cruise line's identity zone—not Regreenity cloud. The in-app capture must show the crew member's face and visible name badge; badge text alone is not used to resolve identity. The capture image and biometric template may be processed on-device, ship-local or in the operator's own service. The host returns the selected internal crew record to its own recognition workflow; the Regreenity bridge receives no image, template, candidate list or match score. A non-biometric operator-issued QR/NFC or staff-assisted manual route remains required for deployments where biometric processing is not approved or a match is uncertain.

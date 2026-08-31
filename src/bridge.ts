@@ -95,7 +95,34 @@ export function notifyAnonymousPassengerVibe(receiverToken: string, vibeId: stri
     vibeId,
     senderDisclosure: 'never',
     delivery: 'randomized-delay-or-batch',
-    hostChecks: ['same-sailing', 'adult-receiver', 'not-same-cabin-or-booking-group', 'duplicate-limit'],
+    hostChecks: ['same-sailing', 'adult-receiver', 'not-same-cabin-or-booking-group', 'duplicate-limit', 'maximum-eight-per-sailing-day'],
+  })
+}
+
+export function requestVConnect(receiverToken: string, requestOptionId: string) {
+  return notifyHost('VCONNECT_REQUEST', {
+    receiverToken,
+    requestOptionId,
+    format: 'predefined-options-only',
+    hostChecks: ['same-sailing', 'adults-only', 'maximum-one-request-per-sailing-day', 'not-blocked'],
+    requesterFeedback: 'accepted-only',
+  })
+}
+
+export function respondToVConnect(requestToken: string, accepted: boolean) {
+  return notifyHost('VCONNECT_RESPONSE', {
+    requestToken,
+    response: accepted ? 'accepted' : 'declined',
+    discloseToRequester: accepted,
+  })
+}
+
+export function proposeVConnectPlan(connectionToken: string, venueOptionId: string, timeOptionId: string) {
+  return notifyHost('VCONNECT_PLAN', {
+    connectionToken,
+    venueOptionId,
+    timeOptionId,
+    format: 'predefined-public-venue-and-time-options-only',
   })
 }
 

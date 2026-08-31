@@ -16,7 +16,7 @@ paths:
     post:
       operationId: submitAction
       parameters: [{name: Idempotency-Key, in: header, required: true, schema: {type: string, format: uuid}}]
-      responses: {'202': {description: Accepted}, '409': {description: Duplicate accepted idempotently}}
+      responses: {'202': {description: Accepted}, '409': {description: Duplicate accepted idempotently}, '429': {description: Sailing-local daily safety limit reached}}
   /recognition/passenger-match:
     post: {operationId: matchAdultPassenger, description: Operator-zone ephemeral image match; capture destroyed after resolution., responses: {'200': {description: Recognition result}}}
   /recognition/crew-match:

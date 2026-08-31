@@ -1,4 +1,4 @@
-export type Feature = 'interests'|'meetups'|'vibes'|'crew-recognition'|'event-feedback'|'notifications'|'commerce'
+export type Feature = 'interests'|'meetups'|'vibes'|'vconnect'|'crew-recognition'|'event-feedback'|'notifications'|'commerce'
 export type AgeBand = 'adult'|'minor'
 export type Connectivity = 'online'|'ship-local'|'offline'
 
@@ -21,11 +21,15 @@ export interface PurchaseIntent { productId:string; category:string; attribution
 export interface PurchaseOutcome { attributionRef:string; status:'confirmed'|'cancelled'|'refunded'; value:number; currency:string }
 export interface FaceMatchResult { status:'recognized'|'not-recognized'|'ineligible'; receiverToken?:string; reason?:string }
 export interface StructuredFeedback { eventId:string; score:1|2|3|4|5; responseIds:string[] }
+export type VConnectResponse = 'accepted'|'declined'
 
 export type Action =
   | { type:'interests.updated'; interests:string[] }
   | { type:'meetup.joined'|'meetup.left'; meetupId:string; revealIdentity:boolean }
   | { type:'vibe.sent'; receiverToken:string; vibeId:string }
+  | { type:'vconnect.requested'; receiverToken:string; requestOptionId:string }
+  | { type:'vconnect.responded'; requestToken:string; response:VConnectResponse }
+  | { type:'vconnect.plan.proposed'; connectionToken:string; venueOptionId:string; timeOptionId:string }
   | { type:'crew.recognized'; crewToken:string; reasonIds:string[] }
   | { type:'event.feedback'; feedback:StructuredFeedback }
   | { type:'notification.preference'; enabled:boolean }
@@ -41,7 +45,7 @@ export interface HostAdapter {
   getConnectivity():Promise<Connectivity>
   listEvents(session:CruiseSession):Promise<CruiseEvent[]>
   listMeetups(session:CruiseSession):Promise<Meetup[]>
-  submitAction(session:CruiseSession,envelope:ActionEnvelope):Promise<{accepted:boolean; duplicate?:boolean}>
+  submitAction(session:CruiseSession,envelope:ActionEnvelope):Promise<{accepted:boolean; duplicate?:boolean; rejectionReason?:string}>
   matchPassenger(session:CruiseSession,imageBytes:Uint8Array):Promise<FaceMatchResult>
   matchCrew(session:CruiseSession,imageBytes:Uint8Array):Promise<FaceMatchResult>
   scheduleNotification(session:CruiseSession,input:{id:string;title:string;body:string;deliverAt:string}):Promise<void>
@@ -70,7 +74,7 @@ export class HttpHostAdapter implements HostAdapter {
   async getConnectivity(){return typeof navigator!=='undefined'&&!navigator.onLine?'offline':'online' as Connectivity}
   async listEvents(session:CruiseSession){return this.request<CruiseEvent[]>(`/sailings/${encodeURIComponent(session.sailingRef)}/events`)}
   async listMeetups(session:CruiseSession){return this.request<Meetup[]>(`/sailings/${encodeURIComponent(session.sailingRef)}/meetups`)}
-  async submitAction(_session:CruiseSession,envelope:ActionEnvelope){return this.request<{accepted:boolean;duplicate?:boolean}>('/actions',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':envelope.idempotencyKey},body:JSON.stringify(envelope)})}
+  async submitAction(_session:CruiseSession,envelope:ActionEnvelope){return this.request<{accepted:boolean;duplicate?:boolean;rejectionReason?:string}>('/actions',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':envelope.idempotencyKey},body:JSON.stringify(envelope)})}
   async matchPassenger(_session:CruiseSession,imageBytes:Uint8Array){return this.request<FaceMatchResult>('/recognition/passenger-match',{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:imageBytes as BodyInit})}
   async matchCrew(_session:CruiseSession,imageBytes:Uint8Array){return this.request<FaceMatchResult>('/recognition/crew-match',{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:imageBytes as BodyInit})}
   async scheduleNotification(_session:CruiseSession,input:{id:string;title:string;body:string;deliverAt:string}){await this.request<void>('/notifications',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)})}
@@ -134,7 +138,7 @@ export class CruiseConnectClient {
 
   async initialize(){
     const session=await this.host.getSession()
-    const validFeatures:Feature[]=['interests','meetups','vibes','crew-recognition','event-feedback','notifications','commerce']
+    const validFeatures:Feature[]=['interests','meetups','vibes','vconnect','crew-recognition','event-feedback','notifications','commerce']
     if(!session.sessionToken||!session.tenantRef||!session.sailingRef||!session.shipRef||!session.guestRef||!['adult','minor'].includes(session.ageBand)||!Array.isArray(session.features)||session.features.some(feature=>!validFeatures.includes(feature))||!Number.isFinite(Date.parse(session.expiresAt)))throw new CruiseConnectError('invalid_session')
     if(new Date(session.expiresAt)<=new Date())throw new CruiseConnectError('session_expired')
     this.session=session
@@ -160,6 +164,9 @@ export class CruiseConnectClient {
     try{return await this.host.matchPassenger(session,imageBytes)}finally{imageBytes.fill(0)}
   }
   async sendVibe(receiverToken:string,vibeId:string){return this.dispatch('vibes',{type:'vibe.sent',receiverToken,vibeId})}
+  async requestVConnect(receiverToken:string,requestOptionId:string){return this.dispatch('vconnect',{type:'vconnect.requested',receiverToken,requestOptionId})}
+  async respondToVConnect(requestToken:string,response:VConnectResponse){return this.dispatch('vconnect',{type:'vconnect.responded',requestToken,response})}
+  async proposeVConnectPlan(connectionToken:string,venueOptionId:string,timeOptionId:string){return this.dispatch('vconnect',{type:'vconnect.plan.proposed',connectionToken,venueOptionId,timeOptionId})}
   async identifyCrew(imageBytes:Uint8Array){try{return await this.host.matchCrew(this.require('crew-recognition'),imageBytes)}finally{imageBytes.fill(0)}}
   async recognizeCrew(crewToken:string,reasonIds:string[]){return this.dispatch('crew-recognition',{type:'crew.recognized',crewToken,reasonIds:[...new Set(reasonIds)].slice(0,5)})}
   async submitEventFeedback(feedback:StructuredFeedback){
