@@ -1,12 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-31T03:17:09.455Z",
-  "gitCommit": "c27c6c6267e0db427aafcc055a18b79517ba2475",
+  "generatedAt": "2026-08-31T04:09:02.775Z",
+  "gitCommit": "1bc4e5bf9850f8ccae72c53210a8c3b583024dfb",
   "files": [
     {
       "name": "regreenity-cruiseconnect-operator-edge-1.1.0.tgz",
       "bytes": 9921,
       "sha256": "c124d4ee49a179ccc38ee51042494bffe94b70a88653c43aa808e8e3295c81c5"
+    },
+    {
+      "name": "regreenity-cruiseconnect-operator-edge-1.1.1.tgz",
+      "bytes": 10290,
+      "sha256": "d17866ac160b29c1fcc712427700166260de5acd95f8b1ac3df3831052536107"
     },
     {
       "name": "regreenity-cruiseconnect-sdk-1.0.0.tgz",
@@ -22,6 +27,11 @@
       "name": "regreenity-cruiseconnect-sdk-1.1.0.tgz",
       "bytes": 7202,
       "sha256": "b045b4ca9714f8a5130b6eb0c2564f4aa4ee71be4c7262392c2962f237756508"
+    },
+    {
+      "name": "regreenity-cruiseconnect-sdk-1.1.1.tgz",
+      "bytes": 7202,
+      "sha256": "5f8379dc12c886d1c6766db1ec5aa486fc9a08ae01bf5bad24493937f395df35"
     }
   ]
 }
