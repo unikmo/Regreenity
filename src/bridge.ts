@@ -95,7 +95,7 @@ export function notifyAnonymousPassengerVibe(receiverToken: string, vibeId: stri
     vibeId,
     senderDisclosure: 'never',
     delivery: 'randomized-delay-or-batch',
-    hostChecks: ['same-sailing', 'adult-receiver', 'not-same-cabin-or-booking-group', 'duplicate-limit', 'maximum-eight-per-sailing-day'],
+    hostChecks: ['same-sailing', 'adult-receiver', 'not-same-cabin-or-booking-group', 'duplicate-limit', 'maximum-five-per-sailing-day'],
   })
 }
 

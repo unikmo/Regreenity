@@ -105,14 +105,14 @@ if (!clientBundles.includes('face and visible name badge')) fail('Crew recogniti
 if (!clientBundles.includes('VConnect opens only after both adults agree')) fail('product is missing the separate mutual-consent VConnect journey')
 if (!clientBundles.includes('One request per sailing day')) fail('VConnect demo is missing the daily request limit')
 if (!clientBundles.includes('requester receives no rejection')) fail('VConnect demo is missing non-acceptance privacy')
-if (!clientBundles.includes('Eight vibes maximum per sailing day')) fail('Anonymous Vibe demo is missing the daily send cap')
+if (!clientBundles.includes('Five vibes maximum per sailing day')) fail('Anonymous Vibe demo is missing the daily send cap')
 
 const sdkSource = readFileSync(resolve('packages/sdk/src/index.ts'), 'utf8')
 for (const required of ['requestVConnect', 'respondToVConnect', 'proposeVConnectPlan', "'vconnect.requested'", "'vconnect.responded'", "'vconnect.plan.proposed'"]) {
   if (!sdkSource.includes(required)) fail(`SDK is missing VConnect contract ${required}`)
 }
 const referenceHostSource = readFileSync(resolve('packages/reference-host/src/index.ts'), 'utf8')
-for (const required of [">=8)return {accepted:false,rejectionReason:'daily_vibe_limit'", ">=1)return {accepted:false,rejectionReason:'daily_vconnect_limit'"]) {
+for (const required of [">=5)return {accepted:false,rejectionReason:'daily_vibe_limit'", ">=1)return {accepted:false,rejectionReason:'daily_vconnect_limit'"]) {
   if (!referenceHostSource.includes(required)) fail(`reference host is missing enforced safety limit ${required}`)
 }
 

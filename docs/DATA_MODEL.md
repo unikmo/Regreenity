@@ -58,7 +58,7 @@ Recommended positive-signal rate limit:
 
 `UNIQUE (sailing_id, sender_passenger_id, recipient_passenger_id, service_date_local)`
 
-In addition, an authenticated passenger may send no more than eight positive signals in one sailing-local day. The ninth attempt pauses sending until the next sailing day. This limit is enforced in the cruise line's operator environment before an interaction is accepted.
+In addition, an authenticated passenger may send no more than five positive signals in one sailing-local day. The sixth attempt pauses sending until the next sailing day. This limit is enforced in the cruise line's operator environment before an interaction is accepted.
 
 For shareable passenger summaries, each sender should contribute at most one count to a given affirmation label across the sailing. This prevents repeated signals from one person inflating the recipient's public summary. Activity invitations should be deduplicated separately by activity/context.
 

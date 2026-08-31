@@ -45,7 +45,7 @@ Recommended characteristics:
 
 The host should resolve a rotating proximity identifier to a limited passenger discovery profile only after verifying both guests are entitled to the same sailing and have opted in. Rotating or hashed person-level identifiers stay operator-side and are not Regreenity analytics inputs.
 
-The operator edge must enforce passenger-to-passenger limits against authenticated sailing-local identity: no more than eight Anonymous Vibes sent per passenger per sailing-local day and no more than one VConnect request per passenger per sailing-local day. A ninth vibe attempt is rejected and the sender remains paused until the next sailing day. VConnect accepts only configured request, public-venue/activity and time option identifiers. A requester-facing status is emitted only after the recipient accepts; declines, ignores, blocks and reports are not disclosed to the requester.
+The operator edge must enforce passenger-to-passenger limits against authenticated sailing-local identity: no more than five Anonymous Vibes sent per passenger per sailing-local day and no more than one VConnect request per passenger per sailing-local day. A sixth vibe attempt is rejected and the sender remains paused until the next sailing day. VConnect accepts only configured request, public-venue/activity and time option identifiers. A requester-facing status is emitted only after the recipient accepts; declines, ignores, blocks and reports are not disclosed to the requester.
 
 ## Crew identity boundary
 

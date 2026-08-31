@@ -29,7 +29,7 @@ export class ReferenceCruiseHost implements HostAdapter {
     if(envelope.action.type==='vibe.sent'&&envelope.action.receiverToken==='same-household')throw new Error('household_excluded')
     const sailingDay=this.sailingLocalDay()
     const sameGuestDay=this.actions.filter(item=>item.guestRef===envelope.guestRef&&this.actionSailingDays.get(item.idempotencyKey)===sailingDay)
-    if(envelope.action.type==='vibe.sent'&&sameGuestDay.filter(item=>item.action.type==='vibe.sent').length>=8)return {accepted:false,rejectionReason:'daily_vibe_limit'}
+    if(envelope.action.type==='vibe.sent'&&sameGuestDay.filter(item=>item.action.type==='vibe.sent').length>=5)return {accepted:false,rejectionReason:'daily_vibe_limit'}
     if(envelope.action.type==='vconnect.requested'&&sameGuestDay.filter(item=>item.action.type==='vconnect.requested').length>=1)return {accepted:false,rejectionReason:'daily_vconnect_limit'}
     this.seen.add(envelope.idempotencyKey);this.actionSailingDays.set(envelope.idempotencyKey,sailingDay);this.actions.push(structuredClone(envelope))
     const action=envelope.action

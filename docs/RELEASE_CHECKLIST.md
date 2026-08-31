@@ -4,7 +4,7 @@
 - [ ] Sailing tokens expire and are bound to operator, ship, sailing and guest.
 - [ ] Adult-only passenger recognition and minors exclusion verified.
 - [ ] Same-household and duplicate-vibe rules verified operator-side.
-- [ ] Eight-vibes-per-sailing-day hard cap rejects a ninth attempt until the next sailing-local day.
+- [ ] Five-vibes-per-sailing-day hard cap rejects a sixth attempt until the next sailing-local day.
 - [ ] One-VConnect-request-per-sailing-day cap is enforced operator-side.
 - [ ] VConnect declines, ignores, blocks and reports emit no requester-facing status; acceptance alone opens prepared public-place/time options.
 - [ ] Recognition captures are destroyed and never enter Regreenity telemetry.
