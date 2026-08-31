@@ -100,6 +100,8 @@ if (!clientBundles.includes('Top Five means five score positions')) fail('passen
 if (!clientBundles.includes('Count only')) fail('passenger experience is missing count-only RSVP controls')
 if (!clientBundles.includes('no second in-app confirmation')) fail('Anonymous Vibe does not document one-time boarding enrolment')
 if (clientBundles.includes('Activate face matching first')) fail('Anonymous Vibe still contains a redundant in-app face-matching confirmation')
+if (clientBundles.includes('voluntary selfie') || clientBundles.includes('crew-participating selfie')) fail('Crew recognition still suggests a guest selfie')
+if (!clientBundles.includes('face and visible name badge')) fail('Crew recognition does not require face-and-name-badge framing')
 
 const privacyContractSource = readFileSync(resolve('src/privacyMetrics.ts'), 'utf8')
 for (const required of ['CruiseAggregateReport', 'MINIMUM_REPORTING_GROUP = 20', 'crewmemberid', 'photo', 'biometrictemplate', 'facematchscore', 'validateCruiseAggregateReport']) {

@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 const fallbackDetails: Record<string, string[]> = {
-  '/': ['Passenger interaction inside the existing cruise-line app', 'Operator-side crew identity and face matching when duplicate names require it', 'Aggregate-only Regreenity cloud reporting', 'Frequently asked questions covering privacy, IT, connectivity, security, safety, workload, revenue, brand and ownership'],
+  '/': ['Passenger interaction inside the existing cruise-line app', 'In-app crew photography with face-and-name-badge capture and operator-side roster matching', 'Aggregate-only Regreenity cloud reporting', 'Frequently asked questions covering privacy, IT, connectivity, security, safety, workload, revenue, brand and ownership'],
   '/passenger-experience/': ['Opt-in discovery through nearby, activity or interest context', 'Predefined positive first contact', 'Public-place progression only after acknowledgement'],
   '/crew-recognition/': ['Contextual recognition during the sailing', 'Recognition without public rankings', 'Signals grouped by sailing, team and experience area'],
   '/service-recovery/': ['A private route for guests to signal friction', 'Capture, route, acknowledge, resolve and follow up', 'Department-level Experience Pulse'],

@@ -39,7 +39,7 @@ Recommended characteristics:
 - coarse "nearby" presentation rather than exact distance
 - no live passenger map
 - no cabin/stateroom exposure
-- operator-side face matching for crew identification only where approved, with a badge/QR/manual fallback
+- operator-side face matching against the cruise line's crew roster, using the visible badge name as a supporting check; approved QR/NFC/manual fallback where needed
 - minors excluded by default
 - native platform permissions respected
 
@@ -47,7 +47,7 @@ The host should resolve a rotating proximity identifier to a limited passenger d
 
 ## Crew identity boundary
 
-Crew face matching belongs in the cruise line's identity zone—not Regreenity cloud. The capture image and biometric template may be processed on-device, ship-local or in the operator's own service. The host returns the selected internal crew record to its own recognition workflow; the Regreenity bridge receives no image, template, candidate list or match score. A non-biometric badge QR/NFC/manual route remains required for deployments where biometric processing is not approved or a match is uncertain.
+Crew face matching belongs in the cruise line's identity zone—not Regreenity cloud. The in-app capture must show the crew member's face and visible name badge; badge text alone is not used to resolve identity. The capture image and biometric template may be processed on-device, ship-local or in the operator's own service. The host returns the selected internal crew record to its own recognition workflow; the Regreenity bridge receives no image, template, candidate list or match score. A non-biometric operator-issued QR/NFC or staff-assisted manual route remains required for deployments where biometric processing is not approved or a match is uncertain.
 
 ## Regreenity cloud boundary
 

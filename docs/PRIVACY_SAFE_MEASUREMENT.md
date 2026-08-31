@@ -26,8 +26,8 @@ No row can identify a passenger or crew member. Every reason, department, respon
 ## Instant crew recognition with a photo
 
 1. The passenger opens crew recognition inside the cruise-line app.
-2. The camera asks the passenger to frame the crew member and visible badge. A crew-participating selfie is also supported.
-3. The host app narrows the candidate from badge/roster context and, where the operator has approved the necessary legal and security controls, performs an operator-side face match to resolve duplicate names.
+2. The in-app camera asks the passenger to photograph the crew member with the crew member's face and visible name badge in frame. Guest selfies and badge-only captures are not part of the standard flow.
+3. The cruise-line identity service matches the face against its own crew roster and uses the badge name as a supporting check. Where the operator has approved the necessary legal and security controls, that match resolves the correct crew record even when names are duplicated.
 4. The passenger selects up to two prepared positive reasons and sends the recognition to the cruise line's service.
 5. The image, biometric template, candidate list and match score remain on-device, ship-local or in the cruise line's own identity service. They never reach Regreenity and are retained or deleted under the operator's documented biometric policy.
 6. The cruise-line privacy gateway later contributes the interaction only to threshold-protected sailing/day/department totals.

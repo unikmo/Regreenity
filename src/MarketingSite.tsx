@@ -38,7 +38,7 @@ const details: Record<Exclude<PageKey, 'home'>, Detail> = {
     crop: 'crew',
     alt: 'Diverse cruise crew members sharing a candid end-of-shift moment',
     facts: [
-      { title: 'Reliable identification', body: 'Take a badge photo—or a voluntary selfie with the crew member. When names are duplicated, an operator-controlled face match can resolve the correct crew record.' },
+      { title: 'Reliable identification', body: 'Use the in-app camera to photograph the crew member with both their face and visible name badge in frame. The cruise line matches the face against its own crew roster; the badge name supports the match but is not used alone.' },
       { title: 'Biometrics stay operator-side', body: 'The image, face template and match score remain on-device, ship-local or in the cruise line’s own identity service. Regreenity never receives them.' },
       { title: 'Recognition, not ranking', body: 'Passengers choose up to two prepared positive reasons. Public crew leaderboards and passenger-facing star ratings are excluded.' },
       { title: 'Aggregate evidence', body: 'Regreenity receives only threshold-protected sailing, reason and department totals; individual records remain with the operator.' },
