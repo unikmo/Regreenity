@@ -55,4 +55,4 @@ jobs:
       - uses: docker/build-push-action@v6
         with: { context: ., file: packages/operator-edge/Dockerfile, load: true, tags: cruiseconnect-edge:ci }
       - uses: aquasecurity/trivy-action@v0.36.0
-        with: { image-ref: cruiseconnect-edge:ci, severity: HIGH,CRITICAL, exit-code: '1', ignore-unfixed: true }
+        with: { image-ref: cruiseconnect-edge:ci, severity: 'HIGH,CRITICAL', exit-code: '1', ignore-unfixed: true }

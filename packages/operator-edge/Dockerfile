@@ -1,4 +1,4 @@
-FROM node:24.7.0-alpine
+FROM node:24.20.0-alpine3.24
 WORKDIR /app
 COPY packages/operator-edge ./packages/operator-edge
 RUN mkdir -p /data && chown -R node:node /app /data
