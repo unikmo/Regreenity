@@ -50,7 +50,7 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 
 ## Operator and contact
 - Operator: PlanetHike OÜ, Tallinn, Estonia.
-- Pilot and enterprise enquiries: info@regreenity.com
-- Website: https://regreenity.com/
-- Privacy: https://regreenity.com/privacy/
-- Terms: https://regreenity.com/terms/
+- Pilot and enterprise enquiries: https://tisonik.com/pilot/#contact
+- Website: https://tisonik.com/
+- Privacy: https://tisonik.com/privacy/
+- Terms: https://tisonik.com/terms/
