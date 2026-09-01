@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 
-const dashboardUrl = 'https://regreenity.com/portal/'
+const dashboardUrl = 'https://tisonik.com/portal/'
 export const notificationConfigured = () => Boolean(process.env.RESEND_API_KEY && process.env.REGREENITY_ENQUIRY_TO && process.env.REGREENITY_ENQUIRY_FROM)
 
 export async function deliverEnquiryNotification(database, pilotRequestId) {
