@@ -17,7 +17,7 @@ jobs:
       - run: npm test
       - run: npm run build
       - name: Reject legacy canonical domain references
-        run: "! grep -R --line-number --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist 'https://regreenity.com' ."
+        run: "if git grep -n 'https://regreenity.com' -- ':!.github/workflows/ci.yml' ':!scripts/qa-site.mjs'; then exit 1; fi"
       - run: npm audit --audit-level=high
       - run: npm run sbom
       - uses: actions/upload-artifact@v4
