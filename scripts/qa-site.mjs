@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { extname, join, relative, resolve } from 'node:path'
 
 const root = resolve('dist')
+const productionOrigin = 'https://tisonik.com'
 const errors = []
 const fail = message => errors.push(message)
 
@@ -21,16 +22,17 @@ for (const file of htmlFiles) {
   const html = readFileSync(file, 'utf8')
   if (!/<title>[^<]{8,}<\/title>/.test(html)) fail(`${name}: missing useful title`)
   if (!/<meta name="description" content="[^\"]{40,}"/.test(html)) fail(`${name}: missing useful description`)
-  if (!/<link rel="canonical" href="https:\/\/regreenity\.com\//.test(html)) fail(`${name}: canonical must be absolute and use regreenity.com`)
-  if (!/<meta property="og:image" content="https:\/\/regreenity\.com\//.test(html)) fail(`${name}: Open Graph image must be absolute`)
+  if (!html.includes(`<link rel="canonical" href="${productionOrigin}/`)) fail(`${name}: canonical must be absolute and use tisonik.com`)
+  if (!html.includes(`<meta property="og:image" content="${productionOrigin}/`)) fail(`${name}: Open Graph image must be absolute and use tisonik.com`)
   if (!/<meta property="og:type" content="website"/.test(html)) fail(`${name}: missing Open Graph type`)
   if (!/<meta property="og:description" content="[^\"]{40,}"/.test(html)) fail(`${name}: missing Open Graph description`)
   if (!/<meta name="twitter:title" content="[^\"]+"/.test(html)) fail(`${name}: missing Twitter title`)
   if (!/<meta name="twitter:description" content="[^\"]{40,}"/.test(html)) fail(`${name}: missing Twitter description`)
-  if (!/<meta name="twitter:image" content="https:\/\/regreenity\.com\//.test(html)) fail(`${name}: Twitter image must be absolute`)
+  if (!html.includes(`<meta name="twitter:image" content="${productionOrigin}/`)) fail(`${name}: Twitter image must be absolute and use tisonik.com`)
   if (!/<script type="application\/ld\+json">/.test(html)) fail(`${name}: missing structured data`)
   if (!/<div id="root"><main class="seo-fallback"/.test(html)) fail(`${name}: missing crawlable static body content`)
   if (/Cruise Connection/i.test(html)) fail(`${name}: legacy Cruise Connection branding remains`)
+  if (html.includes('https://regreenity.com/')) fail(`${name}: legacy regreenity.com canonical/domain reference remains`)
 
   for (const match of html.matchAll(/(?:href|src)="(\/[^\"#?]*)/g)) {
     const target = match[1]
@@ -46,13 +48,21 @@ for (const required of ['robots.txt', 'sitemap.xml', 'llms.txt', 'llms-full.txt'
 
 const robots = existsSync(join(root, 'robots.txt')) ? readFileSync(join(root, 'robots.txt'), 'utf8') : ''
 if ((robots.match(/Disallow: \/product-app\//g) || []).length < 6) fail('interactive product walkthrough is not excluded for all declared crawler groups')
+if (!robots.includes(`Sitemap: ${productionOrigin}/sitemap.xml`)) fail('robots.txt does not point to the tisonik.com sitemap')
 
 const sitemap = existsSync(join(root, 'sitemap.xml')) ? readFileSync(join(root, 'sitemap.xml'), 'utf8') : ''
 if (sitemap.includes('/product-app/')) fail('interactive product walkthrough must not appear in the public sitemap')
-for (const match of sitemap.matchAll(/<loc>https:\/\/regreenity\.com(\/[^<]*)<\/loc>/g)) {
+if (sitemap.includes('regreenity.com')) fail('sitemap contains the legacy regreenity.com domain')
+for (const match of sitemap.matchAll(/<loc>https:\/\/tisonik\.com(\/[^<]*)<\/loc>/g)) {
   const path = match[1]
   const expected = path === '/' ? join(root, 'index.html') : join(root, path, 'index.html')
   if (!existsSync(expected)) fail(`sitemap route missing from build: ${path}`)
+}
+
+for (const aiFile of ['llms.txt', 'llms-full.txt']) {
+  const content = existsSync(join(root, aiFile)) ? readFileSync(join(root, aiFile), 'utf8') : ''
+  if (content.includes('https://regreenity.com')) fail(`${aiFile} contains the legacy production domain`)
+  if (!content.includes('https://tisonik.com')) fail(`${aiFile} does not identify tisonik.com as the canonical website`)
 }
 
 const productApp = join(root, 'product-app', 'index.html')
@@ -66,7 +76,7 @@ if (existsSync(pilot)) {
   const html = readFileSync(pilot, 'utf8')
   if (!clientBundles.includes('/api/pilot-requests')) fail('pilot page contact form is not connected to the first-party enquiry API')
   if (html.includes('formsubmit.co') || clientBundles.includes('formsubmit.co')) fail('pilot page still exposes a third-party form relay')
-  if (!html.includes('mailto:info@regreenity.com')) fail('pilot page lacks direct email fallback')
+  if (!html.includes('mailto:info@regreenity.com')) fail('pilot page lacks the currently verified direct email fallback')
   if (!/complete Regreenity|complete connected product/i.test(html)) fail('pilot page does not present the complete product experience')
   if (!/existing app/i.test(html)) fail('pilot page does not identify Regreenity as an add-on to the existing app')
 }
