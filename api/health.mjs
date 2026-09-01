@@ -3,7 +3,7 @@ import { adminDatabase } from './_lib/supabase.mjs'
 
 export default async function handler(request, response) {
   if (request.method !== 'GET') return sendJson(response, 405, { error: 'method_not_allowed' })
-  const deep = new URL(request.url, 'https://regreenity.com').searchParams.get('deep') === '1'
+  const deep = new URL(request.url, 'https://tisonik.com').searchParams.get('deep') === '1'
   if (deep) {
     try {
       const { error } = await adminDatabase().from('tenants').select('id', { head: true, count: 'exact' })
