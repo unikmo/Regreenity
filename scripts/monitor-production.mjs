@@ -1,4 +1,4 @@
-const origin = (process.env.REGREENITY_MONITOR_ORIGIN || 'https://regreenity.com').replace(/\/$/, '')
+const origin = (process.env.REGREENITY_MONITOR_ORIGIN || 'https://tisonik.com').replace(/\/$/, '')
 const checks = [
   ['site','/'], ['demo','/product-app/'], ['pilot','/pilot/#contact'], ['portal','/portal/'], ['health','/api/health'], ['database','/api/health?deep=1'],
 ]
