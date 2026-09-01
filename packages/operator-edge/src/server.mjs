@@ -39,7 +39,7 @@ export function createOperatorEdge(options = {}) {
   const adapter = options.adapter || new SyntheticCruiseAdapter(database)
   const service = options.service || new OperatorEdgeService(database, adapter)
   const jwtSecret = options.jwtSecret || process.env.CRUISECONNECT_EDGE_JWT_SECRET || 'development-secret-must-be-at-least-32-characters'
-  const allowedOrigins = new Set((options.allowedOrigins || process.env.CRUISECONNECT_EDGE_ALLOWED_ORIGINS || 'https://regreenity.com').split(',').map(value => value.trim()).filter(Boolean))
+  const allowedOrigins = new Set((options.allowedOrigins || process.env.CRUISECONNECT_EDGE_ALLOWED_ORIGINS || 'https://tisonik.com').split(',').map(value => value.trim()).filter(Boolean))
 
   const server = createServer(async (request, response) => {
     const requestId = request.headers['x-request-id'] || randomUUID()
