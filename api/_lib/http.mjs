@@ -34,5 +34,5 @@ export function allowPost(request, response) {
 export function isSameSiteRequest(request) {
   const origin = request.headers.origin
   if (!origin) return true
-  return origin === 'https://regreenity.com' || origin.endsWith('.vercel.app') || origin.startsWith('http://localhost:')
+  return origin === 'https://tisonik.com' || origin === 'https://www.tisonik.com' || origin.endsWith('.vercel.app') || origin.startsWith('http://localhost:')
 }
