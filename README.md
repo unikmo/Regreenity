@@ -34,10 +34,10 @@ The Vite build treats each route as its own HTML entry so important buyer propos
 
 ## SEO production step
 
-Once the production domain is chosen:
+The canonical production domain is `https://tisonik.com`.
 
 ```bash
-SITE_URL=https://your-domain.com npm run seo:generate
+SITE_URL=https://tisonik.com npm run seo:generate
 npm run build
 ```
 
@@ -114,7 +114,7 @@ A lower passenger fee such as $0.50 can be negotiated against stronger minimums,
 ## Important demo notes
 
 - Demo metrics and sailing details are illustrative.
-- The public pilot request form is connected to info@regreenity.com through FormSubmit.
+- The public pilot request form posts to the first-party `/api/pilot-requests` endpoint and is stored in the access-controlled business database.
 - The repository demonstrates the complete connected product experience at the front end; production identity, native proximity, secure offline storage, operational routing, analytics and host-system integrations are implemented with the cruise-line partner during pilot deployment.
 - Nearby discovery is simulated through the host bridge contract; the real proximity layer requires native cruise-line app integration.
 - Offline action queuing in this demo uses browser local storage; production must use approved secure storage and data-retention rules.
