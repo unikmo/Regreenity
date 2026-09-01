@@ -1,5 +1,25 @@
 {
   "crons": [{ "path": "/api/cron/enquiry-notifications", "schedule": "0 8 * * *" }],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "regreenity.com" }],
+      "destination": "https://tisonik.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.regreenity.com" }],
+      "destination": "https://tisonik.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.tisonik.com" }],
+      "destination": "https://tisonik.com/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
