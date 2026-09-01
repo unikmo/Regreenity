@@ -22,4 +22,4 @@ User-agent: PerplexityBot
 Allow: /
 Disallow: /product-app/
 
-Sitemap: https://regreenity.com/sitemap.xml
+Sitemap: https://tisonik.com/sitemap.xml
