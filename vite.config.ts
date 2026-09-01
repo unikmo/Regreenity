@@ -26,21 +26,21 @@ const staticSeoFallback = () => ({
   transformIndexHtml(html: string) {
     const title = html.match(/<title>(.*?)<\/title>/s)?.[1] || 'Regreenity'
     const description = html.match(/<meta name="description" content="(.*?)"\s*\/?>(?:\s*)/s)?.[1] || 'Cruise-line guest-experience interaction layer.'
-    const canonical = html.match(/<link rel="canonical" href="(.*?)"/)?.[1] || 'https://regreenity.com/'
-    const path = new URL(canonical, 'https://regreenity.com').pathname
+    const canonical = html.match(/<link rel="canonical" href="(.*?)"/)?.[1] || 'https://tisonik.com/'
+    const path = new URL(canonical, 'https://tisonik.com').pathname
     const details = fallbackDetails[path] || fallbackDetails['/']
     const contact = path === '/pilot/' ? '<section id="contact"><h2>Request a complete one-ship Regreenity pilot</h2><p>Regreenity is an add-on inside the cruise line’s existing app—not a separate guest app.</p><p>Enable JavaScript to use our secure first-party enquiry form, or email <a href="mailto:info@regreenity.com">info@regreenity.com</a>.</p></section>' : ''
     const fallback = `<main class="seo-fallback" style="max-width:980px;margin:0 auto;padding:48px 24px 72px;font-family:Inter,Arial,sans-serif;color:#171715;background:#faf8f4"><nav aria-label="Primary"><a href="/">Regreenity</a> · <a href="/passenger-experience/">Passenger experience</a> · <a href="/crew-recognition/">Crew recognition</a> · <a href="/service-recovery/">Service recovery</a> · <a href="/engagement/">Engagement</a> · <a href="/ancillary-revenue/">Ancillary revenue</a> · <a href="/pilot/">Pilot</a></nav><article><p style="margin-top:64px;letter-spacing:.18em;font-size:12px;color:#8a613f">REGREENITY · A PLANETHIKE PROJECT</p><h1 style="max-width:850px;font-size:clamp(38px,6vw,72px);line-height:1.02;font-weight:400">${escapeHtml(title)}</h1><p style="max-width:760px;font-size:19px;line-height:1.65;color:#5f5a54">${escapeHtml(description)}</p><h2>What this page covers</h2><ul>${details.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>${contact}</article><footer style="margin-top:64px"><a href="mailto:info@regreenity.com">info@regreenity.com</a> · <a href="/privacy/">Privacy</a> · <a href="/imprint/">Imprint</a></footer></main>`
     const routedFallback = fallback
       .replace('href="/pilot/">Pilot</a>', 'href="/pilot/#contact">Contact</a>')
-      .replace('https://regreenity.com/pilot/?sent=1"', 'https://regreenity.com/pilot/?sent=1#contact"')
+      .replace('https://tisonik.com/pilot/?sent=1"', 'https://tisonik.com/pilot/?sent=1#contact"')
     const socialTags = [
       html.includes('property="og:type"') ? '' : '<meta property="og:type" content="website"/>',
       html.includes('property="og:description"') ? '' : `<meta property="og:description" content="${escapeHtml(description)}"/>`,
       html.includes('name="twitter:card"') ? '' : '<meta name="twitter:card" content="summary_large_image"/>',
       html.includes('name="twitter:title"') ? '' : `<meta name="twitter:title" content="${escapeHtml(title)}"/>`,
       html.includes('name="twitter:description"') ? '' : `<meta name="twitter:description" content="${escapeHtml(description)}"/>`,
-      html.includes('name="twitter:image"') ? '' : '<meta name="twitter:image" content="https://regreenity.com/og-card.png"/>',
+      html.includes('name="twitter:image"') ? '' : '<meta name="twitter:image" content="https://tisonik.com/og-card.png"/>',
     ].join('')
     return html.replace('</head>', `${socialTags}</head>`).replace('<div id="root"></div>', `<div id="root">${routedFallback}</div>`)
   },
