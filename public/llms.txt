@@ -20,20 +20,20 @@ Regreenity is a cruise-line guest-experience interaction layer designed to sit i
 - Public performance claims should follow real pilot evidence; demo or pilot assumptions are not production proof.
 
 ## Canonical pages
-- https://regreenity.com/ — overview
-- https://regreenity.com/passenger-experience/ — passenger experience
-- https://regreenity.com/crew-recognition/ — crew recognition
-- https://regreenity.com/service-recovery/ — private service recovery
-- https://regreenity.com/engagement/ — passenger engagement
-- https://regreenity.com/ancillary-revenue/ — contextual ancillary-revenue discovery
-- https://regreenity.com/integration/ — integration and offline-first architecture
-- https://regreenity.com/pilot/ — pilot framework
+- https://tisonik.com/ — overview
+- https://tisonik.com/passenger-experience/ — passenger experience
+- https://tisonik.com/crew-recognition/ — crew recognition
+- https://tisonik.com/service-recovery/ — private service recovery
+- https://tisonik.com/engagement/ — passenger engagement
+- https://tisonik.com/ancillary-revenue/ — contextual ancillary-revenue discovery
+- https://tisonik.com/integration/ — integration and offline-first architecture
+- https://tisonik.com/pilot/ — pilot framework
 
 ## Brand
 Regreenity is the public product/project brand. It is a PlanetHike project.
 
 ## Contact
-Pilot and enterprise enquiries: info@regreenity.com
+Pilot and enterprise enquiries: https://tisonik.com/pilot/#contact
 
 ## Extended AI-readable reference
-https://regreenity.com/llms-full.txt
+https://tisonik.com/llms-full.txt
