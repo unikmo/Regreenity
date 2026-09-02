@@ -1,5 +1,5 @@
 {
-  "name": "@regreenity/cruiseconnect-sdk",
+  "name": "@tisonik/cruiseconnect-sdk",
   "version": "1.1.1",
   "type": "module",
   "main": "dist/index.js",

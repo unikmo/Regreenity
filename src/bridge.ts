@@ -11,7 +11,7 @@ export type CruiseLaunchContext = {
 const DEMO_CONTEXT: CruiseLaunchContext = {
   source: 'demo',
   sailingId: 'CC-0826-17',
-  shipId: 'MV-REGREENITY',
+  shipId: 'MV-TISONIK',
   guestId: 'GUEST-1042',
   ageBand: 'adult',
   locale: 'en',
@@ -37,7 +37,7 @@ export function getLaunchContext(): CruiseLaunchContext {
 }
 
 export function notifyHost(type: string, payload: Record<string, unknown> = {}) {
-  const message = { source: 'regreenity', type, payload }
+  const message = { source: 'tisonik', type, payload }
   const params = new URLSearchParams(window.location.search)
   const hostOrigin = params.get('hostOrigin')
 
@@ -46,7 +46,7 @@ export function notifyHost(type: string, payload: Record<string, unknown> = {}) 
     return true
   }
 
-  window.dispatchEvent(new CustomEvent('regreenity-demo-event', { detail: message }))
+  window.dispatchEvent(new CustomEvent('tisonik-demo-event', { detail: message }))
   return false
 }
 

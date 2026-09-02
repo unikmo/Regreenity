@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: CruiseConnect Operator Edge API
   version: 1.1.0
-  description: Operator-hosted contract. Passenger and crew records never traverse the Regreenity cloud boundary.
+  description: Operator-hosted contract. Passenger and crew records never traverse the Tisonik cloud boundary.
 servers: [{url: https://ship-api.cruiseline.example/cruiseconnect/v1}]
 security: [{sailingToken: []}]
 paths:

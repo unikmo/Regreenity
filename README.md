@@ -1,8 +1,8 @@
-# Regreenity
+# Tisonik
 
 Agency-grade pilot/demo for a white-label **cruise-line add-on inside the existing app** covering crew recognition, private Experience Pulse + service recovery, safe passenger positive interaction, interest-led participation, social commerce and end-of-cruise positive-memory summaries.
 
-Regreenity is not a new guest app, social network or dating app. It helps verified passengers make a safe first connection inside the cruise line’s existing app, then gets out of the way so real-world interaction happens onboard.
+Tisonik is not a new guest app, social network or dating app. It helps verified passengers make a safe first connection inside the cruise line’s existing app, then gets out of the way so real-world interaction happens onboard.
 
 ## Run locally
 
@@ -57,7 +57,7 @@ No unrestricted chat. No dating mode. No phone-number disclosure.
 
 ## Offline-first requirement
 
-Core Regreenity usage must not depend on public internet access at sea.
+Core Tisonik usage must not depend on public internet access at sea.
 
 The demo now includes:
 
@@ -122,7 +122,7 @@ A lower passenger fee such as $0.50 can be negotiated against stronger minimums,
 
 ## Legal pages (v0.5.0)
 
-Business-specific legal routes are included at `/imprint/`, `/privacy/`, `/terms/`, and `/cookies/`. They use PlanetHike OÜ as the operator and reflect Regreenity's white-label, proximity, offline, recognition, recovery and commerce architecture. See `docs/LEGAL.md`.
+Business-specific legal routes are included at `/imprint/`, `/privacy/`, `/terms/`, and `/cookies/`. They use PlanetHike OÜ as the operator and reflect Tisonik's white-label, proximity, offline, recognition, recovery and commerce architecture. See `docs/LEGAL.md`.
 
 ## V6 visual storytelling update
 

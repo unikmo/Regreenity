@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 
 const dashboardUrl = 'https://tisonik.com/portal/'
-export const notificationConfigured = () => Boolean(process.env.RESEND_API_KEY && process.env.REGREENITY_ENQUIRY_TO && process.env.REGREENITY_ENQUIRY_FROM)
+export const notificationConfigured = () => Boolean(process.env.RESEND_API_KEY && process.env.TISONIK_ENQUIRY_TO && process.env.TISONIK_ENQUIRY_FROM)
 
 export async function deliverEnquiryNotification(database, pilotRequestId) {
   if (!notificationConfigured()) return { configured: false }
@@ -10,10 +10,10 @@ export async function deliverEnquiryNotification(database, pilotRequestId) {
       method: 'POST',
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: process.env.REGREENITY_ENQUIRY_FROM,
-        to: [process.env.REGREENITY_ENQUIRY_TO],
-        subject: 'New Regreenity pilot enquiry',
-        text: `A new pilot enquiry is available in the access-controlled Regreenity portal.\n\nOpen: ${dashboardUrl}\n\nReference: ${pilotRequestId}\n\nNo passenger, crew or enquiry content is included in this notification.`,
+        from: process.env.TISONIK_ENQUIRY_FROM,
+        to: [process.env.TISONIK_ENQUIRY_TO],
+        subject: 'New Tisonik pilot enquiry',
+        text: `A new pilot enquiry is available in the access-controlled Tisonik portal.\n\nOpen: ${dashboardUrl}\n\nReference: ${pilotRequestId}\n\nNo passenger, crew or enquiry content is included in this notification.`,
       }),
     })
     if (!response.ok) throw new Error(`notification_provider_${response.status}`)

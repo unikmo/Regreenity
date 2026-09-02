@@ -16,7 +16,7 @@ Disable the affected feature flag first. Verify the prior signed package, prepar
 
 ## Incident and privacy response
 
-Block the affected sailing token or participant at the operator edge, preserve the non-PII audit trail, purge expired identity material, and notify the cruise-line security contact under the agreed incident schedule. Regreenity should receive aggregates and service health only; operator-side identity incidents remain in the operator environment.
+Block the affected sailing token or participant at the operator edge, preserve the non-PII audit trail, purge expired identity material, and notify the cruise-line security contact under the agreed incident schedule. Tisonik should receive aggregates and service health only; operator-side identity incidents remain in the operator environment.
 
 ## Customer integration boundary
 

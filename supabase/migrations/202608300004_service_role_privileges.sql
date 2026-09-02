@@ -1,4 +1,4 @@
--- Server-only permissions for the Regreenity control plane. The service role
+-- Server-only permissions for the Tisonik control plane. The service role
 -- bypasses RLS, but PostgreSQL table privileges are still required when the
 -- project's automatic API grants are disabled.
 grant usage on schema public to service_role;

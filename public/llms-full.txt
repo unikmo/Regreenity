@@ -1,6 +1,6 @@
-# Regreenity — Public Product Reference
+# Tisonik — Public Product Reference
 
-Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It is designed as a white-label interaction layer inside the cruise line's existing app rather than as a separate consumer social network.
+Tisonik is a PlanetHike OÜ project for cruise-line passenger experience. It is designed as a white-label interaction layer inside the cruise line's existing app rather than as a separate consumer social network.
 
 ## Core product areas
 
@@ -15,7 +15,7 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 ### Crew recognition
 - Guests frame the crew member and visible badge while the service moment is fresh; a crew-participating selfie is also supported.
 - When duplicate names make text insufficient, the operator's identity service may perform face matching under its own approved biometric controls.
-- Images, biometric templates, candidate lists and match scores remain on-device, ship-local or in cruise-line systems; Regreenity never receives them.
+- Images, biometric templates, candidate lists and match scores remain on-device, ship-local or in cruise-line systems; Tisonik never receives them.
 - Recognition uses prepared positive reasons and avoids public crew rankings.
 
 ### Service recovery
@@ -29,7 +29,7 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 - Authorized leaders receive immediate aggregate feedback; the cruise line controls publication.
 
 ### Aggregate-only measurement
-- The default architecture has no Regreenity passenger/crew source-event analytics endpoint.
+- The default architecture has no Tisonik passenger/crew source-event analytics endpoint.
 - A cruise-line or ship-local privacy gateway sends only a predefined aggregate report covering activation, recognition, structured ratings, recovery and net attributed revenue.
 - Names, passenger or crew identifiers, photos, booking/attribution references, exact event timestamps, free text and payment data cannot enter that report.
 - Randomized or hashed person-level identifiers are also excluded because pseudonymous data may remain personal data.
@@ -38,11 +38,11 @@ Regreenity is a PlanetHike OÜ project for cruise-line passenger experience. It 
 - Cross-customer benchmarks use ranges or percentiles across at least five independently operated sailings and 100 qualifying responses, and customers may opt out.
 
 ## Integration
-- Regreenity is designed as an add-on to the cruise line's existing guest app and operating systems.
+- Tisonik is designed as an add-on to the cruise line's existing guest app and operating systems.
 - Integration, security and deployment details are agreed directly with each cruise line and are not published in this public reference.
 
 ## Product and evidence boundaries
-- Regreenity is not a cruise operator, booking engine, merchant, unrestricted chat service or dating app.
+- Tisonik is not a cruise operator, booking engine, merchant, unrestricted chat service or dating app.
 - Public demonstrations and metrics are illustrative and do not imply a cruise-line affiliation.
 - The public interactive walkthrough uses illustrative data and is not a production deployment.
 - Performance claims should follow real pilot evidence.

@@ -19,7 +19,7 @@
 - End-of-cruise positive summary + share flow
 
 ## Crew
-- Badge/photo capture with operator-side face + roster matching; no biometric data sent to Regreenity
+- Badge/photo capture with operator-side face + roster matching; no biometric data sent to Tisonik
 - Up to two predefined reasons per recognition
 - One guest→crew recognition per sailing-local day
 - Sailing number + dates on summary

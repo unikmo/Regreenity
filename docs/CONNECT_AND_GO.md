@@ -2,7 +2,7 @@
 
 ## What ships
 
-- `@regreenity/cruiseconnect-sdk`: versioned Web/TypeScript SDK with feature orchestration, entitlement checks, ephemeral recognition capture handling, idempotency and a bounded sailing-scoped offline queue.
+- `@tisonik/cruiseconnect-sdk`: versioned Web/TypeScript SDK with feature orchestration, entitlement checks, ephemeral recognition capture handling, idempotency and a bounded sailing-scoped offline queue.
 - `packages/native-ios`: Swift Package bridge for a cruise-line `WKWebView`.
 - `packages/native-android`: Android library bridge for a cruise-line `WebView`.
 - `contracts/operator-api.v1.yaml`: standard operator-edge HTTP contract.
@@ -14,7 +14,7 @@
 ## Ten-minute Web integration
 
 ```ts
-import { CruiseConnectClient, EncryptedQueueStore, HttpHostAdapter, LocalCiphertextStore, importQueueEncryptionKey } from '@regreenity/cruiseconnect-sdk'
+import { CruiseConnectClient, EncryptedQueueStore, HttpHostAdapter, LocalCiphertextStore, importQueueEncryptionKey } from '@tisonik/cruiseconnect-sdk'
 
 const host = new HttpHostAdapter({
   baseUrl: 'https://ship-api.example/cruiseconnect/v1',
@@ -33,7 +33,7 @@ The host token binds the session to one operator, ship, sailing and guest. The f
 
 ## Data boundary
 
-Passenger and crew profiles, bookings, captures, recognition templates, source actions, purchases and notifications remain in the cruise line's application or ship-local environment. Recognition methods overwrite the supplied image buffer after a match response. Regreenity cloud receives only thresholded aggregates and non-identifying service health.
+Passenger and crew profiles, bookings, captures, recognition templates, source actions, purchases and notifications remain in the cruise line's application or ship-local environment. Recognition methods overwrite the supplied image buffer after a match response. Tisonik cloud receives only thresholded aggregates and non-identifying service health.
 
 ## Required operator adapters
 
@@ -59,7 +59,7 @@ Run `npm test`, `npm run build`, `npm run release:sdk`, `npm run release:manifes
 
 ## Privacy default
 
-The minimum reporting group is 20. No small cell, person-level token, image, biometric, free text, device identifier, cabin, booking reference or exact source timestamp is accepted by the Regreenity aggregate API.
+The minimum reporting group is 20. No small cell, person-level token, image, biometric, free text, device identifier, cabin, booking reference or exact source timestamp is accepted by the Tisonik aggregate API.
 
 ## What still requires the cruise line
 

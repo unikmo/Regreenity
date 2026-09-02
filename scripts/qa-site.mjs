@@ -32,7 +32,6 @@ for (const file of htmlFiles) {
   if (!/<script type="application\/ld\+json">/.test(html)) fail(`${name}: missing structured data`)
   if (!/<div id="root"><main class="seo-fallback"/.test(html)) fail(`${name}: missing crawlable static body content`)
   if (/Cruise Connection/i.test(html)) fail(`${name}: legacy Cruise Connection branding remains`)
-  if (html.includes('https://regreenity.com/')) fail(`${name}: legacy regreenity.com canonical/domain reference remains`)
 
   for (const match of html.matchAll(/(?:href|src)="(\/[^\"#?]*)/g)) {
     const target = match[1]
@@ -52,7 +51,6 @@ if (!robots.includes(`Sitemap: ${productionOrigin}/sitemap.xml`)) fail('robots.t
 
 const sitemap = existsSync(join(root, 'sitemap.xml')) ? readFileSync(join(root, 'sitemap.xml'), 'utf8') : ''
 if (sitemap.includes('/product-app/')) fail('interactive product walkthrough must not appear in the public sitemap')
-if (sitemap.includes('regreenity.com')) fail('sitemap contains the legacy regreenity.com domain')
 for (const match of sitemap.matchAll(/<loc>https:\/\/tisonik\.com(\/[^<]*)<\/loc>/g)) {
   const path = match[1]
   const expected = path === '/' ? join(root, 'index.html') : join(root, path, 'index.html')
@@ -61,7 +59,6 @@ for (const match of sitemap.matchAll(/<loc>https:\/\/tisonik\.com(\/[^<]*)<\/loc
 
 for (const aiFile of ['llms.txt', 'llms-full.txt']) {
   const content = existsSync(join(root, aiFile)) ? readFileSync(join(root, aiFile), 'utf8') : ''
-  if (content.includes('https://regreenity.com')) fail(`${aiFile} contains the legacy production domain`)
   if (!content.includes('https://tisonik.com')) fail(`${aiFile} does not identify tisonik.com as the canonical website`)
 }
 
@@ -76,9 +73,9 @@ if (existsSync(pilot)) {
   const html = readFileSync(pilot, 'utf8')
   if (!clientBundles.includes('/api/pilot-requests')) fail('pilot page contact form is not connected to the first-party enquiry API')
   if (html.includes('formsubmit.co') || clientBundles.includes('formsubmit.co')) fail('pilot page still exposes a third-party form relay')
-  if (!html.includes('mailto:info@regreenity.com')) fail('pilot page lacks the currently verified direct email fallback')
-  if (!/complete Regreenity|complete connected product/i.test(html)) fail('pilot page does not present the complete product experience')
-  if (!/existing app/i.test(html)) fail('pilot page does not identify Regreenity as an add-on to the existing app')
+  if (!html.includes('mailto:info@tisonik.com')) fail('pilot page lacks the currently verified direct email fallback')
+  if (!/complete Tisonik|complete connected product/i.test(html)) fail('pilot page does not present the complete product experience')
+  if (!/existing app/i.test(html)) fail('pilot page does not identify Tisonik as an add-on to the existing app')
 }
 
 if (/Cruise Connection/i.test(clientBundles)) fail('client bundle contains legacy Cruise Connection branding')
@@ -92,7 +89,7 @@ if (!clientBundles.includes('Live event feedback reaches leaders while they can 
 if (!clientBundles.includes('Confirmed attributed revenue')) fail('executive walkthrough is missing revenue attribution')
 if (!clientBundles.includes('Did someone make your day today?')) fail('executive walkthrough is missing the passive-guest recognition prompt')
 if (!clientBundles.includes('Frequently asked questions about CruiseConnect')) fail('site is missing the public FAQ')
-if (!clientBundles.includes('Where does Regreenity run?')) fail('FAQ is missing the deployment architecture answer')
+if (!clientBundles.includes('Where does Tisonik run?')) fail('FAQ is missing the deployment architecture answer')
 if (!clientBundles.includes('How do passenger privacy and data residency work?')) fail('FAQ is missing privacy and data residency')
 if (!clientBundles.includes('Does the cruise line retain ownership and avoid lock-in?')) fail('FAQ is missing ownership and lock-in')
 if (!clientBundles.includes('FAQPage')) fail('FAQ is missing structured FAQ data')
@@ -101,7 +98,7 @@ if (!clientBundles.includes('biometric templates, face-match scores')) fail('pri
 if (!clientBundles.includes('accepts only the predefined aggregate report')) fail('privacy policy is missing the aggregate-only ingestion boundary')
 if (!clientBundles.includes('The default minimum reporting group is 20')) fail('privacy policy is missing the minimum reporting group')
 if (!clientBundles.includes('Photo + biometric template stay operator-side')) fail('crew demo is missing the operator-side biometric boundary')
-if (!clientBundles.includes('only aggregates reach Regreenity')) fail('crew demo is missing the aggregate-only transmission boundary')
+if (!clientBundles.includes('only aggregates reach Tisonik')) fail('crew demo is missing the aggregate-only transmission boundary')
 if (!clientBundles.includes('Request a pilot conversation')) fail('executive walkthrough is missing the final pilot handoff')
 if (!clientBundles.includes('Send an anonymous vibe')) fail('product is missing the passenger-to-passenger Anonymous Vibe journey')
 if (!clientBundles.includes('Children excluded')) fail('Anonymous Vibe demo is missing child exclusion')

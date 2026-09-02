@@ -1,4 +1,4 @@
-package com.regreenity.cruiseconnect
+package com.tisonik.cruiseconnect
 
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec

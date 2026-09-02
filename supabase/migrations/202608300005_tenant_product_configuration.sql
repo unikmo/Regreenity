@@ -12,8 +12,8 @@ create table public.tenant_product_configuration (
 
 alter table public.tenant_product_configuration enable row level security;
 create policy product_configuration_member_read on public.tenant_product_configuration for select to authenticated using (public.is_tenant_member(tenant_id));
-create policy product_configuration_admin_update on public.tenant_product_configuration for update to authenticated using (public.has_tenant_role(tenant_id,array['regreenity_admin','operator_admin']::public.member_role[])) with check (public.has_tenant_role(tenant_id,array['regreenity_admin','operator_admin']::public.member_role[]));
-create policy product_configuration_admin_insert on public.tenant_product_configuration for insert to authenticated with check (public.has_tenant_role(tenant_id,array['regreenity_admin','operator_admin']::public.member_role[]));
+create policy product_configuration_admin_update on public.tenant_product_configuration for update to authenticated using (public.has_tenant_role(tenant_id,array['tisonik_admin','operator_admin']::public.member_role[])) with check (public.has_tenant_role(tenant_id,array['tisonik_admin','operator_admin']::public.member_role[]));
+create policy product_configuration_admin_insert on public.tenant_product_configuration for insert to authenticated with check (public.has_tenant_role(tenant_id,array['tisonik_admin','operator_admin']::public.member_role[]));
 
 grant select,insert,update on public.tenant_product_configuration to authenticated;
 grant select,insert,update on public.tenant_product_configuration to service_role;

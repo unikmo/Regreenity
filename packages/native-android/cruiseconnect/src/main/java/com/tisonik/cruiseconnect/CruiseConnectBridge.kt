@@ -1,4 +1,4 @@
-package com.regreenity.cruiseconnect
+package com.tisonik.cruiseconnect
 
 import android.net.Uri
 import android.webkit.JavascriptInterface

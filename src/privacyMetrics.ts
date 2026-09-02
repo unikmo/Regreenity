@@ -129,7 +129,7 @@ function assertOperationalCells(cells: CountCell[], label: string, allowedBucket
   })
 }
 
-/** The only analytics payload Regreenity accepts by default. */
+/** The only analytics payload Tisonik accepts by default. */
 export function validateCruiseAggregateReport(report: CruiseAggregateReport, vocabulary: AggregateVocabulary): CruiseAggregateReport {
   assertAggregateSafe(report)
   if (report.schemaVersion !== '1.0') throw new Error('Unsupported aggregate report schema')

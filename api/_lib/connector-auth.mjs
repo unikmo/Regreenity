@@ -4,7 +4,7 @@ import { adminDatabase } from './supabase.mjs'
 const validKeyId = /^rg_[a-zA-Z0-9_-]{12,80}$/
 
 export async function authenticateConnector(request) {
-  const keyId = request.headers['x-regreenity-key-id']
+  const keyId = request.headers['x-tisonik-key-id']
   const authorization = request.headers.authorization || ''
   const secret = authorization.startsWith('Bearer ') ? authorization.slice(7) : ''
   if (typeof keyId !== 'string' || !validKeyId.test(keyId) || secret.length < 32 || secret.length > 256) return null

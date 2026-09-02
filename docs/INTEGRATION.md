@@ -43,17 +43,17 @@ Recommended characteristics:
 - minors excluded by default
 - native platform permissions respected
 
-The host should resolve a rotating proximity identifier to a limited passenger discovery profile only after verifying both guests are entitled to the same sailing and have opted in. Rotating or hashed person-level identifiers stay operator-side and are not Regreenity analytics inputs.
+The host should resolve a rotating proximity identifier to a limited passenger discovery profile only after verifying both guests are entitled to the same sailing and have opted in. Rotating or hashed person-level identifiers stay operator-side and are not Tisonik analytics inputs.
 
 The operator edge must enforce passenger-to-passenger limits against authenticated sailing-local identity: no more than five Anonymous Vibes sent per passenger per sailing-local day and no more than one VConnect request per passenger per sailing-local day. A sixth vibe attempt is rejected and the sender remains paused until the next sailing day. VConnect accepts only configured request, public-venue/activity and time option identifiers. A requester-facing status is emitted only after the recipient accepts; declines, ignores, blocks and reports are not disclosed to the requester.
 
 ## Crew identity boundary
 
-Crew face matching belongs in the cruise line's identity zone—not Regreenity cloud. The in-app capture must show the crew member's face and visible name badge; badge text alone is not used to resolve identity. The capture image and biometric template may be processed on-device, ship-local or in the operator's own service. The host returns the selected internal crew record to its own recognition workflow; the Regreenity bridge receives no image, template, candidate list or match score. A non-biometric operator-issued QR/NFC or staff-assisted manual route remains required for deployments where biometric processing is not approved or a match is uncertain.
+Crew face matching belongs in the cruise line's identity zone—not Tisonik cloud. The in-app capture must show the crew member's face and visible name badge; badge text alone is not used to resolve identity. The capture image and biometric template may be processed on-device, ship-local or in the operator's own service. The host returns the selected internal crew record to its own recognition workflow; the Tisonik bridge receives no image, template, candidate list or match score. A non-biometric operator-issued QR/NFC or staff-assisted manual route remains required for deployments where biometric processing is not approved or a match is uncertain.
 
-## Regreenity cloud boundary
+## Tisonik cloud boundary
 
-Regreenity cloud receives only the allow-listed aggregate report and non-identifying operational health totals: uptime, latency buckets, sync success/failure counts, deployed version and error counts. It does not receive passenger/crew source events, device IDs, randomized person IDs, biometric data or exact event timestamps.
+Tisonik cloud receives only the allow-listed aggregate report and non-identifying operational health totals: uptime, latency buckets, sync success/failure counts, deployed version and error counts. It does not receive passenger/crew source events, device IDs, randomized person IDs, biometric data or exact event timestamps.
 
 ## Demo bridge events
 
@@ -102,7 +102,7 @@ Cruise Connection should not require a cabin number, raw reservation locator, pa
 Minimum useful context:
 
 - cruise-line/tenant reference
-- operator-local guest ID (never a Regreenity analytics field)
+- operator-local guest ID (never a Tisonik analytics field)
 - ship
 - sailing
 - age band / family entitlement

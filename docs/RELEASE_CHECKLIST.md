@@ -7,7 +7,7 @@
 - [ ] Five-vibes-per-sailing-day hard cap rejects a sixth attempt until the next sailing-local day.
 - [ ] One-VConnect-request-per-sailing-day cap is enforced operator-side.
 - [ ] VConnect declines, ignores, blocks and reports emit no requester-facing status; acceptance alone opens prepared public-place/time options.
-- [ ] Recognition captures are destroyed and never enter Regreenity telemetry.
+- [ ] Recognition captures are destroyed and never enter Tisonik telemetry.
 - [ ] Offline queue encryption is provided by the host secure-storage layer.
 - [ ] Ship-local routing, reconnect replay and urgent service paths rehearsed.
 - [ ] Checkout remains in the cruise-line app and refund/cancellation outcomes reconcile.

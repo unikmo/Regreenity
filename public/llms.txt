@@ -1,19 +1,19 @@
-# Regreenity
+# Tisonik
 
-Regreenity is a PlanetHike project focused on cruise-line passenger experience.
+Tisonik is a PlanetHike project focused on cruise-line passenger experience.
 
-## What Regreenity is
-Regreenity is a cruise-line guest-experience interaction layer designed to sit inside the existing cruise-line app. It supports passenger interaction, crew recognition, structured live-event feedback, private service recovery, engagement and privacy-safe ancillary-revenue attribution.
+## What Tisonik is
+Tisonik is a cruise-line guest-experience interaction layer designed to sit inside the existing cruise-line app. It supports passenger interaction, crew recognition, structured live-event feedback, private service recovery, engagement and privacy-safe ancillary-revenue attribution.
 
 ## Product boundaries
-- Regreenity is designed as an add-on interaction layer, not a replacement for the cruise line's app or core commerce stack.
+- Tisonik is designed as an add-on interaction layer, not a replacement for the cruise line's app or core commerce stack.
 - Inventory, pricing, checkout and payment remain with the cruise line.
 - The default analytics architecture accepts only a predefined aggregate report from the cruise-line environment; it has no passenger/crew source-event endpoint.
-- Crew recognition can use a badge photo or crew-participating selfie inside the cruise-line app. Operator-controlled face matching can resolve duplicate names; images, biometric templates and match scores never reach Regreenity.
-- Regreenity cloud receives aggregate KPI reports and non-identifying service-health totals—not randomized or hashed person-level records.
+- Crew recognition can use a badge photo or crew-participating selfie inside the cruise-line app. Operator-controlled face matching can resolve duplicate names; images, biometric templates and match scores never reach Tisonik.
+- Tisonik cloud receives aggregate KPI reports and non-identifying service-health totals—not randomized or hashed person-level records.
 - Aggregate cells below 20 are suppressed or rolled up before transmission.
 - Live-event feedback uses three to five prepared questions without free text, and the cruise line controls publication of aggregated ratings.
-- Adult passengers can send anonymous prepared vibes after the cruise line privately resolves a photographed, face-match-activated adult receiver. Children and same-cabin/booking-group recipients are excluded; captures and sender identity never reach Regreenity.
+- Adult passengers can send anonymous prepared vibes after the cruise line privately resolves a photographed, face-match-activated adult receiver. Children and same-cabin/booking-group recipients are excluded; captures and sender identity never reach Tisonik.
 - Passenger Top Five badges use dense score positions, remain private by default and can be shared only by the passenger. Event RSVPs expose a count by default; chosen name/image visibility is optional.
 - Native proximity and ship-local integrations require host integration.
 - Offline-first operation is an architecture design direction; it should not be read as evidence of a production deployment.
@@ -30,7 +30,7 @@ Regreenity is a cruise-line guest-experience interaction layer designed to sit i
 - https://tisonik.com/pilot/ — pilot framework
 
 ## Brand
-Regreenity is the public product/project brand. It is a PlanetHike project.
+Tisonik is the public product/project brand. It is a PlanetHike project.
 
 ## Contact
 Pilot and enterprise enquiries: https://tisonik.com/pilot/#contact

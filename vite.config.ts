@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 const fallbackDetails: Record<string, string[]> = {
-  '/': ['Passenger interaction inside the existing cruise-line app', 'In-app crew photography with face-and-name-badge capture and operator-side roster matching', 'Aggregate-only Regreenity cloud reporting', 'Frequently asked questions covering privacy, IT, connectivity, security, safety, workload, revenue, brand and ownership'],
+  '/': ['Passenger interaction inside the existing cruise-line app', 'In-app crew photography with face-and-name-badge capture and operator-side roster matching', 'Aggregate-only Tisonik cloud reporting', 'Frequently asked questions covering privacy, IT, connectivity, security, safety, workload, revenue, brand and ownership'],
   '/passenger-experience/': ['Opt-in discovery through nearby, activity or interest context', 'Predefined positive first contact', 'Public-place progression only after acknowledgement'],
   '/crew-recognition/': ['Contextual recognition during the sailing', 'Recognition without public rankings', 'Signals grouped by sailing, team and experience area'],
   '/service-recovery/': ['A private route for guests to signal friction', 'Capture, route, acknowledge, resolve and follow up', 'Department-level Experience Pulse'],
@@ -10,10 +10,10 @@ const fallbackDetails: Record<string, string[]> = {
   '/ancillary-revenue/': ['Context before offer', 'Cruise-line-owned inventory and checkout', 'Pilot-defined attribution'],
   '/social-commerce/': ['Contextual recommendations', 'Cruise-line-owned commerce', 'Pilot-defined attribution'],
   '/cruise-dashboard/': ['Outcome-led pilot measurement', 'No invented proof', 'Signals grouped by sailing and experience area'],
-  '/integration/': ['White-label experience inside the cruise-line app', 'Operator-side identity, biometrics and source records', 'Aggregate KPI and non-identifying health telemetry to Regreenity cloud', 'Frequently asked questions covering integration, privacy, security, operations and ownership'],
-  '/product-app/': ['Private interactive walkthrough with illustrative data', 'Public product information is available on the main Regreenity pages'],
+  '/integration/': ['White-label experience inside the cruise-line app', 'Operator-side identity, biometrics and source records', 'Aggregate KPI and non-identifying health telemetry to Tisonik cloud', 'Frequently asked questions covering integration, privacy, security, operations and ownership'],
+  '/product-app/': ['Private interactive walkthrough with illustrative data', 'Public product information is available on the main Tisonik pages'],
   '/pilot/': ['Deploy the complete connected product experience', 'Integrate inside the cruise line’s existing app', 'Measure passenger, crew, recovery, engagement and commercial outcomes end to end'],
-  '/imprint/': ['PlanetHike OÜ operator information', 'Regreenity contact details'],
+  '/imprint/': ['PlanetHike OÜ operator information', 'Tisonik contact details'],
   '/privacy/': ['Website and business enquiry privacy', 'Passenger and crew deployment roles', 'Contact and data-subject rights'],
   '/terms/': ['Website and demonstration terms', 'Positive-interaction rules', 'Pilot and deployment boundaries'],
   '/cookies/': ['Essential local storage', 'Offline application caching', 'No non-essential tracking in the current site'],
@@ -22,15 +22,15 @@ const fallbackDetails: Record<string, string[]> = {
 const escapeHtml = (value: string) => value.replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]!)
 
 const staticSeoFallback = () => ({
-  name: 'regreenity-static-seo-fallback',
+  name: 'tisonik-static-seo-fallback',
   transformIndexHtml(html: string) {
-    const title = html.match(/<title>(.*?)<\/title>/s)?.[1] || 'Regreenity'
+    const title = html.match(/<title>(.*?)<\/title>/s)?.[1] || 'Tisonik'
     const description = html.match(/<meta name="description" content="(.*?)"\s*\/?>(?:\s*)/s)?.[1] || 'Cruise-line guest-experience interaction layer.'
     const canonical = html.match(/<link rel="canonical" href="(.*?)"/)?.[1] || 'https://tisonik.com/'
     const path = new URL(canonical, 'https://tisonik.com').pathname
     const details = fallbackDetails[path] || fallbackDetails['/']
-    const contact = path === '/pilot/' ? '<section id="contact"><h2>Request a complete one-ship Regreenity pilot</h2><p>Regreenity is an add-on inside the cruise line’s existing app—not a separate guest app.</p><p>Enable JavaScript to use our secure first-party enquiry form, or email <a href="mailto:info@regreenity.com">info@regreenity.com</a>.</p></section>' : ''
-    const fallback = `<main class="seo-fallback" style="max-width:980px;margin:0 auto;padding:48px 24px 72px;font-family:Inter,Arial,sans-serif;color:#171715;background:#faf8f4"><nav aria-label="Primary"><a href="/">Regreenity</a> · <a href="/passenger-experience/">Passenger experience</a> · <a href="/crew-recognition/">Crew recognition</a> · <a href="/service-recovery/">Service recovery</a> · <a href="/engagement/">Engagement</a> · <a href="/ancillary-revenue/">Ancillary revenue</a> · <a href="/pilot/">Pilot</a></nav><article><p style="margin-top:64px;letter-spacing:.18em;font-size:12px;color:#8a613f">REGREENITY · A PLANETHIKE PROJECT</p><h1 style="max-width:850px;font-size:clamp(38px,6vw,72px);line-height:1.02;font-weight:400">${escapeHtml(title)}</h1><p style="max-width:760px;font-size:19px;line-height:1.65;color:#5f5a54">${escapeHtml(description)}</p><h2>What this page covers</h2><ul>${details.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>${contact}</article><footer style="margin-top:64px"><a href="mailto:info@regreenity.com">info@regreenity.com</a> · <a href="/privacy/">Privacy</a> · <a href="/imprint/">Imprint</a></footer></main>`
+    const contact = path === '/pilot/' ? '<section id="contact"><h2>Request a complete one-ship Tisonik pilot</h2><p>Tisonik is an add-on inside the cruise line’s existing app—not a separate guest app.</p><p>Enable JavaScript to use our secure first-party enquiry form, or email <a href="mailto:info@tisonik.com">info@tisonik.com</a>.</p></section>' : ''
+    const fallback = `<main class="seo-fallback" style="max-width:980px;margin:0 auto;padding:48px 24px 72px;font-family:Inter,Arial,sans-serif;color:#171715;background:#faf8f4"><nav aria-label="Primary"><a href="/">Tisonik</a> · <a href="/passenger-experience/">Passenger experience</a> · <a href="/crew-recognition/">Crew recognition</a> · <a href="/service-recovery/">Service recovery</a> · <a href="/engagement/">Engagement</a> · <a href="/ancillary-revenue/">Ancillary revenue</a> · <a href="/pilot/">Pilot</a></nav><article><p style="margin-top:64px;letter-spacing:.18em;font-size:12px;color:#8a613f">TISONIK · A PLANETHIKE PROJECT</p><h1 style="max-width:850px;font-size:clamp(38px,6vw,72px);line-height:1.02;font-weight:400">${escapeHtml(title)}</h1><p style="max-width:760px;font-size:19px;line-height:1.65;color:#5f5a54">${escapeHtml(description)}</p><h2>What this page covers</h2><ul>${details.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>${contact}</article><footer style="margin-top:64px"><a href="mailto:info@tisonik.com">info@tisonik.com</a> · <a href="/privacy/">Privacy</a> · <a href="/imprint/">Imprint</a></footer></main>`
     const routedFallback = fallback
       .replace('href="/pilot/">Pilot</a>', 'href="/pilot/#contact">Contact</a>')
       .replace('https://tisonik.com/pilot/?sent=1"', 'https://tisonik.com/pilot/?sent=1#contact"')

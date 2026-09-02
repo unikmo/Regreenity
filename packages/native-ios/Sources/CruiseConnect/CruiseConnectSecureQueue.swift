@@ -10,7 +10,7 @@ public final class CruiseConnectSecureQueue {
     public init(directory: URL, sailingReference: String) throws {
         let safe = sailingReference.replacingOccurrences(of: "[^A-Za-z0-9_-]", with: "_", options: .regularExpression)
         self.fileURL = directory.appendingPathComponent("cruiseconnect-\(safe).queue", isDirectory: false)
-        self.keyTag = "com.regreenity.cruiseconnect.queue.\(safe)"
+        self.keyTag = "com.tisonik.cruiseconnect.queue.\(safe)"
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     }
 

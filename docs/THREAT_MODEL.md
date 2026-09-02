@@ -2,7 +2,7 @@
 
 ## Protected assets and boundary
 
-Passenger and crew identity, images, biometric templates, bookings, payment and source actions belong to the cruise operator and must not enter Regreenity cloud. Regreenity protects aggregate reports, tenant configuration, pilot enquiries, release artifacts and non-identifying health telemetry.
+Passenger and crew identity, images, biometric templates, bookings, payment and source actions belong to the cruise operator and must not enter Tisonik cloud. Tisonik protects aggregate reports, tenant configuration, pilot enquiries, release artifacts and non-identifying health telemetry.
 
 ## Principal threats and controls
 

@@ -6,7 +6,7 @@ export type QueuedAction = {
   sailingId?: string
 }
 
-const QUEUE_KEY = 'regreenity:offline-queue:v1'
+const QUEUE_KEY = 'tisonik:offline-queue:v1'
 
 export function readOfflineQueue(): QueuedAction[] {
   try {
@@ -27,13 +27,13 @@ export function queueOfflineAction(type: string, payload: Record<string, unknown
   }
   const next = [...readOfflineQueue(), action]
   try { window.localStorage.setItem(QUEUE_KEY, JSON.stringify(next)) } catch { /* storage unavailable */ }
-  window.dispatchEvent(new CustomEvent('regreenity-queue-change', { detail: next.length }))
+  window.dispatchEvent(new CustomEvent('tisonik-queue-change', { detail: next.length }))
   return action
 }
 
 export function clearOfflineQueue() {
   try { window.localStorage.removeItem(QUEUE_KEY) } catch { /* storage unavailable */ }
-  window.dispatchEvent(new CustomEvent('regreenity-queue-change', { detail: 0 }))
+  window.dispatchEvent(new CustomEvent('tisonik-queue-change', { detail: 0 }))
 }
 
 export function getQueuedActionCount() {
@@ -53,7 +53,7 @@ export async function registerOfflineShell() {
       await Promise.all(registrations.map(registration => registration.unregister()))
       if ('caches' in window) {
         const keys = await caches.keys()
-        await Promise.all(keys.filter(key => key.startsWith('regreenity-shell-') || key.startsWith('cruise-connection-shell-')).map(key => caches.delete(key)))
+        await Promise.all(keys.filter(key => key.startsWith('tisonik-shell-') || key.startsWith('cruise-connection-shell-')).map(key => caches.delete(key)))
       }
     } catch { /* local cleanup is best-effort */ }
     return false

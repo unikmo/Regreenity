@@ -10,12 +10,12 @@ export default async function handler(request, response) {
       if (error) throw error
     } catch (error) {
       console.error('health-database-failed', error?.message || error)
-      return sendJson(response, 503, { status: 'degraded', service: 'regreenity-control-plane', database: 'unavailable' })
+      return sendJson(response, 503, { status: 'degraded', service: 'tisonik-control-plane', database: 'unavailable' })
     }
   }
   return sendJson(response, 200, {
     status: 'ok',
-    service: 'regreenity-control-plane',
+    service: 'tisonik-control-plane',
     ...(deep ? { database: 'connected' } : {}),
     version: process.env.VERCEL_GIT_COMMIT_SHA || 'local',
   })

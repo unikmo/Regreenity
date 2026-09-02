@@ -1,8 +1,8 @@
--- Aggregate-only Regreenity control plane. Passenger/crew identity and source
+-- Aggregate-only Tisonik control plane. Passenger/crew identity and source
 -- events remain inside the cruise operator's environment.
 create extension if not exists pgcrypto;
 
-create type public.member_role as enum ('regreenity_admin', 'operator_admin', 'operator_analyst', 'operator_viewer');
+create type public.member_role as enum ('tisonik_admin', 'operator_admin', 'operator_analyst', 'operator_viewer');
 create type public.sailing_status as enum ('planned', 'active', 'complete', 'cancelled');
 create type public.metric_key as enum (
   'eligible_guests', 'activated_guests', 'positive_action_guests',
@@ -169,15 +169,15 @@ alter table public.pilot_requests enable row level security;
 alter table public.audit_events enable row level security;
 
 create policy tenants_member_read on public.tenants for select to authenticated using (public.is_tenant_member(id));
-create policy memberships_member_read on public.memberships for select to authenticated using (user_id = auth.uid() or public.has_tenant_role(tenant_id, array['regreenity_admin','operator_admin']::public.member_role[]));
+create policy memberships_member_read on public.memberships for select to authenticated using (user_id = auth.uid() or public.has_tenant_role(tenant_id, array['tisonik_admin','operator_admin']::public.member_role[]));
 create policy ships_member_read on public.ships for select to authenticated using (public.is_tenant_member(tenant_id));
 create policy sailings_member_read on public.sailings for select to authenticated using (public.is_tenant_member(tenant_id));
 create policy reports_member_read on public.aggregate_reports for select to authenticated using (public.is_tenant_member(tenant_id));
 create policy metrics_member_read on public.aggregate_metrics for select to authenticated using (exists(select 1 from public.aggregate_reports r where r.id = report_id and public.is_tenant_member(r.tenant_id)));
 create policy health_member_read on public.service_health for select to authenticated using (public.is_tenant_member(tenant_id));
-create policy connectors_admin_read on public.connector_installations for select to authenticated using (public.has_tenant_role(tenant_id, array['regreenity_admin','operator_admin']::public.member_role[]));
-create policy pilot_regreenity_admin_read on public.pilot_requests for select to authenticated using (exists(select 1 from public.memberships m where m.user_id = auth.uid() and m.role = 'regreenity_admin'));
-create policy audit_admin_read on public.audit_events for select to authenticated using ((tenant_id is null and exists(select 1 from public.memberships m where m.user_id = auth.uid() and m.role = 'regreenity_admin')) or (tenant_id is not null and public.has_tenant_role(tenant_id, array['regreenity_admin','operator_admin']::public.member_role[])));
+create policy connectors_admin_read on public.connector_installations for select to authenticated using (public.has_tenant_role(tenant_id, array['tisonik_admin','operator_admin']::public.member_role[]));
+create policy pilot_tisonik_admin_read on public.pilot_requests for select to authenticated using (exists(select 1 from public.memberships m where m.user_id = auth.uid() and m.role = 'tisonik_admin'));
+create policy audit_admin_read on public.audit_events for select to authenticated using ((tenant_id is null and exists(select 1 from public.memberships m where m.user_id = auth.uid() and m.role = 'tisonik_admin')) or (tenant_id is not null and public.has_tenant_role(tenant_id, array['tisonik_admin','operator_admin']::public.member_role[])));
 
 grant usage on schema public to authenticated;
 grant select on public.tenants, public.memberships, public.ships, public.sailings,

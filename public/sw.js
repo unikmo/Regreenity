@@ -1,4 +1,4 @@
-const CACHE = 'regreenity-shell-v7'
+const CACHE = 'tisonik-shell-v7'
 const SHELL = [
   '/',
   '/passenger-experience/',

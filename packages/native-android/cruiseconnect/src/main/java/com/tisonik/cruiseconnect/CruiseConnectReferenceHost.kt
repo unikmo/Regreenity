@@ -1,4 +1,4 @@
-package com.regreenity.cruiseconnect
+package com.tisonik.cruiseconnect
 
 import org.json.JSONObject
 
