@@ -16,8 +16,20 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
-      - name: Reject legacy canonical domain references
-        run: "if git grep -n 'https://regreenity.com' -- ':!.github/workflows/ci.yml' ':!scripts/qa-site.mjs'; then exit 1; fi"
+      - name: Reject legacy project name in content or filenames
+        shell: bash
+        run: |
+          legacy="$(printf '%s%s%s' 're' 'green' 'ity')"
+          if git grep -ni "$legacy"; then
+            echo "Legacy project name remains in tracked content."
+            exit 1
+          fi
+          matches="$(find . -path './.git' -prune -o -iname "*$legacy*" -print)"
+          if [ -n "$matches" ]; then
+            printf '%s\n' "$matches"
+            echo "Legacy project name remains in tracked filenames."
+            exit 1
+          fi
       - run: npm audit --audit-level=high
       - run: npm run sbom
       - uses: actions/upload-artifact@v4
