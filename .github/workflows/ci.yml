@@ -7,30 +7,6 @@ on:
 permissions:
   contents: read
 jobs:
-  brand-migration:
-    if: github.event_name == 'pull_request' && github.head_ref == 'migration/tisonik-domain'
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-      - uses: actions/setup-node@v4
-        with: { node-version: 24 }
-      - run: node scripts/rename-to-tisonik.mjs
-      - name: Commit migration output
-        shell: bash
-        run: |
-          git add -A
-          if git diff --cached --quiet; then
-            echo "Tisonik rename already applied."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Complete Tisonik product rename"
-          git push origin HEAD:${{ github.head_ref }}
   web-and-contracts:
     runs-on: ubuntu-latest
     steps:
