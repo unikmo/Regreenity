@@ -16,7 +16,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
-      - name: Reject legacy project name in content or filenames
+      - name: Reject legacy project name in source, paths and built output
         shell: bash
         run: |
           legacy="$(printf '%s%s%s' 're' 'green' 'ity')"
@@ -24,10 +24,14 @@ jobs:
             echo "Legacy project name remains in tracked content."
             exit 1
           fi
+          if grep -Rni --binary-files=without-match "$legacy" dist; then
+            echo "Legacy project name remains in the production build output."
+            exit 1
+          fi
           matches="$(find . -path './.git' -prune -o -iname "*$legacy*" -print)"
           if [ -n "$matches" ]; then
             printf '%s\n' "$matches"
-            echo "Legacy project name remains in tracked filenames."
+            echo "Legacy project name remains in a project path."
             exit 1
           fi
       - run: npm audit --audit-level=high
