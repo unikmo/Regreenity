@@ -73,7 +73,7 @@ if (existsSync(pilot)) {
   const html = readFileSync(pilot, 'utf8')
   if (!clientBundles.includes('/api/pilot-requests')) fail('pilot page contact form is not connected to the first-party enquiry API')
   if (html.includes('formsubmit.co') || clientBundles.includes('formsubmit.co')) fail('pilot page still exposes a third-party form relay')
-  if (!html.includes('mailto:info@tisonik.com')) fail('pilot page lacks the currently verified direct email fallback')
+  if (!html.includes('mailto:info@tisonik.com')) fail('pilot page lacks the configured direct email fallback')
   if (!/complete Tisonik|complete connected product/i.test(html)) fail('pilot page does not present the complete product experience')
   if (!/existing app/i.test(html)) fail('pilot page does not identify Tisonik as an add-on to the existing app')
 }
