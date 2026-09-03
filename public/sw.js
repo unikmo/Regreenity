@@ -1,4 +1,4 @@
-const CACHE = 'tisonik-shell-v7'
+const CACHE = 'tisonik-shell-v8'
 const SHELL = [
   '/',
   '/passenger-experience/',
@@ -8,6 +8,7 @@ const SHELL = [
   '/ancillary-revenue/',
   '/cruise-dashboard/',
   '/integration/',
+  '/all-inclusive-resorts/',
   '/pilot/',
   '/product-app/',
   '/imprint/',
