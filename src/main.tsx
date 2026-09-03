@@ -29,7 +29,7 @@ if (!useLegacyProductShell && !useLegacyLegalShell && !usePortal && !useSandbox)
     if (!footer || footer.querySelector('a[href="/all-inclusive-resorts/"]')) return
     const link = document.createElement('a')
     link.href = '/all-inclusive-resorts/'
-    link.textContent = 'All-Inclusive Resorts'
+    link.textContent = 'All-Inclusive Hotels & Resorts'
     link.dataset.resortPreview = 'true'
     footer.prepend(link)
   })
