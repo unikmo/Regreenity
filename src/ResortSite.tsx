@@ -3,6 +3,8 @@ import type { ReactNode } from 'react'
 const Arrow = () => <span aria-hidden="true">→</span>
 const resortPilotHref = 'mailto:info@tisonik.com?subject=Tisonik%20all-inclusive%20hotel%20and%20resort%20pilot'
 
+const heroImage = 'https://images.unsplash.com/photo-1776977507261-81e4ab0dd806?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&w=1800'
+
 const Footer = () => (
   <footer className="site-footer resort-footer">
     <div><strong>TISONIK</strong><span>A PlanetHike project</span></div>
@@ -16,17 +18,30 @@ const Footer = () => (
   </footer>
 )
 
-const Moment = ({ number, eyebrow, title, children }: { number: string; eyebrow: string; title: string; children: ReactNode }) => (
-  <article className="resort-moment">
-    <span className="resort-moment-number">{number}</span>
-    <p className="eyebrow">{eyebrow}</p>
-    <h3>{title}</h3>
-    <div>{children}</div>
-  </article>
+type ExperienceProps = {
+  number: string
+  eyebrow: string
+  title: string
+  text: string
+  image: string
+  alt: string
+  reverse?: boolean
+}
+
+const Experience = ({ number, eyebrow, title, text, image, alt, reverse = false }: ExperienceProps) => (
+  <section className={`resort-experience ${reverse ? 'is-reverse' : ''}`}>
+    <div className="resort-experience-copy">
+      <span className="resort-number">{number}</span>
+      <p className="eyebrow">{eyebrow}</p>
+      <h2>{title}</h2>
+      <p>{text}</p>
+    </div>
+    <figure className="resort-experience-visual"><img src={image} alt={alt} loading="lazy" /></figure>
+  </section>
 )
 
-const Metric = ({ label, value }: { label: string; value: string }) => (
-  <div className="resort-metric"><span>{label}</span><strong>{value}</strong></div>
+const Benefit = ({ number, title, children }: { number: string; title: string; children: ReactNode }) => (
+  <article><span>{number}</span><h3>{title}</h3><p>{children}</p></article>
 )
 
 export default function ResortSite() {
@@ -34,143 +49,85 @@ export default function ResortSite() {
     <header className="site-header resort-header">
       <a className="brand" href="/" aria-label="Tisonik home">TISONIK</a>
       <nav className="resort-header-nav" aria-label="Resort page navigation">
-        <a href="#experience">Guest Experience</a>
-        <a href="#recovery">Service Recovery</a>
-        <a href="#premium">Premium Experiences</a>
+        <a href="#experience">Experience</a><a href="#recognition">Recognition</a><a href="#recovery">Recovery</a><a href="#premium">Premium</a>
       </nav>
-      <a className="menu-link" href="/">For cruise lines <Arrow /></a>
+      <a className="resort-header-cta" href={resortPilotHref}>Explore a pilot <Arrow /></a>
     </header>
 
     <main>
       <section className="resort-hero">
-        <div className="resort-hero-copy">
-          <p className="eyebrow">TISONIK · ALL-INCLUSIVE HOTELS &amp; RESORTS</p>
+        <div className="resort-hero-title">
+          <p className="eyebrow">BUILT FOR ALL-INCLUSIVE HOTELS &amp; RESORTS</p>
           <h1>Help guests get more from <span>every day of their stay.</span></h1>
-          <p>Tisonik adds a lightweight guest-experience layer to the property's existing digital journey—helping guests discover more, join more, recognize great service, recover poor moments and find relevant premium experiences.</p>
-          <a className="resort-text-link" href="#experience">See the guest experience <Arrow /></a>
         </div>
-        <figure className="resort-hero-visual" role="img" aria-label="Guests enjoying a tropical all-inclusive hotel or resort" />
+        <figure className="resort-hero-visual">
+          <img src={heroImage} alt="Waitress serving guests on a sunny waterside hospitality terrace" fetchPriority="high" />
+        </figure>
+        <div className="resort-hero-after">
+          <p>Tisonik adds a guest-experience layer to the resort&apos;s existing digital journey—helping guests discover more, participate more, recognize great service, recover poor moments and find premium experiences that fit their stay.</p>
+          <a className="pilot-button" href={resortPilotHref}>Explore a pilot <Arrow /></a>
+        </div>
       </section>
 
-      <section className="resort-value-strip" aria-label="Tisonik all-inclusive property outcomes">
-        <div><span>01</span><strong>Use more of what is included.</strong></div>
-        <div><span>02</span><strong>Fix friction before checkout.</strong></div>
-        <div><span>03</span><strong>Recognize the people who make the stay.</strong></div>
-        <div><span>04</span><strong>Grow relevant premium revenue.</strong></div>
-      </section>
-
-      <section id="experience" className="resort-section resort-section--intro">
+      <section className="resort-manifesto">
         <p className="eyebrow">THE ALL-INCLUSIVE OPPORTUNITY</p>
-        <h2>The property already offers more. Tisonik helps the guest actually experience it.</h2>
-        <p className="resort-lede">A multi-day all-inclusive stay is full of included activities, entertainment, dining choices and services. Tisonik makes those moments easier to discover without turning the guest journey into another catalogue.</p>
-
-        <div className="resort-dual">
-          <article className="resort-dual-card resort-dual-card--included">
-            <p className="eyebrow">INCLUDED IN YOUR STAY</p>
-            <h3>Make prepaid value visible at the right moment.</h3>
-            <div className="resort-example">
-              <span>Today · 16:00</span>
-              <strong>Caribbean cooking class</strong>
-              <p>Beach Kitchen · 6 places remaining</p>
-              <b>Included in your stay</b>
-            </div>
-          </article>
-          <article className="resort-dual-card resort-dual-card--premium">
-            <p className="eyebrow">WORTH ADDING TO YOUR STAY</p>
-            <h3>Surface premium extras when they genuinely fit.</h3>
-            <div className="resort-example">
-              <span>Tomorrow · 09:00</span>
-              <strong>Coastal villages &amp; market</strong>
-              <p>Half-day property excursion</p>
-              <b>€79 per guest</b>
-            </div>
-          </article>
-        </div>
+        <h2>More of the stay experienced.<br />More reasons to remember it.</h2>
+        <p>Guests have already chosen the property. Tisonik helps every day feel fuller—through people, activities, service and experiences that are relevant in the moment.</p>
       </section>
 
-      <section className="resort-moments-grid" aria-label="Tisonik all-inclusive hotel and resort product pillars">
-        <Moment number="01" eyebrow="DISCOVER" title="Make everything included easier to find.">
-          <p>Surface relevant activities, entertainment, kids programming, dining options and property moments based on time, context and voluntarily shared interests.</p>
-        </Moment>
-        <Moment number="02" eyebrow="PARTICIPATE" title="Turn property programming into experiences guests actually join.">
-          <p>Use timely prompts and simple interest signals to help guests move from “I didn't know that was happening” to “we should do that today.”</p>
-        </Moment>
-        <Moment number="03" eyebrow="RECOGNIZE" title="Let exceptional hospitality be seen.">
-          <p>Capture structured recognition for the bartender, housekeeper, kids-club host, waiter or activity team member who made the stay better—without public employee rankings.</p>
-        </Moment>
-        <Moment number="04" eyebrow="RECOVER" title="Fix the moment before it becomes the review.">
-          <p>Give guests a private in-stay route to flag room, dining, service or activity friction, then track acknowledgement, resolution and the follow-up experience.</p>
-        </Moment>
-        <Moment number="05" eyebrow="PREMIUM" title="Turn relevance into incremental revenue.">
-          <p>Surface speciality restaurants, excursions, spa, car rental, private transfers, diving, cabanas, upgrades and other paid experiences while the property keeps inventory, pricing, checkout and payment.</p>
-        </Moment>
-        <Moment number="06" eyebrow="REMEMBER" title="Finish the stay on the right emotion.">
-          <p>Close with a positive recap of experiences, staff recognition and favourite moments, then hand the guest naturally into loyalty or another stay.</p>
-        </Moment>
+      <section className="resort-value-model">
+        <article>
+          <p className="eyebrow">INCLUDED IN YOUR STAY</p>
+          <h2>Make prepaid value impossible to miss.</h2>
+          <p>Activities, entertainment, sports, kids programming and included dining become easier to discover at exactly the right time.</p>
+          <div className="resort-offer"><span>TODAY · 16:00</span><strong>Caribbean cooking class</strong><small>Beach Kitchen · 6 places remaining</small><b>Included in your stay</b></div>
+        </article>
+        <article>
+          <p className="eyebrow">WORTH ADDING TO YOUR STAY</p>
+          <h2>Make premium experiences feel relevant.</h2>
+          <p>Speciality dining, excursions, spa, car rental and other extras appear because they fit the guest—not because there is another catalogue to browse.</p>
+          <div className="resort-offer"><span>TOMORROW · 09:00</span><strong>Coastal villages &amp; market</strong><small>Half-day property excursion</small><b>€79 per guest</b></div>
+        </article>
       </section>
 
-      <section id="recovery" className="resort-recovery">
-        <div className="resort-recovery-copy">
-          <p className="eyebrow">SERVICE RECOVERY</p>
-          <h2>Don't wait for the post-stay review to discover the problem.</h2>
-          <p>Small frustrations compound over a multi-day stay. Tisonik gives the property a structured private signal while the team can still change the outcome.</p>
-        </div>
-        <div className="resort-recovery-flow" aria-label="Example service recovery flow">
-          <div><span>19:42</span><strong>How was dinner tonight?</strong><p>Guest selects: “Not quite right.”</p></div>
-          <i aria-hidden="true">→</i>
-          <div><span>19:43</span><strong>What could we improve?</strong><p>Prepared reasons route the issue to the right team.</p></div>
-          <i aria-hidden="true">→</i>
-          <div><span>21:10</span><strong>Has this been resolved?</strong><p>The property closes the loop before the night ends.</p></div>
-        </div>
-      </section>
+      <div id="experience" className="resort-experience-wrap">
+        <Experience number="01" eyebrow="DISCOVER & PARTICIPATE" title="Make the resort feel alive." text="Help guests move naturally from poolside to activities, entertainment, dining and shared experiences. Fewer moments of ‘we didn't know that was happening’ and more moments guests actually join." image="/media/cruise-inclusive-activity.jpg" alt="Diverse guests enjoying an inclusive hospitality activity together" />
+        <div id="recognition" />
+        <Experience number="02" eyebrow="STAFF RECOGNITION" title="Let exceptional hospitality be seen." text="The people behind the stay matter. Give guests a simple way to recognize the waiter, bartender, housekeeper, kids-club host, concierge or activity team member who made their day." image="/media/cruise-candid-crew.jpg" alt="Hospitality team members sharing a positive service moment" reverse />
+        <div id="recovery" />
+        <Experience number="03" eyebrow="SERVICE RECOVERY" title="Fix the moment before it becomes the review." text="A disappointing dinner, room problem or poor activity experience should not quietly follow the guest home. Tisonik creates a private route to capture, route and resolve friction while there is still time to change the outcome." image="/media/cruise-family-recovery.jpg" alt="Hospitality employee helping a guest family during their stay" />
+        <Experience number="04" eyebrow="PREMIUM EXPERIENCES" title="Turn relevance into incremental revenue." text="A speciality dinner tonight. Tomorrow's excursion. A spa opening. A rental car. A private transfer or celebration. Tisonik surfaces the right extra at the right moment while inventory, price, checkout and payment remain with the property." image="/media/cruise-family-experience.jpg" alt="Guests choosing a premium hospitality experience together" reverse />
+      </div>
 
       <section id="premium" className="resort-premium">
-        <div className="resort-premium-head">
-          <div><p className="eyebrow">PREMIUM EXPERIENCES</p><h2>All-inclusive still has meaningful revenue moments.</h2></div>
-          <p>The guest should feel helped, not advertised to. Tisonik uses context to surface a relevant extra, then hands the transaction back to the property's existing booking or commerce system.</p>
-        </div>
-        <div className="resort-premium-list">
-          <span>Speciality dining</span><span>Excursions</span><span>Car rental</span><span>Spa</span><span>Room upgrades</span><span>Private transfers</span><span>Cabanas</span><span>Diving &amp; watersports</span><span>Celebrations</span><span>Premium drinks</span>
-        </div>
+        <p className="eyebrow">MORE THAN THE PACKAGE</p>
+        <h2>All-inclusive still has meaningful<br />premium revenue moments.</h2>
+        <div className="resort-premium-list"><span>Speciality dining</span><span>Excursions</span><span>Car rental</span><span>Spa</span><span>Room upgrades</span><span>Private transfers</span><span>Cabanas</span><span>Diving &amp; watersports</span><span>Celebrations</span><span>Premium drinks</span></div>
       </section>
 
-      <section className="resort-social">
-        <div>
-          <p className="eyebrow">STAY PARTICIPATION</p>
-          <h2>Make it easier to join in—without turning the stay into a social network.</h2>
-        </div>
-        <div className="resort-social-cards">
-          <article><span>PADEL · 17:00</span><strong>Looking for another pair?</strong><p>Guests can signal interest around a specific public property activity.</p></article>
-          <article><span>FAMILY ACTIVITY · 15:30</span><strong>Beach games starting soon.</strong><p>Context-led participation, not a browse-all-guests directory.</p></article>
-          <article><span>EXCURSION · TOMORROW</span><strong>Interest is building.</strong><p>Aggregated interest can provide social proof without exposing guest identities.</p></article>
-        </div>
-      </section>
-
-      <section className="resort-dashboard">
-        <div className="resort-dashboard-copy">
-          <p className="eyebrow">ONE PILOT VIEW</p>
-          <h2>Measure guest value and commercial value separately.</h2>
-          <p>No invented performance claims. A pilot should agree the measures first, then show whether Tisonik improves participation, recovery, recognition and attributable premium conversion at the property.</p>
-        </div>
-        <div className="resort-dashboard-card" aria-label="Illustrative all-inclusive pilot metrics">
-          <p>Illustrative pilot view</p>
-          <Metric label="Included-experience participation" value="Measure change" />
-          <Metric label="Service issues recovered in-stay" value="Measure rate" />
-          <Metric label="Staff recognition" value="Measure frequency" />
-          <Metric label="Premium-experience conversion" value="Measure lift" />
-          <Metric label="Attributed ancillary revenue" value="Measure value" />
+      <section className="resort-outcomes">
+        <p className="eyebrow">ONE EXPERIENCE LAYER</p>
+        <h2>Guest value and commercial value<br />in the same stay.</h2>
+        <div className="resort-outcomes-grid">
+          <Benefit number="01" title="Discover">Help guests see more of what the property already offers.</Benefit>
+          <Benefit number="02" title="Participate">Turn programming into experiences guests actually join.</Benefit>
+          <Benefit number="03" title="Recognize">Capture the people who make the stay exceptional.</Benefit>
+          <Benefit number="04" title="Recover">Resolve dissatisfaction while the guest is still there.</Benefit>
+          <Benefit number="05" title="Upgrade">Surface premium experiences when they genuinely fit.</Benefit>
+          <Benefit number="06" title="Remember">Finish the stay with a positive memory and loyalty bridge.</Benefit>
         </div>
       </section>
 
       <section className="resort-pilot">
-        <p className="eyebrow">START WITH ONE PROPERTY</p>
-        <h2>Test Tisonik where the guest journey is dense enough to matter.</h2>
-        <p>Start with one all-inclusive hotel or resort, a defined set of included and premium experiences, clear recovery workflows and agreed pilot measures.</p>
-        <a className="pilot-button" href={resortPilotHref}>Discuss a property pilot <Arrow /></a>
-        <small>This page is an experimental Tisonik vertical and is not yet part of the primary navigation.</small>
+        <div>
+          <p className="eyebrow">START SMALL. LEARN FAST.</p>
+          <h2>Experience Tisonik on one all-inclusive property.</h2>
+          <p>Test participation, recognition, service recovery and premium-experience discovery in one resort before deciding on wider rollout.</p>
+          <a className="pilot-button" href={resortPilotHref}>Explore a pilot <Arrow /></a>
+        </div>
+        <figure><img src="/media/passenger-connection.jpg" alt="Guests enjoying a positive shared hospitality moment" loading="lazy" /></figure>
       </section>
     </main>
-
     <Footer />
   </div>
 }
