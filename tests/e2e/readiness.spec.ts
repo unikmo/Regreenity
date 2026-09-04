@@ -61,23 +61,34 @@ test('resort pillar contains no unapproved hotel-chain logos or affiliations', a
   await expect(page.getByText('BUILT FOR ALL-INCLUSIVE RESORTS')).toBeVisible()
 })
 
-test('resort rating demo keeps the approved five-minute minimal flow', async ({ page }) => {
+test('resort rating demo uses the fixed 10-question public flow', async ({ page }) => {
   await page.goto('/resort-live-demo/')
   await page.getByRole('button', { name: '5-minute rating' }).click()
 
-  for (let question = 0; question < 4; question++) {
-    await expect(page.getByText(new RegExp(`QUESTION ${question + 1} OF 4`))).toBeVisible()
+  for (let question = 0; question < 10; question++) {
+    await expect(page.getByText(new RegExp(`QUESTION ${question + 1} OF 10`))).toBeVisible()
     const scoreButtons = page.getByRole('button', { name: /Rate \d+ out of 10/ })
     await expect(scoreButtons).toHaveCount(10)
     await page.getByRole('button', { name: 'Rate 8 out of 10' }).click()
-    await page.getByRole('button', { name: question === 3 ? 'Add optional comment' : 'Next question' }).click()
+    await page.getByRole('button', { name: question === 9 ? 'Add two short comments' : 'Next question' }).click()
   }
 
-  const note = page.getByPlaceholder('Maximum 400 characters')
-  await expect(note).toHaveAttribute('maxlength', '400')
-  await note.fill('Great staff. Dinner service was slow.')
-  await page.getByRole('button', { name: /submit demo rating/i }).click()
-  await expect(page.getByText('Thanks. The resort can still act while you are here.')).toBeVisible()
+  const good = page.getByLabel(/What was good\?/) 
+  const improve = page.getByLabel(/What could be improved\?/) 
+  await expect(good).toHaveAttribute('maxlength', '400')
+  await expect(improve).toHaveAttribute('maxlength', '400')
+  await good.fill('Warm staff, beautiful pool and excellent breakfast.')
+  await improve.fill('Dinner waiting time could be shorter.')
+  await page.getByRole('button', { name: /submit & publish demo rating/i }).click()
+  await expect(page.getByText('Rating published. The resort can still act while you are here.')).toBeVisible()
+  await expect(page.getByText(/cannot selectively hold back a rating because it is poor/i)).toBeVisible()
+})
+
+test('resort rating copy states questions are standard and ratings cannot be suppressed', async ({ page }) => {
+  await page.goto('/hotel-guest-rating-software/')
+  await expect(page.getByText(/10 standard guest pain-point questions/i).first()).toBeVisible()
+  await expect(page.getByText(/participating hotels do not choose or rewrite them/i).first()).toBeVisible()
+  await expect(page.getByText(/cannot selectively suppress or hold back poor ratings/i).first()).toBeVisible()
 })
 
 test('resort pilot form uses the existing first-party enquiry endpoint', async ({ page }) => {
