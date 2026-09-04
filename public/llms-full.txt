@@ -12,11 +12,11 @@ Tisonik is a PlanetHike OÜ project for guest-experience activation in cruise li
 ### In-stay ratings and service recovery
 - The resort can invite guests to rate the stay while they are still on property or shortly before departure, when there is still time to act on poor experiences.
 - The rating flow is designed to take no more than about five minutes.
-- The rating product uses exactly 10 standard guest pain-point questions. Participating hotels do not choose, replace or rewrite the questions.
-- Each question uses the same 1–10 score scale.
-- The standard question set covers room cleanliness and maintenance, room comfort, food quality and choice, drinks and bar service, waiting times and speed of service, staff helpfulness, pools/beach/shared areas, discovery of activities and included experiences, handling of problems or requests, and the overall stay so far.
-- Guests may add a separate optional “What was good?” comment capped at 400 characters.
-- Guests may add a separate optional “What could be improved?” comment capped at 400 characters.
+- The rating product uses exactly 10 standard questions. Participating hotels do not choose, replace or rewrite the questions.
+- Questions 1–8 are fixed guest pain-point questions, each using the same 1–10 score scale.
+- Those eight scored areas cover room cleanliness and maintenance, room comfort, food quality and choice, drinks and bar service, waiting times and speed of service, staff helpfulness and welcome, pools/beach/shared areas, and ease of finding and joining activities, entertainment and included experiences.
+- Question 9 is “What was good?” and allows up to 400 characters.
+- Question 10 is “What could be improved?” and allows up to 400 characters.
 - A poor or concerning in-stay rating can be routed into a service-recovery workflow so the resort can acknowledge, resolve and follow up before checkout where possible.
 - Participation means publication: submitted ratings go public, and a participating property cannot selectively suppress or hold back a rating because it is poor.
 - Service recovery does not remove the submitted rating from the publication path.
@@ -25,8 +25,10 @@ Tisonik is a PlanetHike OÜ project for guest-experience activation in cruise li
 - Tisonik can give guests a simple way to recognize resort employees who made the stay better.
 - The resort use case is positive recognition, not a public employee leaderboard.
 
-### Premium experience discovery
-- Relevant spa, speciality dining, excursions, transfers, cabanas, watersports, celebrations and other premium experiences can be surfaced inside the guest journey.
+### Ancillary revenue and premium experience discovery
+- The commercial opportunity extends beyond a single upsell or static catalogue.
+- Relevant paid experiences can include spa and wellness, speciality dining, excursions, private transfers, cabanas and daybeds, watersports, celebrations and other resort-specific experiences.
+- Tisonik can surface these opportunities at useful moments inside the guest journey while clearly distinguishing paid experiences from what is already included.
 - Tisonik does not need to own the resort's inventory, availability, pricing, checkout, payment or fulfilment. Those remain with the resort.
 - Commercial performance claims should follow real pilot evidence and agreed attribution logic.
 
