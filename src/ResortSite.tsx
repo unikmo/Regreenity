@@ -5,7 +5,7 @@ const Arrow = () => <span aria-hidden="true">→</span>
 const resortImages = {
   hero: 'https://images.unsplash.com/photo-1741316041551-ed5d92b2f14f?auto=format&fit=crop&fm=jpg&q=82&w=2200',
   pool: 'https://images.unsplash.com/photo-1783931420467-e54029948fc9?auto=format&fit=crop&fm=jpg&q=82&w=1800',
-  staff: 'https://images.unsplash.com/photo-1776977507261-81e4ab0dd806?auto=format&fit=crop&fm=jpg&q=82&w=1800',
+  staff: 'https://images.unsplash.com/photo-1759143545924-beb85b33c0f1?auto=format&fit=crop&fm=jpg&q=82&w=1800',
   dining: 'https://images.unsplash.com/photo-1760669348715-b2314a8af89a?auto=format&fit=crop&fm=jpg&q=82&w=1800',
   spa: 'https://images.unsplash.com/photo-1639162906614-0603b0ae95fd?auto=format&fit=crop&fm=jpg&q=82&w=1800',
   sunset: 'https://images.unsplash.com/photo-1772064901616-00264a6c4104?auto=format&fit=crop&fm=jpg&q=82&w=1800',
@@ -57,7 +57,7 @@ const Header = ({ compact = false }: { compact?: boolean }) => (
 
 const Footer = () => (
   <footer className="site-footer resort-footer">
-    <div><strong>TISONIK</strong><span>A PlanetHike project</span></div>
+    <div><strong>TISONIK</strong><span>A product of TSquare Ventures LLC</span></div>
     <p>Guest experience activation for all-inclusive hotels and resorts: discovery, ancillary revenue, in-stay ratings, service recovery and staff recognition.</p>
     <nav className="footer-links" aria-label="Footer navigation">
       <a href="/all-inclusive-resorts/">Resorts</a>
@@ -249,7 +249,7 @@ const ResortPillar = () => (
           <p>Help guests move naturally from poolside to activities, dining, entertainment and shared experiences. Less “we didn&apos;t know that was happening.” More of the stay actually experienced.</p>
         </Feature>
 
-        <Feature number="02" eyebrow="SERVICE RECOVERY" title="Fix the moment before it becomes the review." image={resortImages.staff} alt="Hospitality employee attending to guests in a premium resort setting" reverse imagePosition="72% center" imageScale={1.12}>
+        <Feature number="02" eyebrow="SERVICE RECOVERY" title="Fix the moment before it becomes the review." image={resortImages.staff} alt="Guest-service team member assisting at a hotel reception" reverse>
           <p>Give guests a private path to say when something is wrong while they are still on property. Route the signal, acknowledge it, resolve it and follow up before departure.</p>
         </Feature>
 
@@ -437,7 +437,7 @@ const ResortPilotForm = () => {
     </div>
     <label>Property or hotel group<input required name="company" autoComplete="organization" placeholder="Organisation" /></label>
     <label>What should we know?<textarea required name="message" rows={5} minLength={10} placeholder="Target property, current guest app, priorities, timing…" /></label>
-    <label className="resort-form-consent"><input required type="checkbox" name="privacy_consent" value="yes" /><span>I agree that PlanetHike may use these details to respond to my enquiry, as described in the <a href="/privacy/">privacy policy</a>.</span></label>
+    <label className="resort-form-consent"><input required type="checkbox" name="privacy_consent" value="yes" /><span>I agree that TSquare Ventures LLC may use these details to respond to my enquiry, as described in the <a href="/privacy/">privacy policy</a>.</span></label>
     <label className="resort-honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
     <button className="resort-primary-button" type="submit" disabled={status === 'sending' || status === 'sent'}>
       {status === 'sending' ? 'Sending…' : status === 'sent' ? 'Enquiry received' : <>Request a live demo or pilot <Arrow /></>}
@@ -511,7 +511,7 @@ const seoPages: Record<Exclude<ResortPageKey, 'pillar' | 'demo' | 'pilot'>, {
     title: 'Act while the guest is still there.',
     intro: 'A post-stay complaint is information. An in-stay signal is an opportunity to change the outcome.',
     image: resortImages.staff,
-    alt: 'Hospitality employee attending to guests at a resort',
+    alt: 'Guest-service team member assisting at a hotel reception',
     points: [
       { title: 'Capture early', body: 'Give the guest an easy route to signal friction while the team still has time to act.' },
       { title: 'Route and acknowledge', body: 'Send the issue to the right operational owner and make the response visible.' },

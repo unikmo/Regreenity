@@ -152,7 +152,7 @@ const Header = ({ page }: { page: PageKey }) => (
 
 const Footer = () => (
   <footer className="site-footer">
-    <div><strong>TISONIK</strong><span>A PlanetHike project</span></div>
+    <div><strong>TISONIK</strong><span>A product of TSquare Ventures LLC</span></div>
     <p>Passenger experience, crew recognition, service recovery, engagement and ancillary-revenue discovery for cruise lines.</p>
     <nav className="footer-links" aria-label="Footer navigation"><a href={contactHref}>Contact</a><a href="/imprint/">Imprint</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/cookies/">Cookies</a></nav>
   </footer>
@@ -266,7 +266,7 @@ const PilotContactForm = () => {
     }
   }
   return <section id="contact" className="contact-form-section" aria-labelledby="pilot-contact-title">
-    <div className="contact-form-copy"><p className="eyebrow">REQUEST A PILOT</p><h1 id="pilot-contact-title">Plan a complete one-ship Tisonik pilot.</h1><p>You have seen the product. Tell us about your existing app, target ship and timing, and we’ll respond personally about a complete one-ship pilot.</p><div className="contact-confidence"><span>One short form</span><span>Direct response from PlanetHike</span><span>No mailing list</span></div><a href="mailto:info@tisonik.com">info@tisonik.com <Arrow /></a></div>
+    <div className="contact-form-copy"><p className="eyebrow">REQUEST A PILOT</p><h1 id="pilot-contact-title">Plan a complete one-ship Tisonik pilot.</h1><p>You have seen the product. Tell us about your existing app, target ship and timing, and we’ll respond personally about a complete one-ship pilot.</p><div className="contact-confidence"><span>One short form</span><span>Direct response from TSquare Ventures LLC</span><span>No mailing list</span></div><a href="mailto:info@tisonik.com">info@tisonik.com <Arrow /></a></div>
     <form className="pilot-contact-form" onSubmit={submitEnquiry}>
       <input className="form-honeypot" type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       {status === 'sent' && <p className="form-success" role="status">Thank you. Your Tisonik enquiry is safely recorded. We’ll reply personally.</p>}
@@ -275,7 +275,7 @@ const PilotContactForm = () => {
       <div className="contact-form-row"><label>Name<input required name="name" autoComplete="name" placeholder="Your name" /></label><label>Role<input name="role" autoComplete="organization-title" placeholder="Guest Experience, Digital…" /></label></div>
       <label>Cruise line or company<input required name="company" autoComplete="organization" placeholder="Organisation" /></label>
       <label>What should we know about your current app or pilot?<textarea required name="message" rows={5} placeholder="Current cruise app, target ship or sailing, integration priorities, timing…" /></label>
-      <label className="form-consent"><input required type="checkbox" name="privacy_consent" value="yes" /><span>I agree that PlanetHike may use these details to respond to my enquiry, as described in the <a href="/privacy/">privacy policy</a>.</span></label>
+      <label className="form-consent"><input required type="checkbox" name="privacy_consent" value="yes" /><span>I agree that TSquare Ventures LLC may use these details to respond to my enquiry, as described in the <a href="/privacy/">privacy policy</a>.</span></label>
       <button className="pilot-button contact-submit" type="submit" disabled={status === 'sending' || status === 'sent'}>{status === 'sending' ? 'Sending securely…' : status === 'sent' ? 'Enquiry received' : <>Request a pilot conversation <Arrow /></>}</button>
     </form>
   </section>

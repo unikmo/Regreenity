@@ -28,6 +28,10 @@ npm run build
 - `/integration/`
 - `/pilot/`
 
+## Company
+
+Tisonik is a product of **TSquare Ventures LLC**, 30 N Gould St Ste R, Sheridan, WY 82801, USA.
+
 ## Resort vertical routes
 
 - `/all-inclusive-resorts/`

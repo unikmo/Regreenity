@@ -1,6 +1,6 @@
 # Tisonik — Public Product Reference
 
-Tisonik is a PlanetHike OÜ project for guest-experience activation in cruise lines and all-inclusive hotels and resorts. It is designed as a white-label interaction layer inside an operator's existing digital journey rather than as a separate consumer destination.
+Tisonik is a product of TSquare Ventures LLC for guest-experience activation in cruise lines and all-inclusive hotels and resorts. It is designed as a white-label interaction layer inside an operator's existing digital journey rather than as a separate consumer destination.
 
 ## All-inclusive hotels and resorts
 
@@ -89,7 +89,7 @@ Tisonik is a PlanetHike OÜ project for guest-experience activation in cruise li
 - https://tisonik.com/hotel-ancillary-revenue-software/
 
 ## Operator and contact
-- Operator: PlanetHike OÜ, Tallinn, Estonia.
+- Operator: TSquare Ventures LLC, 30 N Gould St Ste R, Sheridan, WY 82801, USA.
 - Resort live-demo and pilot enquiries: https://tisonik.com/resort-pilot/#contact
 - Cruise pilot and enterprise enquiries: https://tisonik.com/pilot/#contact
 - Website: https://tisonik.com/
