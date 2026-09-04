@@ -55,25 +55,20 @@ test('pilot form is labelled, first-party and keyboard reachable', async ({ page
 test('resort pillar contains no unapproved hotel-chain logos or affiliations', async ({ page }) => {
   await page.goto('/all-inclusive-resorts/')
   const body = await page.locator('body').innerText()
-  for (const unapprovedBrand of ['Atlantis', 'RIU', 'Barceló', 'Iberostar', 'Secrets']) {
-    expect(body).not.toContain(unapprovedBrand)
-  }
+  for (const unapprovedBrand of ['Atlantis', 'RIU', 'Barceló', 'Iberostar', 'Secrets']) expect(body).not.toContain(unapprovedBrand)
   await expect(page.getByText('BUILT FOR ALL-INCLUSIVE RESORTS')).toBeVisible()
 })
 
 test('resort pillar makes ancillary revenue opportunity explicit', async ({ page }) => {
   await page.goto('/all-inclusive-resorts/#revenue')
   await expect(page.getByText('More of the stay can become bookable.')).toBeVisible()
-  for (const opportunity of ['Spa & wellness', 'Speciality dining', 'Excursions', 'Cabanas & daybeds', 'Private transfers', 'Celebrations', 'Watersports']) {
-    await expect(page.getByText(opportunity, { exact: true })).toBeVisible()
-  }
+  for (const opportunity of ['Spa & wellness', 'Speciality dining', 'Excursions', 'Cabanas & daybeds', 'Private transfers', 'Celebrations', 'Watersports']) await expect(page.getByText(opportunity, { exact: true })).toBeVisible()
   await expect(page.getByRole('link', { name: /ancillary revenue use case/i })).toHaveAttribute('href', '/hotel-ancillary-revenue-software/')
 })
 
 test('resort rating demo uses eight scored questions plus two written wrap-up questions', async ({ page }) => {
   await page.goto('/resort-live-demo/')
   await page.getByRole('button', { name: /2 · Stay rating/i }).click()
-
   for (let question = 0; question < 8; question++) {
     await expect(page.getByText(new RegExp(`QUESTION ${question + 1} OF 10`))).toBeVisible()
     const scoreButtons = page.getByRole('button', { name: /Rate \d+ out of 10/ })
@@ -81,19 +76,16 @@ test('resort rating demo uses eight scored questions plus two written wrap-up qu
     await page.getByRole('button', { name: 'Rate 8 out of 10' }).click()
     await page.getByRole('button', { name: 'Next question' }).click()
   }
-
   await expect(page.getByText('QUESTION 9 OF 10 · DEMO')).toBeVisible()
   const good = page.getByLabel(/Your answer/).first()
   await expect(good).toHaveAttribute('maxlength', '400')
   await good.fill('Warm staff, beautiful pool and excellent breakfast.')
   await page.getByRole('button', { name: 'Next question' }).click()
-
   await expect(page.getByText('QUESTION 10 OF 10 · DEMO')).toBeVisible()
   const improve = page.getByLabel(/Your answer/).first()
   await expect(improve).toHaveAttribute('maxlength', '400')
   await improve.fill('Dinner waiting time could be shorter.')
   await page.getByRole('button', { name: /submit & publish demo rating/i }).click()
-
   await expect(page.getByText('Rating published. The resort can still act while you are here.')).toBeVisible()
   await expect(page.getByText(/cannot selectively hold back a rating because it is poor/i)).toBeVisible()
 })
@@ -120,17 +112,14 @@ test('TSquare is the public operator identity and the service-recovery image is 
     await page.goto(route)
     expect(await page.locator('body').innerText()).not.toContain(legacyBrand)
   }
-
   await page.goto('/imprint/')
   await expect(page.getByText('TSquare Ventures LLC', { exact: true }).first()).toBeVisible()
   await expect(page.getByText(/30 N Gould St Ste R/).first()).toBeVisible()
   await expect(page.getByText(/Sheridan, WY 82801, USA/).first()).toBeVisible()
-
   await page.goto('/all-inclusive-resorts/')
   const recoveryImage = page.locator('.resort-feature').filter({ hasText: 'SERVICE RECOVERY' }).locator('img')
   await expect(recoveryImage).toHaveAttribute('src', /photo-1759143545924-beb85b33c0f1/)
-  const recoverySrc = await recoveryImage.getAttribute('src')
-  expect(recoverySrc).not.toContain('photo-1776977507261-81e4ab0dd806')
+  expect(await recoveryImage.getAttribute('src')).not.toContain('photo-1776977507261-81e4ab0dd806')
 })
 
 test('resort pilot form uses the existing first-party enquiry endpoint', async ({ page }) => {
