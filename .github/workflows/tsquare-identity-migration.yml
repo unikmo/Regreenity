@@ -24,14 +24,13 @@ jobs:
           from pathlib import Path
           import re
 
-          text_suffixes = {'.ts', '.tsx', '.js', '.mjs', '.json', '.md', '.html', '.txt', '.css', '.yml', '.yaml'}
           skip = {Path('.github/workflows/tsquare-identity-migration.yml')}
-          files = [p for p in Path('.').rglob('*') if p.is_file() and p.suffix.lower() in text_suffixes and '.git' not in p.parts and 'node_modules' not in p.parts and p not in skip]
+          files = [p for p in Path('.').rglob('*') if p.is_file() and '.git' not in p.parts and 'node_modules' not in p.parts and p not in skip]
 
           for path in files:
               try:
                   text = path.read_text(encoding='utf-8')
-              except UnicodeDecodeError:
+              except (UnicodeDecodeError, OSError):
                   continue
               original = text
 
@@ -39,11 +38,13 @@ jobs:
               text = text.replace('A PlanetHike project', 'A product of TSquare Ventures LLC')
               text = text.replace('a PlanetHike project', 'a product of TSquare Ventures LLC')
               text = text.replace('a PlanetHike OÜ project', 'a product of TSquare Ventures LLC')
+              text = text.replace('TISONIK · A PLANETHIKE PROJECT', 'TISONIK · A PRODUCT OF TSQUARE VENTURES LLC')
               text = text.replace('Direct response from PlanetHike', 'Direct response from TSquare Ventures LLC')
               text = text.replace('contact PlanetHike through the production form', 'contact TSquare Ventures LLC through the production form')
               text = text.replace('I agree that PlanetHike may use these details', 'I agree that TSquare Ventures LLC may use these details')
               text = text.replace('PlanetHike OÜ', 'TSquare Ventures LLC')
               text = text.replace('PlanetHike', 'TSquare Ventures LLC')
+              text = re.sub(r'PLANETHIKE(?:\s+OÜ)?', 'TSQUARE VENTURES LLC', text, flags=re.I)
 
               # Remove former Estonian operator particulars rather than attributing them to the new LLC.
               text = text.replace('TSquare Ventures LLC, registry code 17233027, Järvevana tee 9, Tallinn, 11314, Estonia', 'TSquare Ventures LLC, 30 N Gould St Ste R, Sheridan, WY 82801, USA')
@@ -91,7 +92,6 @@ jobs:
                   text = text.replace("alt: 'Hospitality employee attending to guests at a resort'", "alt: 'Guest-service team member assisting at a hotel reception'")
 
               if path.as_posix() == 'README.md':
-                  text = text.replace('They use TSquare Ventures LLC as the operator and reflect Tisonik', 'They use TSquare Ventures LLC as the operator and reflect Tisonik')
                   marker = '## Resort vertical routes\n'
                   if marker in text and '30 N Gould St Ste R' not in text:
                       text = text.replace(marker, '## Company\n\nTisonik is a product of **TSquare Ventures LLC**, 30 N Gould St Ste R, Sheridan, WY 82801, USA.\n\n' + marker)
@@ -112,7 +112,6 @@ jobs:
           imprint = Path('imprint/index.html')
           if imprint.exists():
               text = imprint.read_text(encoding='utf-8')
-              text = text.replace('a product of TSquare Ventures LLC.', 'a product of TSquare Ventures LLC.')
               text = text.replace('{"@type":"Organization","name":"Tisonik","description":"White-label positive-interaction infrastructure for cruise lines."}', '{"@type":"Organization","name":"TSquare Ventures LLC","address":{"@type":"PostalAddress","streetAddress":"30 N Gould St Ste R","addressLocality":"Sheridan","addressRegion":"WY","postalCode":"82801","addressCountry":"US"},"brand":{"@type":"Brand","name":"Tisonik"}}')
               imprint.write_text(text, encoding='utf-8')
           PY
