@@ -355,7 +355,7 @@ const ResortLiveDemo = () => {
       </section>
 
       <section className="resort-demo-shell">
-        <div className="resort-demo-tabs" role="tablist" aria-label="Demo views">
+        <div className="resort-demo-tabs" role="group" aria-label="Demo views">
           <button className={mode === 'guest' ? 'is-active' : ''} onClick={() => setMode('guest')} type="button">1 · Guest journey</button>
           <button className={mode === 'rating' ? 'is-active' : ''} onClick={() => setMode('rating')} type="button">2 · Stay rating</button>
           <button className={mode === 'team' ? 'is-active' : ''} onClick={() => setMode('team')} type="button">3 · Resort team</button>
