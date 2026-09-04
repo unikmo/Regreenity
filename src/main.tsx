@@ -27,7 +27,7 @@ const loadRoute = async () => {
   if (usePortal) return import('./Portal').then(module => module.default)
   if (useLegacyProductShell) return Promise.all([import('./ExecutiveWalkthrough'), import('./executive-walkthrough.css')]).then(([module]) => module.default)
   if (useLegacyLegalShell) return Promise.all([import('./App'), import('./styles.css')]).then(([module]) => module.default)
-  if (useResort) return Promise.all([import('./ResortSite'), import('./marketing.css'), import('./resort.css')]).then(([module]) => module.default)
+  if (useResort) return Promise.all([import('./ResortSite'), import('./marketing.css'), import('./resort.css'), import('./resort-accessibility.css')]).then(([module]) => module.default)
   return Promise.all([import('./MarketingSite'), import('./marketing.css')]).then(([module]) => module.default)
 }
 
