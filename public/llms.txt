@@ -5,20 +5,22 @@ Tisonik is a PlanetHike project for guest-experience activation in cruise lines 
 ## What Tisonik is
 Tisonik is designed as a white-label guest-experience interaction layer that fits inside an operator's existing digital journey rather than replacing the operator's core app, PMS, booking or commerce stack.
 
-For all-inclusive hotels and resorts, Tisonik focuses on experience discovery and participation, in-stay ratings and service recovery, staff recognition, and relevant premium-experience discovery.
+For all-inclusive hotels and resorts, Tisonik focuses on experience discovery and participation, relevant ancillary-revenue opportunities, in-stay ratings and service recovery, and staff recognition.
 
 ## Resort product boundaries
 - Tisonik is an experience layer, not a replacement for the resort's core operational or commerce systems.
 - Resort inventory, availability, pricing, checkout, payment and fulfilment remain with the resort.
 - Public demonstrations and demo metrics are illustrative and do not imply a hotel or resort affiliation or production performance.
 - The in-stay rating flow is designed to take no more than about five minutes.
-- The rating product uses exactly 10 standard guest pain-point questions; participating hotels do not choose, replace or rewrite the questions.
-- Each rating question uses a 1–10 score.
-- Guests may add a separate optional “What was good?” comment capped at 400 characters.
-- Guests may add a separate optional “What could be improved?” comment capped at 400 characters.
+- The rating product uses exactly 10 standard questions; participating hotels do not choose, replace or rewrite them.
+- Questions 1–8 are fixed guest pain-point questions and use a 1–10 score.
+- Question 9 is “What was good?” and allows up to 400 characters.
+- Question 10 is “What could be improved?” and allows up to 400 characters.
 - The purpose of in-stay ratings is to give the resort a chance to respond while the guest is still on property or before departure.
 - Participation means publication: submitted ratings go public, and a participating property cannot selectively suppress or hold back poor ratings.
-- Public performance claims should follow real pilot evidence rather than demo assumptions.
+- Relevant paid experiences can include spa and wellness, speciality dining, excursions, cabanas and daybeds, private transfers, celebrations and watersports.
+- Tisonik surfaces these opportunities in context while inventory, pricing, checkout, payment and fulfilment remain with the resort.
+- Public commercial-performance claims should follow real pilot evidence rather than demo assumptions.
 
 ## Cruise product boundaries
 - Tisonik is designed as an add-on interaction layer inside the cruise line's existing app, not a replacement for the cruise line's app or core commerce stack.
