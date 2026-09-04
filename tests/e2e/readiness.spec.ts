@@ -129,7 +129,8 @@ test('TSquare is the public operator identity and the service-recovery image is 
   await page.goto('/all-inclusive-resorts/')
   const recoveryImage = page.locator('.resort-feature').filter({ hasText: 'SERVICE RECOVERY' }).locator('img')
   await expect(recoveryImage).toHaveAttribute('src', /photo-1759143545924-beb85b33c0f1/)
-  await expect(recoveryImage).not.toHaveAttribute('src', /photo-1776977507261-81e4ab0dd806/)
+  const recoverySrc = await recoveryImage.getAttribute('src')
+  expect(recoverySrc).not.toContain('photo-1776977507261-81e4ab0dd806')
 })
 
 test('resort pilot form uses the existing first-party enquiry endpoint', async ({ page }) => {
