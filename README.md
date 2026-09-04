@@ -30,6 +30,20 @@ npm run build
 - `/integration/`
 - `/pilot/`
 
+## Resort vertical routes
+
+- `/all-inclusive-resorts/`
+- `/resort-live-demo/`
+- `/resort-pilot/`
+- `/resort-guest-engagement-software/`
+- `/hotel-service-recovery-software/`
+- `/hotel-guest-rating-software/`
+- `/resort-experience-discovery/`
+- `/resort-upselling-software/`
+- `/hotel-ancillary-revenue-software/`
+
+The resort rating flow uses exactly 10 standard guest pain-point questions on a 1–10 scale, followed by separate optional “What was good?” and “What could be improved?” fields capped at 400 characters each. Participating properties do not configure the questions and cannot selectively suppress submitted ratings.
+
 The Vite build treats each route as its own HTML entry so important buyer propositions are not represented only by client-side state.
 
 ## SEO production step
