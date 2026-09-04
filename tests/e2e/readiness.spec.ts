@@ -1,7 +1,25 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
-const publicRoutes = ['/', '/passenger-experience/', '/crew-recognition/', '/service-recovery/', '/engagement/', '/ancillary-revenue/', '/integration/', '/pilot/']
+const publicRoutes = [
+  '/',
+  '/passenger-experience/',
+  '/crew-recognition/',
+  '/service-recovery/',
+  '/engagement/',
+  '/ancillary-revenue/',
+  '/integration/',
+  '/pilot/',
+  '/all-inclusive-resorts/',
+  '/resort-live-demo/',
+  '/resort-pilot/',
+  '/resort-guest-engagement-software/',
+  '/hotel-service-recovery-software/',
+  '/resort-upselling-software/',
+  '/hotel-ancillary-revenue-software/',
+  '/resort-experience-discovery/',
+  '/hotel-guest-rating-software/',
+]
 
 for (const route of publicRoutes) test(`${route} has no serious accessibility or overflow defects`, async ({ page }) => {
   await page.goto(route)
@@ -32,6 +50,84 @@ test('pilot form is labelled, first-party and keyboard reachable', async ({ page
   await expect(page.locator('form.pilot-contact-form')).not.toHaveAttribute('action', /formsubmit/i)
   await page.keyboard.press('Tab')
   expect(await page.evaluate(() => document.activeElement?.tagName)).not.toBe('BODY')
+})
+
+test('resort pillar contains no unapproved hotel-chain logos or affiliations', async ({ page }) => {
+  await page.goto('/all-inclusive-resorts/')
+  const body = await page.locator('body').innerText()
+  for (const unapprovedBrand of ['Atlantis', 'RIU', 'Barceló', 'Iberostar', 'Secrets']) expect(body).not.toContain(unapprovedBrand)
+  await expect(page.getByText('BUILT FOR ALL-INCLUSIVE RESORTS')).toBeVisible()
+})
+
+test('resort pillar makes ancillary revenue opportunity explicit', async ({ page }) => {
+  await page.goto('/all-inclusive-resorts/#revenue')
+  await expect(page.getByText('More of the stay can become bookable.')).toBeVisible()
+  for (const opportunity of ['Spa & wellness', 'Speciality dining', 'Excursions', 'Cabanas & daybeds', 'Private transfers', 'Celebrations', 'Watersports']) await expect(page.getByText(opportunity, { exact: true })).toBeVisible()
+  await expect(page.getByRole('link', { name: /ancillary revenue use case/i })).toHaveAttribute('href', '/hotel-ancillary-revenue-software/')
+})
+
+test('resort rating demo uses eight scored questions plus two written wrap-up questions', async ({ page }) => {
+  await page.goto('/resort-live-demo/')
+  await page.getByRole('button', { name: /2 · Stay rating/i }).click()
+  for (let question = 0; question < 8; question++) {
+    await expect(page.getByText(new RegExp(`QUESTION ${question + 1} OF 10`))).toBeVisible()
+    const scoreButtons = page.getByRole('button', { name: /Rate \d+ out of 10/ })
+    await expect(scoreButtons).toHaveCount(10)
+    await page.getByRole('button', { name: 'Rate 8 out of 10' }).click()
+    await page.getByRole('button', { name: 'Next question' }).click()
+  }
+  await expect(page.getByText('QUESTION 9 OF 10 · DEMO')).toBeVisible()
+  const good = page.getByLabel(/Your answer/).first()
+  await expect(good).toHaveAttribute('maxlength', '400')
+  await good.fill('Warm staff, beautiful pool and excellent breakfast.')
+  await page.getByRole('button', { name: 'Next question' }).click()
+  await expect(page.getByText('QUESTION 10 OF 10 · DEMO')).toBeVisible()
+  const improve = page.getByLabel(/Your answer/).first()
+  await expect(improve).toHaveAttribute('maxlength', '400')
+  await improve.fill('Dinner waiting time could be shorter.')
+  await page.getByRole('button', { name: /submit & publish demo rating/i }).click()
+  await expect(page.getByText('Rating published. The resort can still act while you are here.')).toBeVisible()
+  await expect(page.getByText(/cannot selectively hold back a rating because it is poor/i)).toBeVisible()
+})
+
+test('resort rating copy explains the 10-question format and publication rule', async ({ page }) => {
+  await page.goto('/hotel-guest-rating-software/')
+  await expect(page.getByText(/eight guest pain-point questions scored 1–10/i).first()).toBeVisible()
+  await expect(page.getByText(/questions 9–10: context/i).first()).toBeVisible()
+  await expect(page.getByText(/participation does not include a right to suppress poor ratings/i).first()).toBeVisible()
+})
+
+test('resort live demo uses a clear three-step buyer flow', async ({ page }) => {
+  await page.goto('/resort-live-demo/')
+  await expect(page.getByRole('button', { name: /1 · Guest journey/i })).toBeVisible()
+  await expect(page.getByRole('button', { name: /2 · Stay rating/i })).toBeVisible()
+  await expect(page.getByRole('button', { name: /3 · Resort team/i })).toBeVisible()
+  await page.getByRole('button', { name: /3 · Resort team/i }).click()
+  await expect(page.getByText(/Ancillary revenue/).first()).toBeVisible()
+})
+
+test('TSquare is the public operator identity and the service-recovery image is replaced', async ({ page }) => {
+  const legacyBrand = ['Planet', 'Hike'].join('')
+  for (const route of ['/', '/all-inclusive-resorts/', '/resort-pilot/', '/imprint/', '/privacy/', '/terms/', '/cookies/']) {
+    await page.goto(route)
+    expect(await page.locator('body').innerText()).not.toContain(legacyBrand)
+  }
+  await page.goto('/imprint/')
+  await expect(page.getByText('TSquare Ventures LLC', { exact: true }).first()).toBeVisible()
+  await expect(page.getByText(/30 N Gould St Ste R/).first()).toBeVisible()
+  await expect(page.getByText(/Sheridan, WY 82801, USA/).first()).toBeVisible()
+  await page.goto('/all-inclusive-resorts/')
+  const recoveryImage = page.locator('.resort-feature').filter({ hasText: 'SERVICE RECOVERY' }).locator('img')
+  await expect(recoveryImage).toHaveAttribute('src', /photo-1759143545924-beb85b33c0f1/)
+  expect(await recoveryImage.getAttribute('src')).not.toContain('photo-1776977507261-81e4ab0dd806')
+})
+
+test('resort pilot form uses the existing first-party enquiry endpoint', async ({ page }) => {
+  await page.goto('/resort-pilot/#contact')
+  await expect(page.getByLabel('Work email')).toBeVisible()
+  await expect(page.getByLabel('Property or hotel group')).toBeVisible()
+  await expect(page.locator('form.resort-contact-form')).not.toHaveAttribute('action', /formsubmit/i)
+  await expect(page.getByRole('button', { name: /request a live demo or pilot/i })).toBeEnabled()
 })
 
 test('offline shell keeps a previously visited public page available', async ({ page, context }) => {

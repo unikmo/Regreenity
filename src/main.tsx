@@ -9,14 +9,25 @@ const useLegacyProductShell = path.startsWith('/product-app/')
 const useLegacyLegalShell = ['/imprint/', '/privacy/', '/terms/', '/cookies/'].some((route) => path.startsWith(route))
 const usePortal = path.startsWith('/portal/')
 const useSandbox = path.startsWith('/sandbox/')
-const useResort = path.startsWith('/all-inclusive-resorts/')
+const resortRoutes = [
+  '/all-inclusive-resorts/',
+  '/resort-live-demo/',
+  '/resort-pilot/',
+  '/resort-guest-engagement-software/',
+  '/hotel-service-recovery-software/',
+  '/resort-upselling-software/',
+  '/hotel-ancillary-revenue-software/',
+  '/resort-experience-discovery/',
+  '/hotel-guest-rating-software/',
+]
+const useResort = resortRoutes.some(route => path.startsWith(route))
 
 const loadRoute = async () => {
   if (useSandbox) return Promise.all([import('./Sandbox'), import('./sandbox.css')]).then(([module]) => module.default)
   if (usePortal) return import('./Portal').then(module => module.default)
   if (useLegacyProductShell) return Promise.all([import('./ExecutiveWalkthrough'), import('./executive-walkthrough.css')]).then(([module]) => module.default)
   if (useLegacyLegalShell) return Promise.all([import('./App'), import('./styles.css')]).then(([module]) => module.default)
-  if (useResort) return Promise.all([import('./ResortSite'), import('./marketing.css'), import('./resort.css')]).then(([module]) => module.default)
+  if (useResort) return Promise.all([import('./ResortSite'), import('./marketing.css'), import('./resort.css'), import('./resort-accessibility.css')]).then(([module]) => module.default)
   return Promise.all([import('./MarketingSite'), import('./marketing.css')]).then(([module]) => module.default)
 }
 

@@ -1,4 +1,4 @@
-# Cruise Connection legal implementation
+# Tisonik legal implementation
 
 Version 0.5.0 adds business-specific legal pages:
 
@@ -9,7 +9,9 @@ Version 0.5.0 adds business-specific legal pages:
 
 ## Operator identity
 
-Cruise Connection is operated as a product/trade name of **PlanetHike OÜ**, registered office Järvevana tee 9, Tallinn, 11314, Estonia, registry code **17233027**, Estonian Business Register. Legal representative: Tichi Mbanwie. Contact: info@tisonik.com; +49 (0)163 466 8380.
+Tisonik is a product of **TSquare Ventures LLC**, 30 N Gould St Ste R, Sheridan, WY 82801, USA. Contact: info@tisonik.com.
+
+**REQUIRES QUALIFIED LEGAL REVIEW before production publication following this operator change.**
 
 ## Product-specific privacy design reflected in the policy
 

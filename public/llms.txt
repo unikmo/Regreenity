@@ -1,39 +1,65 @@
 # Tisonik
 
-Tisonik is a PlanetHike project focused on cruise-line passenger experience.
+Tisonik is a product of TSquare Ventures LLC for guest-experience activation in cruise lines and all-inclusive hotels and resorts.
 
 ## What Tisonik is
-Tisonik is a cruise-line guest-experience interaction layer designed to sit inside the existing cruise-line app. It supports passenger interaction, crew recognition, structured live-event feedback, private service recovery, engagement and privacy-safe ancillary-revenue attribution.
+Tisonik is designed as a white-label guest-experience interaction layer that fits inside an operator's existing digital journey rather than replacing the operator's core app, PMS, booking or commerce stack.
 
-## Product boundaries
-- Tisonik is designed as an add-on interaction layer, not a replacement for the cruise line's app or core commerce stack.
+For all-inclusive hotels and resorts, Tisonik focuses on experience discovery and participation, relevant ancillary-revenue opportunities, in-stay ratings and service recovery, and staff recognition.
+
+## Resort product boundaries
+- Tisonik is an experience layer, not a replacement for the resort's core operational or commerce systems.
+- Resort inventory, availability, pricing, checkout, payment and fulfilment remain with the resort.
+- Public demonstrations and demo metrics are illustrative and do not imply a hotel or resort affiliation or production performance.
+- The in-stay rating flow is designed to take no more than about five minutes.
+- The rating product uses exactly 10 standard questions; participating hotels do not choose, replace or rewrite them.
+- Questions 1–8 are fixed guest pain-point questions and use a 1–10 score.
+- Question 9 is “What was good?” and allows up to 400 characters.
+- Question 10 is “What could be improved?” and allows up to 400 characters.
+- The purpose of in-stay ratings is to give the resort a chance to respond while the guest is still on property or before departure.
+- Participation means publication: submitted ratings go public, and a participating property cannot selectively suppress or hold back poor ratings.
+- Relevant paid experiences can include spa and wellness, speciality dining, excursions, cabanas and daybeds, private transfers, celebrations and watersports.
+- Tisonik surfaces these opportunities in context while inventory, pricing, checkout, payment and fulfilment remain with the resort.
+- Public commercial-performance claims should follow real pilot evidence rather than demo assumptions.
+
+## Cruise product boundaries
+- Tisonik is designed as an add-on interaction layer inside the cruise line's existing app, not a replacement for the cruise line's app or core commerce stack.
 - Inventory, pricing, checkout and payment remain with the cruise line.
 - The default analytics architecture accepts only a predefined aggregate report from the cruise-line environment; it has no passenger/crew source-event endpoint.
-- Crew recognition can use a badge photo or crew-participating selfie inside the cruise-line app. Operator-controlled face matching can resolve duplicate names; images, biometric templates and match scores never reach Tisonik.
-- Tisonik cloud receives aggregate KPI reports and non-identifying service-health totals—not randomized or hashed person-level records.
-- Aggregate cells below 20 are suppressed or rolled up before transmission.
-- Live-event feedback uses three to five prepared questions without free text, and the cruise line controls publication of aggregated ratings.
-- Adult passengers can send anonymous prepared vibes after the cruise line privately resolves a photographed, face-match-activated adult receiver. Children and same-cabin/booking-group recipients are excluded; captures and sender identity never reach Tisonik.
-- Passenger Top Five badges use dense score positions, remain private by default and can be shared only by the passenger. Event RSVPs expose a count by default; chosen name/image visibility is optional.
-- Native proximity and ship-local integrations require host integration.
-- Offline-first operation is an architecture design direction; it should not be read as evidence of a production deployment.
-- Public performance claims should follow real pilot evidence; demo or pilot assumptions are not production proof.
+- Passenger and crew privacy, recognition, recovery and aggregate-measurement boundaries are described in the extended public reference.
 
-## Canonical pages
-- https://tisonik.com/ — overview
+## Canonical resort pages
+- https://tisonik.com/all-inclusive-resorts/ — all-inclusive resort overview
+- https://tisonik.com/resort-live-demo/ — interactive resort demo
+- https://tisonik.com/resort-pilot/ — one-property pilot and live-demo enquiry
+- https://tisonik.com/resort-guest-engagement-software/ — resort guest engagement
+- https://tisonik.com/hotel-service-recovery-software/ — hotel service recovery
+- https://tisonik.com/hotel-guest-rating-software/ — in-stay guest ratings
+- https://tisonik.com/resort-experience-discovery/ — included experience discovery
+- https://tisonik.com/resort-upselling-software/ — premium experience discovery
+- https://tisonik.com/hotel-ancillary-revenue-software/ — ancillary revenue discovery
+
+## Canonical cruise pages
+- https://tisonik.com/ — cruise overview
 - https://tisonik.com/passenger-experience/ — passenger experience
 - https://tisonik.com/crew-recognition/ — crew recognition
 - https://tisonik.com/service-recovery/ — private service recovery
 - https://tisonik.com/engagement/ — passenger engagement
 - https://tisonik.com/ancillary-revenue/ — contextual ancillary-revenue discovery
 - https://tisonik.com/integration/ — integration and offline-first architecture
-- https://tisonik.com/pilot/ — pilot framework
+- https://tisonik.com/pilot/ — cruise pilot framework
 
 ## Brand
-Tisonik is the public product/project brand. It is a PlanetHike project.
+Tisonik is the public product/project brand. It is a product of TSquare Ventures LLC.
 
 ## Contact
-Pilot and enterprise enquiries: https://tisonik.com/pilot/#contact
+Resort live-demo and pilot enquiries: https://tisonik.com/resort-pilot/#contact
+Cruise pilot and enterprise enquiries: https://tisonik.com/pilot/#contact
 
 ## Extended AI-readable reference
 https://tisonik.com/llms-full.txt
+
+
+## Company
+Tisonik is a product of TSquare Ventures LLC.
+Address: 30 N Gould St Ste R, Sheridan, WY 82801, USA.

@@ -1,8 +1,6 @@
 # Tisonik
 
-Agency-grade pilot/demo for a white-label **cruise-line add-on inside the existing app** covering crew recognition, private Experience Pulse + service recovery, safe passenger positive interaction, interest-led participation, social commerce and end-of-cruise positive-memory summaries.
-
-Tisonik is not a new guest app, social network or dating app. It helps verified passengers make a safe first connection inside the cruise line’s existing app, then gets out of the way so real-world interaction happens onboard.
+Tisonik is a white-label guest-experience interaction layer for cruise lines and all-inclusive hotels and resorts. It fits inside an operator's existing digital journey rather than replacing the operator's core app, PMS, booking or commerce stack.
 
 ## Run locally
 
@@ -19,7 +17,7 @@ Open `http://localhost:5173/`.
 npm run build
 ```
 
-## Crawlable product routes
+## Crawlable cruise routes
 
 - `/`
 - `/crew-recognition/`
@@ -29,6 +27,40 @@ npm run build
 - `/cruise-dashboard/`
 - `/integration/`
 - `/pilot/`
+
+## Company
+
+Tisonik is a product of **TSquare Ventures LLC**.
+
+30 N Gould St Ste R  
+Sheridan, WY 82801  
+USA
+
+## Resort vertical routes
+
+- `/all-inclusive-resorts/`
+- `/resort-live-demo/`
+- `/resort-pilot/`
+- `/resort-guest-engagement-software/`
+- `/hotel-service-recovery-software/`
+- `/hotel-guest-rating-software/`
+- `/resort-experience-discovery/`
+- `/resort-upselling-software/`
+- `/hotel-ancillary-revenue-software/`
+
+### Resort rating model
+
+The resort rating flow contains exactly 10 standard Tisonik questions. Participating hotels do not choose, replace or rewrite them.
+
+- Questions 1–8 are guest pain-point questions scored on a 1–10 scale.
+- Question 9 is **What was good?**, with up to 400 characters.
+- Question 10 is **What could be improved?**, with up to 400 characters.
+- Submitted ratings publish for participating properties. A property cannot selectively suppress a poor rating.
+- The in-stay timing gives the resort a chance to respond before departure without removing the rating from the publication path.
+
+### Resort ancillary-revenue model
+
+The resort journey can surface relevant paid opportunities such as spa and wellness, speciality dining, excursions, cabanas and daybeds, private transfers, celebrations and watersports. The resort retains inventory, availability, pricing, checkout, payment and fulfilment. Public commercial-performance claims require real pilot evidence.
 
 The Vite build treats each route as its own HTML entry so important buyer propositions are not represented only by client-side state.
 
@@ -57,9 +89,9 @@ No unrestricted chat. No dating mode. No phone-number disclosure.
 
 ## Offline-first requirement
 
-Core Tisonik usage must not depend on public internet access at sea.
+Core Tisonik cruise usage must not depend on public internet access at sea.
 
-The demo now includes:
+The demo includes:
 
 - a service-worker cached application shell
 - a production requirement to pre-bundle/pre-cache the module before sailing or serve it from the ship-local network so first onboard open does not require public internet
@@ -68,7 +100,7 @@ The demo now includes:
 - host bridge events for nearby discovery, interests, affirmations, public-meeting proposals, crew recognition, service issues and Experience Pulse
 - an integration architecture separating **device**, **ship-local network** and **external cloud** responsibilities
 
-Production nearby discovery should be supplied by a native cruise-app bridge/SDK (for example BLE-based coarse proximity, with optional more precise capability only where the cruise line approves it). The web UI itself should not claim precise proximity or authenticate passengers.
+Production nearby discovery should be supplied by a native cruise-app bridge/SDK. The web UI itself should not claim precise proximity or authenticate passengers.
 
 If the ship exposes onboard APIs/LAN, events can synchronize locally without public internet. If external connectivity is unavailable, non-urgent events can queue and synchronize later. Production queued records should use the host application's approved secure local storage.
 
@@ -82,7 +114,7 @@ If the ship exposes onboard APIs/LAN, events can synchronize locally without pub
 
 ## Experience Pulse
 
-Experience Pulse is private cruise-line operational feedback, not public rating content.
+Experience Pulse is private cruise-line operational feedback, not the resort public-rating product.
 
 - Ask only about departments/experiences the guest used.
 - Maximum one pulse per guest/department/sailing-local day.
@@ -98,7 +130,7 @@ The cruise line must actively promote the passenger layer before and during the 
 
 ## Working commercial framework
 
-For design-partner discussions, the current working anchor is:
+For design-partner discussions, the current working cruise anchor is:
 
 - Enterprise onboarding/integration fee — negotiated
 - Ship activation/licensing fee — negotiated per vessel
@@ -113,17 +145,15 @@ A lower passenger fee such as $0.50 can be negotiated against stronger minimums,
 
 ## Important demo notes
 
-- Demo metrics and sailing details are illustrative.
-- The public pilot request form posts to the first-party `/api/pilot-requests` endpoint and is stored in the access-controlled business database.
-- The repository demonstrates the complete connected product experience at the front end; production identity, native proximity, secure offline storage, operational routing, analytics and host-system integrations are implemented with the cruise-line partner during pilot deployment.
-- Nearby discovery is simulated through the host bridge contract; the real proximity layer requires native cruise-line app integration.
-- Offline action queuing in this demo uses browser local storage; production must use approved secure storage and data-retention rules.
+- Demo metrics and property/sailing details are illustrative.
+- Public demonstrations do not imply an affiliation with any hotel, resort or cruise brand.
+- The public pilot request form posts to the first-party `/api/pilot-requests` endpoint.
+- Production identity, secure offline storage, operational routing, analytics and host-system integrations are implemented with the operator during pilot deployment.
 
+## Legal pages
 
-## Legal pages (v0.5.0)
+Business-specific legal routes are included at `/imprint/`, `/privacy/`, `/terms/`, and `/cookies/`. See `docs/LEGAL.md`.
 
-Business-specific legal routes are included at `/imprint/`, `/privacy/`, `/terms/`, and `/cookies/`. They use PlanetHike OÜ as the operator and reflect Tisonik's white-label, proximity, offline, recognition, recovery and commerce architecture. See `docs/LEGAL.md`.
+## Cruise visual storytelling
 
-## V6 visual storytelling update
-
-The public overview now uses local generated cruise-hospitality imagery in the hero, measurable-outcome cards, crew-recognition story, service-recovery story, passenger-connection story, social-commerce moment, positive-memory card and integration section. All image assets live under `public/media/` and are included in the service-worker shell so the visual experience remains available after pre-cache/onboard distribution.
+The cruise overview uses cruise-hospitality imagery under `public/media/`. Resort pages use a separate resort-specific visual direction and must not reuse cruise imagery.
