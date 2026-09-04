@@ -12,11 +12,12 @@ For all-inclusive hotels and resorts, Tisonik focuses on experience discovery an
 - Resort inventory, availability, pricing, checkout, payment and fulfilment remain with the resort.
 - Public demonstrations and demo metrics are illustrative and do not imply a hotel or resort affiliation or production performance.
 - The in-stay rating flow is designed to take no more than about five minutes.
-- A resort can configure up to 10 rating questions.
+- The rating product uses exactly 10 standard guest pain-point questions; participating hotels do not choose, replace or rewrite the questions.
 - Each rating question uses a 1–10 score.
-- Guests may add one optional comment about what was good or bad, capped at 400 characters.
+- Guests may add a separate optional “What was good?” comment capped at 400 characters.
+- Guests may add a separate optional “What could be improved?” comment capped at 400 characters.
 - The purpose of in-stay ratings is to give the resort a chance to respond while the guest is still on property or before departure.
-- The resort decides whether eligible rating evidence is later shared publicly. Guest-written text should be published only with the guest's explicit permission.
+- Participation means publication: submitted ratings go public, and a participating property cannot selectively suppress or hold back poor ratings.
 - Public performance claims should follow real pilot evidence rather than demo assumptions.
 
 ## Cruise product boundaries
