@@ -1,0 +1,147 @@
+name: One-time TSquare identity migration
+
+on:
+  push:
+    branches:
+      - build/resort-vertical-v1
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: build/resort-vertical-v1
+          fetch-depth: 0
+      - name: Replace operator identity and service-recovery image
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          text_suffixes = {'.ts', '.tsx', '.js', '.mjs', '.json', '.md', '.html', '.txt', '.css', '.yml', '.yaml'}
+          skip = {Path('.github/workflows/tsquare-identity-migration.yml')}
+          files = [p for p in Path('.').rglob('*') if p.is_file() and p.suffix.lower() in text_suffixes and '.git' not in p.parts and 'node_modules' not in p.parts and p not in skip]
+
+          for path in files:
+              try:
+                  text = path.read_text(encoding='utf-8')
+              except UnicodeDecodeError:
+                  continue
+              original = text
+
+              # Brand/company phrasing first so generic replacements do not create awkward copy.
+              text = text.replace('A PlanetHike project', 'A product of TSquare Ventures LLC')
+              text = text.replace('a PlanetHike project', 'a product of TSquare Ventures LLC')
+              text = text.replace('a PlanetHike OÜ project', 'a product of TSquare Ventures LLC')
+              text = text.replace('Direct response from PlanetHike', 'Direct response from TSquare Ventures LLC')
+              text = text.replace('contact PlanetHike through the production form', 'contact TSquare Ventures LLC through the production form')
+              text = text.replace('I agree that PlanetHike may use these details', 'I agree that TSquare Ventures LLC may use these details')
+              text = text.replace('PlanetHike OÜ', 'TSquare Ventures LLC')
+              text = text.replace('PlanetHike', 'TSquare Ventures LLC')
+
+              # Remove former Estonian operator particulars rather than attributing them to the new LLC.
+              text = text.replace('TSquare Ventures LLC, registry code 17233027, Järvevana tee 9, Tallinn, 11314, Estonia', 'TSquare Ventures LLC, 30 N Gould St Ste R, Sheridan, WY 82801, USA')
+              text = text.replace('TSquare Ventures LLC, Järvevana tee 9, Tallinn, 11314, Estonia · Registry code 17233027', 'TSquare Ventures LLC, 30 N Gould St Ste R, Sheridan, WY 82801, USA')
+              text = text.replace('TSquare Ventures LLC, Järvevana tee 9, Tallinn, 11314, Estonia', 'TSquare Ventures LLC, 30 N Gould St Ste R, Sheridan, WY 82801, USA')
+
+              # Public legal operator card: use only company facts supplied for TSquare Ventures LLC.
+              if path.as_posix() == 'src/App.tsx':
+                  text = re.sub(
+                      r'<section id="operator"><h2>1\. Operator information</h2>.*?</section>',
+                      '<section id="operator"><h2>1. Operator information</h2><p><strong>Tisonik</strong> is a product of <strong>TSquare Ventures LLC</strong>.</p><dl className="legal-details"><div><dt>Legal entity</dt><dd>TSquare Ventures LLC</dd></div><div><dt>Business address</dt><dd>30 N Gould St Ste R, Sheridan, WY 82801, USA</dd></div></dl></section>',
+                      text,
+                      count=1,
+                      flags=re.S,
+                  )
+                  text = re.sub(
+                      r'<section id="contact"><h2>2\. Contact</h2>.*?</section>',
+                      '<section id="contact"><h2>2. Contact</h2><p>Email: <a href="mailto:info@tisonik.com">info@tisonik.com</a></p><p>For privacy requests, use the same email address with the subject line <strong>“Privacy request – Tisonik”</strong>.</p></section>',
+                      text,
+                      count=1,
+                      flags=re.S,
+                  )
+                  text = text.replace('You may also lodge a complaint with the Estonian Data Protection Inspectorate (Andmekaitse Inspektsioon) or another competent supervisory authority.', 'You may also lodge a complaint with the competent data-protection or privacy authority where applicable.')
+                  text = text.replace('These public Terms are governed by the laws of Estonia, without prejudice to mandatory rules that apply to you. Where legally permissible, disputes relating solely to these Terms are subject to the competent courts of Estonia. Enterprise customer disputes are governed by the applicable signed agreement.', 'These public Terms are subject to applicable law and any mandatory consumer protections. Enterprise customer disputes, governing law and forum are defined by the applicable signed agreement.')
+                  text = text.replace("const updated = '30 August 2026'", "const updated = '4 September 2026'")
+
+              # Documentation operator block and legal-review flag.
+              if path.as_posix() == 'docs/LEGAL.md':
+                  text = text.replace('# Cruise Connection legal implementation', '# Tisonik legal implementation')
+                  text = re.sub(
+                      r'## Operator identity\n\n.*?\n\n## Product-specific privacy design reflected in the policy',
+                      '## Operator identity\n\nTisonik is a product of **TSquare Ventures LLC**, 30 N Gould St Ste R, Sheridan, WY 82801, USA. Contact: info@tisonik.com.\n\n**REQUIRES QUALIFIED LEGAL REVIEW before production publication following this operator change.**\n\n## Product-specific privacy design reflected in the policy',
+                      text,
+                      count=1,
+                      flags=re.S,
+                  )
+
+              # Actual image #2 replacement: new hospitality/reception image, not just a crop of the old photo.
+              if path.as_posix() == 'src/ResortSite.tsx':
+                  text = text.replace(
+                      'https://images.unsplash.com/photo-1776977507261-81e4ab0dd806?auto=format&fit=crop&fm=jpg&q=82&w=1800',
+                      'https://images.unsplash.com/photo-1759143545924-beb85b33c0f1?auto=format&fit=crop&fm=jpg&q=82&w=1800'
+                  )
+                  text = text.replace('alt="Hospitality employee attending to guests in a premium resort setting" reverse imagePosition="72% center" imageScale={1.12}', 'alt="Guest-service team member assisting at a hotel reception" reverse')
+                  text = text.replace("alt: 'Hospitality employee attending to guests at a resort'", "alt: 'Guest-service team member assisting at a hotel reception'")
+
+              if path.as_posix() == 'README.md':
+                  text = text.replace('They use TSquare Ventures LLC as the operator and reflect Tisonik', 'They use TSquare Ventures LLC as the operator and reflect Tisonik')
+                  marker = '## Resort vertical routes\n'
+                  if marker in text and '30 N Gould St Ste R' not in text:
+                      text = text.replace(marker, '## Company\n\nTisonik is a product of **TSquare Ventures LLC**, 30 N Gould St Ste R, Sheridan, WY 82801, USA.\n\n' + marker)
+
+              # Make the canonical public AI references explicit about company identity/address.
+              if path.as_posix() == 'public/llms.txt':
+                  if '30 N Gould St Ste R' not in text:
+                      text += '\n\n## Company\nTisonik is a product of TSquare Ventures LLC.\nAddress: 30 N Gould St Ste R, Sheridan, WY 82801, USA.\n'
+              if path.as_posix() == 'public/llms-full.txt':
+                  text = text.replace('- Operator: TSquare Ventures LLC, Tallinn, Estonia.', '- Operator: TSquare Ventures LLC, 30 N Gould St Ste R, Sheridan, WY 82801, USA.')
+                  if '30 N Gould St Ste R' not in text:
+                      text += '\n\n## Company identity\nTisonik is a product of TSquare Ventures LLC, 30 N Gould St Ste R, Sheridan, WY 82801, USA.\n'
+
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+
+          # Static imprint metadata/structured identity.
+          imprint = Path('imprint/index.html')
+          if imprint.exists():
+              text = imprint.read_text(encoding='utf-8')
+              text = text.replace('a product of TSquare Ventures LLC.', 'a product of TSquare Ventures LLC.')
+              text = text.replace('{"@type":"Organization","name":"Tisonik","description":"White-label positive-interaction infrastructure for cruise lines."}', '{"@type":"Organization","name":"TSquare Ventures LLC","address":{"@type":"PostalAddress","streetAddress":"30 N Gould St Ste R","addressLocality":"Sheridan","addressRegion":"WY","postalCode":"82801","addressCountry":"US"},"brand":{"@type":"Brand","name":"Tisonik"}}')
+              imprint.write_text(text, encoding='utf-8')
+          PY
+
+          # The one-time workflow must not remain in the product branch, and no PlanetHike identity may remain in the working tree.
+          git rm .github/workflows/tsquare-identity-migration.yml
+          if git grep -ni 'planethike' -- . ':!package-lock.json'; then
+            echo 'PlanetHike reference remains after migration.' >&2
+            exit 1
+          fi
+
+          # Guard the user-supplied operator identity and actual image replacement.
+          grep -q 'TSquare Ventures LLC' src/App.tsx
+          grep -q '30 N Gould St Ste R' src/App.tsx
+          grep -q 'photo-1759143545924-beb85b33c0f1' src/ResortSite.tsx
+          if grep -q 'photo-1776977507261-81e4ab0dd806' src/ResortSite.tsx; then
+            echo 'Old service-recovery image still present.' >&2
+            exit 1
+          fi
+
+      - name: Commit migration
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Move Tisonik operator to TSquare Ventures LLC and replace resort recovery image'
+          git push origin HEAD:build/resort-vertical-v1
