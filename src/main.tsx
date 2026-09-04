@@ -9,7 +9,18 @@ const useLegacyProductShell = path.startsWith('/product-app/')
 const useLegacyLegalShell = ['/imprint/', '/privacy/', '/terms/', '/cookies/'].some((route) => path.startsWith(route))
 const usePortal = path.startsWith('/portal/')
 const useSandbox = path.startsWith('/sandbox/')
-const useResort = path.startsWith('/all-inclusive-resorts/')
+const resortRoutes = [
+  '/all-inclusive-resorts/',
+  '/resort-live-demo/',
+  '/resort-pilot/',
+  '/resort-guest-engagement-software/',
+  '/hotel-service-recovery-software/',
+  '/resort-upselling-software/',
+  '/hotel-ancillary-revenue-software/',
+  '/resort-experience-discovery/',
+  '/hotel-guest-rating-software/',
+]
+const useResort = resortRoutes.some(route => path.startsWith(route))
 
 const loadRoute = async () => {
   if (useSandbox) return Promise.all([import('./Sandbox'), import('./sandbox.css')]).then(([module]) => module.default)
