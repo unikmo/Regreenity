@@ -11,6 +11,7 @@ export const enquirySchema = z.object({
   message: z.string().trim().min(10).max(4000),
   privacyConsent: z.literal(true),
   website: z.string().max(200).optional().default(''),
+  sourcePath: z.enum(['/pilot/', '/resort-pilot/']).optional().default('/pilot/'),
 }).strict()
 
 export function normalizeEnquiry(value) {
@@ -23,6 +24,7 @@ export function normalizeEnquiry(value) {
     message: value.message ?? value.details,
     privacyConsent: value.privacyConsent === true || value.privacyConsent === 'true' || value.privacy_consent === 'yes',
     website: value.website ?? value._honey ?? '',
+    sourcePath: value.sourcePath ?? value.source_path ?? '/pilot/',
   }
 }
 
@@ -37,7 +39,7 @@ export default async function handler(request, response) {
       console.warn('pilot-request-validation-failed', invalidFields.join(','))
       return sendJson(response, 400, { error: 'invalid_enquiry', invalidFields })
     }
-    const { website, privacyConsent, workEmail, roleTitle, ...rest } = parsed.data
+    const { website, privacyConsent, workEmail, roleTitle, sourcePath, ...rest } = parsed.data
     if (website) return sendJson(response, 202, { accepted: true })
 
     const database = adminDatabase()
@@ -46,7 +48,7 @@ export default async function handler(request, response) {
       work_email: workEmail.toLowerCase(),
       role_title: roleTitle || null,
       consented_at: new Date().toISOString(),
-      source_path: '/pilot/',
+      source_path: sourcePath,
     }).select('id').single()
     if (error) throw error
     const { error: outboxError } = await database.from('pilot_request_notifications').insert({ pilot_request_id: enquiry.id })
