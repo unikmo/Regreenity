@@ -114,6 +114,24 @@ test('resort live demo uses a clear three-step buyer flow', async ({ page }) => 
   await expect(page.getByText(/Ancillary revenue/).first()).toBeVisible()
 })
 
+test('TSquare is the public operator identity and the service-recovery image is replaced', async ({ page }) => {
+  const legacyBrand = ['Planet', 'Hike'].join('')
+  for (const route of ['/', '/all-inclusive-resorts/', '/resort-pilot/', '/imprint/', '/privacy/', '/terms/', '/cookies/']) {
+    await page.goto(route)
+    expect(await page.locator('body').innerText()).not.toContain(legacyBrand)
+  }
+
+  await page.goto('/imprint/')
+  await expect(page.getByText('TSquare Ventures LLC', { exact: true }).first()).toBeVisible()
+  await expect(page.getByText(/30 N Gould St Ste R/).first()).toBeVisible()
+  await expect(page.getByText(/Sheridan, WY 82801, USA/).first()).toBeVisible()
+
+  await page.goto('/all-inclusive-resorts/')
+  const recoveryImage = page.locator('.resort-feature').filter({ hasText: 'SERVICE RECOVERY' }).locator('img')
+  await expect(recoveryImage).toHaveAttribute('src', /photo-1759143545924-beb85b33c0f1/)
+  await expect(recoveryImage).not.toHaveAttribute('src', /photo-1776977507261-81e4ab0dd806/)
+})
+
 test('resort pilot form uses the existing first-party enquiry endpoint', async ({ page }) => {
   await page.goto('/resort-pilot/#contact')
   await expect(page.getByLabel('Work email')).toBeVisible()
